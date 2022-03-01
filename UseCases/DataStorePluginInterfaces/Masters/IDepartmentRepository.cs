@@ -1,4 +1,5 @@
-﻿using CoreBusiness.Masters;
+﻿using CoreBusiness;
+using CoreBusiness.Masters;
 using System.Collections.Generic;
 
 namespace UseCases.DataStorePluginInterfaces.Masters
@@ -6,9 +7,9 @@ namespace UseCases.DataStorePluginInterfaces.Masters
     public interface IDepartmentRepository
     {
         IEnumerable<Department> GetDepartment();
-        void AddDepartment(Department department);
-        void UpdateDepartment(Department department);
-        void DeleteDepartment(int departmentId);
+        Response AddDepartment(Department department);
+        Response UpdateDepartment(Department department);
+        Response DeleteDepartment(int departmentId);
         Department GetDepartmentById(int departmentId);
     }
 }

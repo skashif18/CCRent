@@ -1,4 +1,5 @@
 ﻿using CoreBusiness;
+using CoreBusiness.Masters;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -13,6 +14,12 @@ namespace Plugins.DataStore.SQL
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+
+
+        // master Dtaset
+        public DbSet<Bank> Banks { get; set; }
+        public DbSet<Branch> Branches { get; set; }
+        public DbSet<City> Cities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

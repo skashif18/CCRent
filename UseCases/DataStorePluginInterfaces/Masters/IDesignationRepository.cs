@@ -1,4 +1,5 @@
-﻿using CoreBusiness.Masters;
+﻿using CoreBusiness;
+using CoreBusiness.Masters;
 using System.Collections.Generic;
 
 namespace UseCases.DataStorePluginInterfaces.Masters
@@ -6,9 +7,9 @@ namespace UseCases.DataStorePluginInterfaces.Masters
     public interface IDesignationRepository
     {
         IEnumerable<Designation> GetDesignation();
-        void AddDesignation(Designation designation);
-        void UpdateDesignation(Designation designation);
-        void DeleteDesignation(int designationId);
+        Response AddDesignation(Designation designation);
+        Response UpdateDesignation(Designation designation);
+        Response DeleteDesignation(int designationId);
         Designation GetDesignationById(int designationId);
     }
 }

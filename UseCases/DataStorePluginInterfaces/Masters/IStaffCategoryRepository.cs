@@ -1,4 +1,5 @@
-﻿using CoreBusiness.Masters;
+﻿using CoreBusiness;
+using CoreBusiness.Masters;
 using System.Collections.Generic;
 
 namespace UseCases.DataStorePluginInterfaces.Masters
@@ -6,9 +7,9 @@ namespace UseCases.DataStorePluginInterfaces.Masters
     public interface IStaffCategoryRepository
     {
         IEnumerable<StaffCategory> GetStaffCategory();
-        void AddStaffCategory(StaffCategory staffCategory);
-        void UpdateStaffCategory(StaffCategory staffCategory);
-        void DeleteStaffCategory(int saffCategoryId);
+        Response AddStaffCategory(StaffCategory staffCategory);
+        Response UpdateStaffCategory(StaffCategory staffCategory);
+        Response DeleteStaffCategory(int saffCategoryId);
         StaffCategory GetStaffCategoryById(int staffCategoryId);
     }
 }

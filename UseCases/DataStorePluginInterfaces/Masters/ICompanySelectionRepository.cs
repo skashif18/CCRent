@@ -1,4 +1,5 @@
-﻿using CoreBusiness.Masters;
+﻿using CoreBusiness;
+using CoreBusiness.Masters;
 using System.Collections.Generic;
 
 namespace UseCases.DataStorePluginInterfaces.Masters
@@ -6,9 +7,9 @@ namespace UseCases.DataStorePluginInterfaces.Masters
     public interface ICompanySelectionRepository
     {
         IEnumerable<CompanySelection> GetCompanySelection();
-        void AddCompanySelection(CompanySelection companySelection);
-        void UpdateCompanySelection(CompanySelection companySelection);
-        void DeleteCompanySelection(int companySelectionId);
+        Response AddCompanySelection(CompanySelection companySelection);
+        Response UpdateCompanySelection(CompanySelection companySelection);
+        Response DeleteCompanySelection(int companySelectionId);
         CompanySelection GetCompanySelectionById(int companySelectionId);
     }
 }

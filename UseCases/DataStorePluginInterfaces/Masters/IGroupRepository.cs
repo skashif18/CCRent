@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CoreBusiness;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace UseCases.DataStorePluginInterfaces.Masters
@@ -6,9 +7,9 @@ namespace UseCases.DataStorePluginInterfaces.Masters
     public interface IGroupRepository
     {
         IEnumerable<Group> GetGroup();
-        void AddGroup(Group group);
-        void UpdateGroup(Group group);
-        void DeleteGroup(int groupId);
+        Response AddGroup(Group group);
+        Response UpdateGroup(Group group);
+        Response DeleteGroup(int groupId);
         Group GetGroupById(int groupId);
     }
 }
