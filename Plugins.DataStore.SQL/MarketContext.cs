@@ -20,6 +20,20 @@ namespace Plugins.DataStore.SQL
         public DbSet<Bank> Banks { get; set; }
         public DbSet<Branch> Branches { get; set; }
         public DbSet<City> Cities { get; set; }
+        public DbSet<CompanyGroup> CompanyGroups { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<CompanySelection> CompanySelections { get; set; }
+        public DbSet<CostCenter> CostCenters { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<Designation> Designations { get; set; }
+        public DbSet<Division> Divisions { get; set; }
+        public DbSet<Grade> Grades { get; set; }
+        public DbSet<Group> Groups { get; set; } 
+        public DbSet<PayHead> PayHeads { get; set; }
+        public DbSet<StaffCategory> StaffCategories { get; set; }
+        public DbSet<State> States { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

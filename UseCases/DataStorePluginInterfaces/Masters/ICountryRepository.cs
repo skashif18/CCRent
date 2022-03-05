@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace UseCases.DataStorePluginInterfaces.Masters
 {
-    internal interface ICountryRepository
+    public interface ICountryRepository
     {
         IEnumerable<Country> GetCountry();
-        Response AddCountry(Country Country);
-        Response UpdateCountry(Country Country);
+        Response AddCountry(Country country);
+        Response UpdateCountry(Country country);
         Response DeleteCountry(int CountryId);
         Country GetCountryById(int CountryId);
     }
