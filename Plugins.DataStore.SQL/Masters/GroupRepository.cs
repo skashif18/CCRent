@@ -1,9 +1,9 @@
 ﻿using CoreBusiness;
+using CoreBusiness.Masters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UseCases.DataStorePluginInterfaces.Masters;
 
@@ -21,27 +21,70 @@ namespace Plugins.DataStore.SQL.Masters
 
         public Response AddGroup(Group group)
         {
-            throw new NotImplementedException();
+            if (group != null)
+                try
+                {
+                    _db.Groups.Add(group);
+                    _db.SaveChanges();
+                    response.IsSuccess = true;
+                    response.Message = "Group is Added Successfuly";
+                }
+                catch (Exception ex)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Error:" + ex.Message;
+                }
+
+            return response;
         }
 
-        public Response DeleteGroup(int groupId)
+        public Response DeleteGroup(int GroupId)
         {
-            throw new NotImplementedException();
+            var group = _db.Groups.Find(GroupId);
+            if (group == null) return response;
+            try
+            {
+                _db.Groups.Remove(group);
+                _db.SaveChanges();
+                response.IsSuccess = true;
+                response.Message = "Group is Removed Successfuly";
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Error:" + ex.Message;
+            }
+            return response;
         }
 
         public IEnumerable<Group> GetGroup()
         {
-            throw new NotImplementedException();
+            return _db.Groups.ToList();
         }
 
-        public Group GetGroupById(int groupId)
+        public Group GetGroupById(int GroupId)
         {
-            throw new NotImplementedException();
+            return _db.Groups.Find(GroupId);
         }
 
         public Response UpdateGroup(Group group)
         {
-            throw new NotImplementedException();
+            var grp = _db.Groups.Find(group.GroupId);
+            if (group == null) return response;
+            try
+            {
+                grp.GroupName = group.GroupName;
+                grp.ShortDescription = group.ShortDescription;
+                _db.SaveChanges();
+                response.IsSuccess = true;
+                response.Message = "Group is Updated Successfuly";
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Error:" + ex.Message;
+            }
+            return response;
         }
     }
 }

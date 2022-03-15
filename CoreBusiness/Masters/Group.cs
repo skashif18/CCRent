@@ -4,6 +4,8 @@ namespace CoreBusiness.Masters;
 
 public class Group
 {
+    public int GroupId { get; set; }
+
     [RegularExpression("[a-zA-Z0-9_ ]*$", ErrorMessage = "Invalid group name ")]
     [StringLength(200, ErrorMessage = "Group can contain only 200 characters")]
     public string GroupName { get; set; }
