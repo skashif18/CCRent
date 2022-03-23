@@ -1,4 +1,5 @@
 ﻿using CoreBusiness;
+using CoreBusiness.EmployeeRelations;
 using CoreBusiness.Masters;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -34,6 +35,9 @@ namespace Plugins.DataStore.SQL
         public DbSet<StaffCategory> StaffCategories { get; set; }
         public DbSet<State> States { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+
+        // Employee Dtaset
+        public DbSet<Employee> Employees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
