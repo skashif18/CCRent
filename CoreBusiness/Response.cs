@@ -1,6 +1,6 @@
 ﻿namespace CoreBusiness
 {
-    public  class Response
+    public class Response
     {
         public int Id { get; set; }
         public bool IsSuccess { get; set; }
@@ -9,3 +9,10 @@
 
     }
 }
+
+
+
+
+
+
+
