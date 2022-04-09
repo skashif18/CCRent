@@ -7,7 +7,7 @@ namespace Plugins.DataStore.SQL
 {
     public class MarketContext : DbContext
     {
-        public MarketContext(DbContextOptions options) : base(options)
+        public MarketContext(DbContextOptions<MarketContext> options) : base(options)
         {
         }
 
@@ -29,7 +29,7 @@ namespace Plugins.DataStore.SQL
         public DbSet<Designation> Designations { get; set; }
         public DbSet<Division> Divisions { get; set; }
         public DbSet<Grade> Grades { get; set; }
-        public DbSet<Group> Groups { get; set; } 
+        public DbSet<Group> Groups { get; set; }
         public DbSet<PayHead> PayHeads { get; set; }
         public DbSet<StaffCategory> StaffCategories { get; set; }
         public DbSet<State> States { get; set; }

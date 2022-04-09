@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugins.DataStore.InMemory"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "WebApp\WebApp.csproj", "{B1441A58-37F5-44ED-BBBE-B0DA2B146EFF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Appo.Server", "Appo.Server\Appo.Server.csproj", "{9B182AE0-F72A-45F7-80B2-1FD98F3B5A99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{B1441A58-37F5-44ED-BBBE-B0DA2B146EFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1441A58-37F5-44ED-BBBE-B0DA2B146EFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1441A58-37F5-44ED-BBBE-B0DA2B146EFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B182AE0-F72A-45F7-80B2-1FD98F3B5A99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B182AE0-F72A-45F7-80B2-1FD98F3B5A99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B182AE0-F72A-45F7-80B2-1FD98F3B5A99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B182AE0-F72A-45F7-80B2-1FD98F3B5A99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
