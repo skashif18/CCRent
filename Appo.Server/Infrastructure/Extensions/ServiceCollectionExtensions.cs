@@ -1,9 +1,6 @@
 ﻿namespace Appo.Server.Infrastructure
 {
     using Appo.Server.Features.Identity;
-    using Appo.Server.Features.Packages;
-    using Appo.Server.Features.Profiles;
-    using Appo.Server.Features.Search;
     using Appo.Server.Infrastructure.Extensions;
     using Appo.Server.Infrastructure.Filters;
     using Appo.Server.Infrastructure.Services;
@@ -78,11 +75,9 @@
         {
             services
                 .AddTransient<IIdentityService, IdentityService>()
-                .AddScoped<ICurrentUserService, CurrentUserService>()
-                .AddTransient<ISearchService, SearchService>()
-                .AddTransient<IProfileService, ProfileService>()
-                .AddTransient<IPackagesService, PackagesService>()
-                .AddTransient<ICategoryRepository, CategoryRepository>();
+                .AddScoped<ICurrentUserService, CurrentUserService>();
+                
+             
 
             return services;
         }
@@ -93,7 +88,7 @@
                      options.UseSqlServer(
                          configuration.GetDefaultConnectionString()))
 
-            .AddDbContext<MarketContext>(
+            .AddDbContext<CarRentContext>(
                 options =>
                      options.UseSqlServer(
                          configuration.GetDefaultConnectionString()));

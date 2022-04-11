@@ -1,4 +1,5 @@
 ﻿using CoreBusiness;
+using CoreBusiness.Master;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace Appo.Server.Features.Categories
             category = _category;
         }
         [HttpGet]
-        public IEnumerable<Category> Get()
+        public IEnumerable<SrvCategory> Get()
             => category.GetCategories();
 
     }

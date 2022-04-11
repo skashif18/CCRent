@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Controls\SelectProductForSellingComponent.razor" />
+    <Content Remove="Controls\SellProductComponent.razor" />
+    <Content Remove="Controls\TodayTransactionsComponent.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.2">
@@ -24,6 +30,10 @@
     <ProjectReference Include="..\Plugins.DataStore.InMemory\Plugins.DataStore.InMemory.csproj" />
     <ProjectReference Include="..\Plugins.DataStore.SQL\Plugins.DataStore.SQL.csproj" />
     <ProjectReference Include="..\UseCases\UseCases.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controls\" />
   </ItemGroup>
 
 </Project>

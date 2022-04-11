@@ -6,14 +6,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Plugins.DataStore.InMemory;
 using Plugins.DataStore.SQL;
+using Plugins.DataStore.SQL.Infrastructure.Services;
+using Plugins.DataStore.SQL.Masters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UseCases;
 using UseCases.DataStorePluginInterfaces;
+using UseCases.DataStorePluginInterfaces.Masters;
 using WebApp.Data;
 
 namespace WebApp
@@ -35,15 +37,19 @@ namespace WebApp
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
 
-            services.AddDbContext<MarketContext>(options =>
+            services.AddDbContext<CarRentContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+
+           
 
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("AdminOnly", p => p.RequireClaim("Position", "Admin"));
                 options.AddPolicy("CashierOnly", p => p.RequireClaim("Position", "Cashier"));
+                options.AddPolicy("CustomerOnly", p => p.RequireClaim("Position", "Customer"));
+                options.AddPolicy("SupplierOnly", p => p.RequireClaim("Position", "Supplier"));
             });
 
             //Dependency Injection for In-Memory Data Store
@@ -52,26 +58,11 @@ namespace WebApp
             //services.AddScoped<ITransactionRepository, TransactionInMemoryRepository>();
 
             //Dependency Injection for ef core Data Store for SQL
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddTransient<INationalityRepository, NationalityRepository>();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             //Dependency Injection for Use Cases and Repositories
-            services.AddTransient<IViewCategoriesUseCase, ViewCategoriesUseCase>();
-            services.AddTransient<IAddCategoryUseCase, AddCategoryUseCase>();
-            services.AddTransient<IEditCategoryUseCase, EditCategoryUseCase>();
-            services.AddTransient<IGetCategoryByIdUseCase, GetCategoryByIdUseCase>();
-            services.AddTransient<IDeleteCategoryUseCase, DeleteCategoryUseCase>();
-            services.AddTransient<IViewProductsUseCase, ViewProductsUseCase>();
-            services.AddTransient<IAddProductUseCase, AddProductUseCase>();
-            services.AddTransient<IEditProductUseCase, EditProductUseCase>();
-            services.AddTransient<IGetProductByIdUseCase, GetProductByIdUseCase>();
-            services.AddTransient<IDeleteProductUseCase, DeleteProductUseCase>();
-            services.AddTransient<IViewProductsByCategoryId, ViewProductsByCategoryId>();
-            services.AddTransient<ISellProductUseCase, SellProductUseCase>();
-            services.AddTransient<IRecordTransactionUseCase, RecordTransactionUseCase>();
-            services.AddTransient<IGetTodayTransactionsUseCase, GetTodayTransactionsUseCase>();
-            services.AddTransient<IGetTransactionsUseCase, GetTransactionsUseCase>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

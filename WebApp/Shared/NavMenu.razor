@@ -1,5 +1,5 @@
 ﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">Supermarket Management</a>
+    <a class="navbar-brand" href=""> Rent a classic cars</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -12,26 +12,57 @@
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </li>
+
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="cashier_console">
-                <span class="oi oi-plus" aria-hidden="true"></span> Sell
+            <NavLink class="nav-link" @onclick="()=>expandSubMenus =!expandSubMenus">
+                <span class="oi oi-plus" aria-hidden="true"></span> Masters
             </NavLink>
+
+            @if (expandSubMenus)
+            {
+                <ul>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/Nationality" Match="NavLinkMatch.All">
+                            <span class="oi oi-link-intact" aria-hidden="true"></span> Nationality
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/Religion" Match="NavLinkMatch.All">
+                            <span class="oi oi-link-intact" aria-hidden="true"></span> Religion
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/Gender" Match="NavLinkMatch.All">
+                            <span class="oi oi-link-intact" aria-hidden="true"></span> Gender
+                        </NavLink>
+                    </li>
+
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/Language" Match="NavLinkMatch.All">
+                            <span class="oi oi-link-intact" aria-hidden="true"></span> Language
+                        </NavLink>
+                    </li>
+
+
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/Country" Match="NavLinkMatch.All">
+                            <span class="oi oi-link-intact" aria-hidden="true"></span> Country
+                        </NavLink>
+                    </li>
+
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/City" Match="NavLinkMatch.All">
+                            <span class="oi oi-link-intact" aria-hidden="true"></span> City
+                        </NavLink>
+                    </li>
+
+                </ul>
+
+
+            }
         </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="categories">
-                <span class="oi oi-plus" aria-hidden="true"></span> Categories
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="products">
-                <span class="oi oi-plus" aria-hidden="true"></span> Products
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="transactions">
-                <span class="oi oi-plus" aria-hidden="true"></span> Reports 
-            </NavLink>
-        </li>
+
+
     </ul>
 </div>
 
@@ -39,6 +70,7 @@
     private bool collapseNavMenu = true;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private bool expandSubMenus;
 
     private void ToggleNavMenu()
     {

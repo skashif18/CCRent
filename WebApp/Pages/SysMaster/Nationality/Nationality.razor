@@ -1,0 +1,65 @@
+﻿@page "/Nationality"
+@attribute [Authorize(Policy ="AdminOnly")]
+@inject NavigationManager NavigationManager
+
+@inject INationalityRepository objNationality
+
+<h3>Manage Nationality</h3>
+
+@if (nationalities != null)
+{
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name En</th>
+                <th>Name Ar</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in nationalities)
+            {
+                <tr>
+                    <td>@item.NameEn</td>
+                    <td>@item.NameAr</td>
+                    <td>
+                        <button type="button" @onclick="@(() => EditNationality(item))" class="btn btn-link">Edit</button>
+                        
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<br />
+<button type="button" @onclick="OnClickAddNationality" class="btn btn-primary">Add Nationality</button>
+
+
+
+@code {
+    private IEnumerable<SysNationality> nationalities;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        LoadNationality();
+    }
+
+    private void OnClickAddNationality()
+    {
+        NavigationManager.NavigateTo("/AddNationality");
+    }
+
+    private void EditNationality(SysNationality nationality)
+    {
+        NavigationManager.NavigateTo($"/EditNationality/{nationality.Id}");
+    }
+
+    
+
+    private void LoadNationality()
+    {
+        nationalities = objNationality.GetAll()?.ToList();
+    }
+}
