@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DataStorePluginInterfaces\ICategoryRepository.cs" />
+    <Compile Remove="DataStorePluginInterfaces\IProductRepository.cs" />
+    <Compile Remove="DataStorePluginInterfaces\ITransactionRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CoreBusiness\CoreBusiness.csproj" />
   </ItemGroup>
 

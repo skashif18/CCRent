@@ -14,5 +14,6 @@ namespace UseCases.DataStorePluginInterfaces.Masters
         Response Update(SysNationality sysNationality);
         IEnumerable<SysNationality> GetAll();
         SysNationality GetById(int id);
+        Response Delete(int Id);
     }
 }

@@ -4,4 +4,10 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Category.cs" />
+    <Compile Remove="Product.cs" />
+    <Compile Remove="Transaction.cs" />
+  </ItemGroup>
+
 </Project>

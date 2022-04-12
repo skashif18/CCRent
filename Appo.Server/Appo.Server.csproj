@@ -8,21 +8,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Categories\**" />
     <Compile Remove="Features\Follows\**" />
     <Compile Remove="Features\Packages\**" />
     <Compile Remove="Features\Profiles\**" />
     <Compile Remove="Features\Search\**" />
     <Compile Remove="Models\**" />
+    <Content Remove="Features\Categories\**" />
     <Content Remove="Features\Follows\**" />
     <Content Remove="Features\Packages\**" />
     <Content Remove="Features\Profiles\**" />
     <Content Remove="Features\Search\**" />
     <Content Remove="Models\**" />
+    <EmbeddedResource Remove="Features\Categories\**" />
     <EmbeddedResource Remove="Features\Follows\**" />
     <EmbeddedResource Remove="Features\Packages\**" />
     <EmbeddedResource Remove="Features\Profiles\**" />
     <EmbeddedResource Remove="Features\Search\**" />
     <EmbeddedResource Remove="Models\**" />
+    <None Remove="Features\Categories\**" />
     <None Remove="Features\Follows\**" />
     <None Remove="Features\Packages\**" />
     <None Remove="Features\Profiles\**" />
