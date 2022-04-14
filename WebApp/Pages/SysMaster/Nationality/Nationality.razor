@@ -1,6 +1,7 @@
 ﻿@page "/Nationality"
 @attribute [Authorize(Policy ="AdminOnly")]
 @inject NavigationManager NavigationManager
+@inject IToastService toastService
 
 @inject INationalityRepository objNationality
 
@@ -25,7 +26,7 @@
                     <td>@item.NameAr</td>
                     <td>
                         <button type="button" @onclick="@(() => EditNationality(item))" class="btn btn-link">Edit</button>
-                        
+                         <button type="button" @onclick="@(() => Delete(item.Id))" class="btn btn-link">Delete</button>
                     </td>
                 </tr>
             }
@@ -43,7 +44,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        LoadNationality();
+        LoadList();
     }
 
     private void OnClickAddNationality()
@@ -53,12 +54,26 @@
 
     private void EditNationality(SysNationality nationality)
     {
-        NavigationManager.NavigateTo($"/EditNationality/{nationality.Id}");
+        NavigationManager.NavigateTo($"/editNationality/{nationality.Id}");
     }
 
-    
+    private void Delete(int Id)
+    {
+        var v = objNationality.Delete(Id);
+        if (v.IsSuccess)
+        {
+            toastService.ShowSuccess(v.Message);
+        }
+        else
+        {
+            toastService.ShowError(v.Message);
 
-    private void LoadNationality()
+         }
+        
+        LoadList();
+    }
+
+    private void LoadList()
     {
         nationalities = objNationality.GetAll()?.ToList();
     }

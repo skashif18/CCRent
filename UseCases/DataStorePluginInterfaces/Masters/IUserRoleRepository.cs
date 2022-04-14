@@ -1,10 +1,9 @@
-﻿using CoreBusiness;
-using CoreBusiness.Masters;
-using System.Collections.Generic;
-
-
-namespace UseCases.DataStorePluginInterfaces.Masters
+﻿namespace UseCases.DataStorePluginInterfaces.Masters
 {
+    using CoreBusiness;
+    using CoreBusiness.Masters;
+    using System.Collections.Generic;
+
     public interface IUserRoleRepository
     {
         IEnumerable<UserRole> GetUserRole();

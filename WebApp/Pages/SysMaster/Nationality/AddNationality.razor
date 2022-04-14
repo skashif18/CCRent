@@ -1,6 +1,8 @@
 ﻿@page "/AddNationality"
 @inject NavigationManager NavigationManager
 @inject INationalityRepository Nationality
+@inject IToastService toastService
+
 <h3>Add Nationality</h3>
 
 @if (nationality != null)
@@ -25,21 +27,22 @@
             <label for="description">User Defiend One</label>
             <InputText id="namear" @bind-Value="nationality.UserDefined1" class="form-control"></InputText>
         </div>
-         <div class="form-group">
+        <div class="form-group">
             <label for="description">User Defiend 2</label>
             <InputText id="namear" @bind-Value="nationality.UserDefined2" class="form-control"></InputText>
         </div>
-         <div class="form-group">
+        <div class="form-group">
             <label for="description">User Defiend 3</label>
             <InputText id="namear" @bind-Value="nationality.UserDefined3" class="form-control"></InputText>
         </div>
-         <div class="form-group">
+        <div class="form-group">
             <label for="description">User Defiend 4</label>
             <InputText id="namear" @bind-Value="nationality.UserDefined4" class="form-control"></InputText>
         </div>
 
         <button type="submit" class="btn btn-primary">Save</button>
         <button type="button" class="btn btn-primary" @onclick="OnCancel">Cancel</button>
+        <button class="btn btn-info" @onclick="@(() => toastService.ShowInfo("I'm an INFO message"))">Info Toast</button>
     </EditForm>
 
 }
@@ -57,7 +60,17 @@
 
     private void OnValidSumit()
     {
-        Nationality.Create(nationality);
+        var v = Nationality.Create(nationality);
+
+        if (v.IsSuccess)
+        {
+            toastService.ShowSuccess(v.Message);
+        }
+        else
+        {
+            toastService.ShowError(v.Message);
+        }
+
         NavigationManager.NavigateTo("/nationality");
     }
 

@@ -1,13 +1,8 @@
-﻿using CoreBusiness;
-using CoreBusiness.Master;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UseCases.DataStorePluginInterfaces.Masters
+﻿namespace UseCases.DataStorePluginInterfaces.Masters
 {
+    using CoreBusiness;
+    using CoreBusiness.Master;
+    using System.Collections.Generic;
     public interface INationalityRepository
     {
         Response Create(SysNationality sysNationality);
