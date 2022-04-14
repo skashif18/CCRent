@@ -1,0 +1,81 @@
+﻿@page "/AddGender"
+@inject NavigationManager NavigationManager
+@inject IGenderRepository Gender
+@inject IToastService toastService
+
+<h3>Add Gender</h3>
+
+@if (gender != null)
+{
+    <EditForm Model="gender" OnValidSubmit="OnValidSumit">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
+        <div class="form-group">
+            <label for="name">Name</label>
+            <InputText id="nameen" @bind-Value="gender.NameEn" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">Name Ar</label>
+            <InputText id="namear" @bind-Value="gender.NameAr" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">Note</label>
+            <InputText id="namear" @bind-Value="gender.Note" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">User Defiend One</label>
+            <InputText id="namear" @bind-Value="gender.UserDefined1" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">User Defiend 2</label>
+            <InputText id="namear" @bind-Value="gender.UserDefined2" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">User Defiend 3</label>
+            <InputText id="namear" @bind-Value="gender.UserDefined3" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">User Defiend 4</label>
+            <InputText id="namear" @bind-Value="gender.UserDefined4" class="form-control"></InputText>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-primary" @onclick="OnCancel">Cancel</button>
+        <button class="btn btn-info" @onclick="@(() => toastService.ShowInfo("I'm an INFO message"))">Info Toast</button>
+    </EditForm>
+
+}
+
+
+@code {
+    private SysGender gender;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        gender = new SysGender();
+    }
+
+    private void OnValidSumit()
+    {
+        var v = Gender.Create(gender);
+
+        if (v.IsSuccess)
+        {
+            toastService.ShowSuccess(v.Message);
+        }
+        else
+        {
+            toastService.ShowError(v.Message);
+        }
+
+        NavigationManager.NavigateTo("/gender");
+    }
+
+    private void OnCancel()
+    {
+        NavigationManager.NavigateTo("/gender");
+    }
+}

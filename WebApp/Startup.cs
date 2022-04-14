@@ -63,6 +63,12 @@ namespace WebApp
 
             //Dependency Injection for ef core Data Store for SQL
             services.AddTransient<INationalityRepository, NationalityRepository>();
+            services.AddTransient<IReligionRepository, ReligionRepository>();
+            services.AddTransient<ILanguageRepository, LanguageRepository>();
+            services.AddTransient<IGenderRepository, GenderRepository>();
+            services.AddTransient<ICountryRepository, CountryRepository>();
+            services.AddTransient<ICityRepository, CityRepository>();
+
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             //Dependency Injection for Use Cases and Repositories

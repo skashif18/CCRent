@@ -41,7 +41,7 @@
         public Response Update(SysGender model)
         {
             var _model = db.SysNationalities.Find(model.Id);
-            if (model == null)
+            if (model != null)
             {
                 #region Updating the field
                 _model.NameEn = model.NameEn;

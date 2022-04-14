@@ -1,0 +1,81 @@
+﻿@page "/AddReligion"
+@inject NavigationManager NavigationManager
+@inject IReligionRepository Religion
+@inject IToastService toastService
+
+<h3>Add Religion</h3>
+
+@if (religion != null)
+{
+    <EditForm Model="religion" OnValidSubmit="OnValidSumit">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
+        <div class="form-group">
+            <label for="name">Name</label>
+            <InputText id="nameen" @bind-Value="religion.NameEn" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">Name Ar</label>
+            <InputText id="namear" @bind-Value="religion.NameAr" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">Note</label>
+            <InputText id="namear" @bind-Value="religion.Note" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">User Defiend One</label>
+            <InputText id="namear" @bind-Value="religion.UserDefined1" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">User Defiend 2</label>
+            <InputText id="namear" @bind-Value="religion.UserDefined2" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">User Defiend 3</label>
+            <InputText id="namear" @bind-Value="religion.UserDefined3" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">User Defiend 4</label>
+            <InputText id="namear" @bind-Value="religion.UserDefined4" class="form-control"></InputText>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-primary" @onclick="OnCancel">Cancel</button>
+        <button class="btn btn-info" @onclick="@(() => toastService.ShowInfo("I'm an INFO message"))">Info Toast</button>
+    </EditForm>
+
+}
+
+
+@code {
+    private SysReligion religion;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        religion = new SysReligion();
+    }
+
+    private void OnValidSumit()
+    {
+        var v = Religion.Create(religion);
+
+        if (v.IsSuccess)
+        {
+            toastService.ShowSuccess(v.Message);
+        }
+        else
+        {
+            toastService.ShowError(v.Message);
+        }
+
+        NavigationManager.NavigateTo("/religion");
+    }
+
+    private void OnCancel()
+    {
+        NavigationManager.NavigateTo("/religion");
+    }
+}

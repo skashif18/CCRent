@@ -1,6 +1,80 @@
 ﻿@page "/Language"
-<h3>Language</h3>
+@attribute [Authorize(Policy ="AdminOnly")]
+@inject NavigationManager NavigationManager
+@inject IToastService toastService
+
+@inject ILanguageRepository repository
+
+<h3>Manage Language</h3>
+
+@if (languages != null)
+{
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name En</th>
+                <th>Name Ar</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in languages)
+            {
+                <tr>
+                    <td>@item.NameEn</td>
+                    <td>@item.NameAr</td>
+                    <td>
+                        <button type="button" @onclick="@(() => EditLanguage(item))" class="btn btn-link">Edit</button>
+                         <button type="button" @onclick="@(() => Delete(item.Id))" class="btn btn-link">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<br />
+<button type="button" @onclick="OnClickAddLanguage" class="btn btn-primary">Add Language</button>
+
+
 
 @code {
+    private IEnumerable<SysLanguage> languages;
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        LoadList();
+    }
+
+    private void OnClickAddLanguage()
+    {
+        NavigationManager.NavigateTo("/AddLanguage");
+    }
+
+    private void EditLanguage(SysLanguage Language)
+    {
+        NavigationManager.NavigateTo($"/editLanguage/{Language.Id}");
+    }
+
+    private void Delete(int Id)
+    {
+        var v = repository.Delete(Id);
+        if (v.IsSuccess)
+        {
+            toastService.ShowSuccess(v.Message);
+        }
+        else
+        {
+            toastService.ShowError(v.Message);
+
+         }
+        
+        LoadList();
+    }
+
+    private void LoadList()
+    {
+        languages = repository.GetAll()?.ToList();
+    }
 }

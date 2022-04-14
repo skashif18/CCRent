@@ -1,6 +1,80 @@
 ﻿@page "/Religion"
-<h3>Religion</h3>
+@attribute [Authorize(Policy ="AdminOnly")]
+@inject NavigationManager NavigationManager
+@inject IToastService toastService
+
+@inject IReligionRepository objReligion
+
+<h3>Manage Religion</h3>
+
+@if (religions != null)
+{
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name En</th>
+                <th>Name Ar</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in religions)
+            {
+                <tr>
+                    <td>@item.NameEn</td>
+                    <td>@item.NameAr</td>
+                    <td>
+                        <button type="button" @onclick="@(() => EditReligion(item))" class="btn btn-link">Edit</button>
+                         <button type="button" @onclick="@(() => Delete(item.Id))" class="btn btn-link">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<br />
+<button type="button" @onclick="OnClickAddReligion" class="btn btn-primary">Add Religion</button>
+
+
 
 @code {
+    private IEnumerable<SysReligion> religions;
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        LoadList();
+    }
+
+    private void OnClickAddReligion()
+    {
+        NavigationManager.NavigateTo("/AddReligion");
+    }
+
+    private void EditReligion(SysReligion religion)
+    {
+        NavigationManager.NavigateTo($"/editReligion/{religion.Id}");
+    }
+
+    private void Delete(int Id)
+    {
+        var v = objReligion.Delete(Id);
+        if (v.IsSuccess)
+        {
+            toastService.ShowSuccess(v.Message);
+        }
+        else
+        {
+            toastService.ShowError(v.Message);
+
+         }
+        
+        LoadList();
+    }
+
+    private void LoadList()
+    {
+        religions = objReligion.GetAll()?.ToList();
+    }
 }

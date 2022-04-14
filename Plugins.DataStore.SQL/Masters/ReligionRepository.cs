@@ -7,7 +7,7 @@ using UseCases.DataStorePluginInterfaces.Masters;
 
 namespace Plugins.DataStore.SQL.Masters
 {
-    internal class ReligionRepository : IReligionRepository
+    public  class ReligionRepository : IReligionRepository
     {
         private readonly CarRentContext db;
         private readonly Response response = new();
@@ -43,7 +43,7 @@ namespace Plugins.DataStore.SQL.Masters
         public Response Update(SysReligion model)
         {
             var _model = db.SysNationalities.Find(model.Id);
-            if (model == null)
+            if (model != null)
             {
                 #region Updating the field
                 _model.NameEn = model.NameEn;

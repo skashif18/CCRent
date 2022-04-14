@@ -1,0 +1,97 @@
+﻿@page "/editLanguage/{Id}"
+@attribute [Authorize(Policy = "AdminOnly")]
+
+@inject NavigationManager NavigationManager
+
+@inject IToastService toastService
+
+@inject ILanguageRepository repository
+
+<h3>Edit Category</h3>
+
+@if (language != null)
+{
+    <EditForm Model="language" OnValidSubmit="OnValidSumit">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
+        <div class="form-group">
+            <label for="name">Name</label>
+            <InputText id="nameen" @bind-Value="language.NameEn" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">Name Ar</label>
+            <InputText id="namear" @bind-Value="language.NameAr" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">Note</label>
+            <InputText id="namear" @bind-Value="language.Note" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">User Defiend One</label>
+            <InputText id="namear" @bind-Value="language.UserDefined1" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">User Defiend 2</label>
+            <InputText id="namear" @bind-Value="language.UserDefined2" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">User Defiend 3</label>
+            <InputText id="namear" @bind-Value="language.UserDefined3" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">User Defiend 4</label>
+            <InputText id="namear" @bind-Value="language.UserDefined4" class="form-control"></InputText>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-primary" @onclick="OnCancel">Cancel</button>
+    </EditForm>
+
+}
+
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    private SysLanguage language;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (int.TryParse(this.Id, out int iId))
+        {
+            var val = repository.GetById(iId);
+            this.language = val;
+        }
+    }
+
+    private void OnValidSumit()
+    {
+        var result = repository.Update(this.language);
+        if (result.IsSuccess)
+        {
+            toastService.ShowSuccess(result.Message);
+            NavigationManager.NavigateTo("/Language");
+        }
+        else
+        {
+            toastService.ShowError(result.Message);
+        }
+
+
+    }
+
+    private void OnCancel()
+    {
+        NavigationManager.NavigateTo("/Language");
+    }
+
+}

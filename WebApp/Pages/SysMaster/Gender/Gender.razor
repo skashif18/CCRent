@@ -1,6 +1,80 @@
 ﻿@page "/Gender"
-<h3>Gender</h3>
+@attribute [Authorize(Policy ="AdminOnly")]
+@inject NavigationManager NavigationManager
+@inject IToastService toastService
+
+@inject IGenderRepository objGender
+
+<h3>Manage Gender</h3>
+
+@if (genders != null)
+{
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name En</th>
+                <th>Name Ar</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in genders)
+            {
+                <tr>
+                    <td>@item.NameEn</td>
+                    <td>@item.NameAr</td>
+                    <td>
+                        <button type="button" @onclick="@(() => EditGender(item))" class="btn btn-link">Edit</button>
+                         <button type="button" @onclick="@(() => Delete(item.Id))" class="btn btn-link">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<br />
+<button type="button" @onclick="OnClickAddGender" class="btn btn-primary">Add Gender</button>
+
+
 
 @code {
+    private IEnumerable<SysGender> genders;
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        LoadList();
+    }
+
+    private void OnClickAddGender()
+    {
+        NavigationManager.NavigateTo("/AddGender");
+    }
+
+    private void EditGender(SysGender gender)
+    {
+        NavigationManager.NavigateTo($"/editGender/{gender.Id}");
+    }
+
+    private void Delete(int Id)
+    {
+        var v = objGender.Delete(Id);
+        if (v.IsSuccess)
+        {
+            toastService.ShowSuccess(v.Message);
+        }
+        else
+        {
+            toastService.ShowError(v.Message);
+
+         }
+        
+        LoadList();
+    }
+
+    private void LoadList()
+    {
+        genders = objGender.GetAll()?.ToList();
+    }
 }

@@ -1,6 +1,88 @@
 ﻿@page "/Country"
-<h3>Country</h3>
+@attribute [Authorize(Policy = "AdminOnly")]
+@inject NavigationManager NavigationManager
+@inject IToastService toastService
+
+@inject ICountryRepository objCountry
+
+<h3>Manage Country</h3>
+
+@if (countries != null)
+{
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name En</th>
+                <th>Name Ar</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in countries)
+            {
+                <tr>
+                    <td>@item.NameEn</td>
+                    <td>@item.NameAr</td>
+                    <td>
+                        <button type="button" @onclick="@(() => EditCountry(item))" class="btn btn-link">Edit</button>
+                        <button type="button" @onclick="@(() => Delete(item.Id))" class="btn btn-link">Delete</button>
+                        <button type="button" @onclick="@(() => ManageCities(item.Id))" class="btn btn-link">Manage Cities</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<br />
+<button type="button" @onclick="OnClickAddCountry" class="btn btn-primary">Add Country</button>
+
+
 
 @code {
+    private IEnumerable<SysCountry> countries;
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        LoadList();
+    }
+
+    private void OnClickAddCountry()
+    {
+        NavigationManager.NavigateTo("/AddCountry");
+    }
+
+    private void EditCountry(SysCountry country)
+    {
+        NavigationManager.NavigateTo($"/editCountry/{country.Id}");
+    }
+
+    private void Delete(int Id)
+    {
+        var v = objCountry.Delete(Id);
+        if (v.IsSuccess)
+        {
+            toastService.ShowSuccess(v.Message);
+        }
+        else
+        {
+            toastService.ShowError(v.Message);
+
+        }
+
+        LoadList();
+    }
+
+    private void ManageCities(int Id)
+    {
+           NavigationManager.NavigateTo($"/city/{Id}");
+    }
+
+
+
+    private void LoadList()
+    {
+        countries = objCountry.GetAll()?.ToList();
+    }
 }

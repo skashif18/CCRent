@@ -1,0 +1,81 @@
+﻿@page "/AddCountry"
+@inject NavigationManager NavigationManager
+@inject ICountryRepository Country
+@inject IToastService toastService
+
+<h3>Add Country</h3>
+
+@if (country != null)
+{
+    <EditForm Model="country" OnValidSubmit="OnValidSumit">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
+        <div class="form-group">
+            <label for="name">Name</label>
+            <InputText id="nameen" @bind-Value="country.NameEn" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">Name Ar</label>
+            <InputText id="namear" @bind-Value="country.NameAr" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">Note</label>
+            <InputText id="namear" @bind-Value="country.Note" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">User Defiend One</label>
+            <InputText id="namear" @bind-Value="country.UserDefined1" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">User Defiend 2</label>
+            <InputText id="namear" @bind-Value="country.UserDefined2" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">User Defiend 3</label>
+            <InputText id="namear" @bind-Value="country.UserDefined3" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">User Defiend 4</label>
+            <InputText id="namear" @bind-Value="country.UserDefined4" class="form-control"></InputText>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-primary" @onclick="OnCancel">Cancel</button>
+        <button class="btn btn-info" @onclick="@(() => toastService.ShowInfo("I'm an INFO message"))">Info Toast</button>
+    </EditForm>
+
+}
+
+
+@code {
+    private SysCountry country;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        country = new SysCountry();
+    }
+
+    private void OnValidSumit()
+    {
+        var v = Country.Create(country);
+
+        if (v.IsSuccess)
+        {
+            toastService.ShowSuccess(v.Message);
+        }
+        else
+        {
+            toastService.ShowError(v.Message);
+        }
+
+        NavigationManager.NavigateTo("/country");
+    }
+
+    private void OnCancel()
+    {
+        NavigationManager.NavigateTo("/country");
+    }
+}

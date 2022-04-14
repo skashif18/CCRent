@@ -1,0 +1,97 @@
+﻿@page "/editCountry/{Id}"
+@attribute [Authorize(Policy = "AdminOnly")]
+
+@inject NavigationManager NavigationManager
+
+@inject IToastService toastService
+
+@inject ICountryRepository repository
+
+<h3>Edit Country</h3>
+
+@if (country != null)
+{
+    <EditForm Model="country" OnValidSubmit="OnValidSumit">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
+        <div class="form-group">
+            <label for="name">Name</label>
+            <InputText id="nameen" @bind-Value="country.NameEn" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">Name Ar</label>
+            <InputText id="namear" @bind-Value="country.NameAr" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">Note</label>
+            <InputText id="namear" @bind-Value="country.Note" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">User Defiend One</label>
+            <InputText id="namear" @bind-Value="country.UserDefined1" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">User Defiend 2</label>
+            <InputText id="namear" @bind-Value="country.UserDefined2" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">User Defiend 3</label>
+            <InputText id="namear" @bind-Value="country.UserDefined3" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="description">User Defiend 4</label>
+            <InputText id="namear" @bind-Value="country.UserDefined4" class="form-control"></InputText>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-primary" @onclick="OnCancel">Cancel</button>
+    </EditForm>
+
+}
+
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    private SysCountry country;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (int.TryParse(this.Id, out int iId))
+        {
+            var val = repository.GetById(iId);
+            this.country = val;
+        }
+    }
+
+    private void OnValidSumit()
+    {
+        var result = repository.Update(this.country);
+        if (result.IsSuccess)
+        {
+            toastService.ShowSuccess(result.Message);
+            NavigationManager.NavigateTo("/Country");
+        }
+        else
+        {
+            toastService.ShowError(result.Message);
+        }
+
+
+    }
+
+    private void OnCancel()
+    {
+        NavigationManager.NavigateTo("/Country");
+    }
+
+}
