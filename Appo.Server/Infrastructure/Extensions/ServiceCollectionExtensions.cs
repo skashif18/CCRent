@@ -13,8 +13,12 @@
     using Microsoft.OpenApi.Models;
     using Plugins.DataStore.SQL;
     using Plugins.DataStore.SQL.Infrastructure.Services;
+    using Plugins.DataStore.SQL.Masters;
+    using Plugins.DataStore.SQL.ServiceRepository;
     using System;
     using System.Text;
+    using UseCases.DataStorePluginInterfaces.Masters;
+    using UseCases.DataStorePluginInterfaces.SrvTable.Supplier;
 
     public static class ServiceCollectionExtensions
     {
@@ -73,7 +77,9 @@
         {
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddTransient<IIdentityService, IdentityService>();
-
+            services.AddTransient<IGetMasterRepository, GetMasterRepository>();
+            services.AddTransient<ISupplierRepository, SupplierRepository>();
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
 
 
             return services;
@@ -117,8 +123,6 @@
                     }
                 });
             });
-
-
 
     }
 }
