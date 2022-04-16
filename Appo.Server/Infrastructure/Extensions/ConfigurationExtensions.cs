@@ -10,6 +10,8 @@ namespace Appo.Server.Infrastructure.Extensions
 
         public static string GetDefaultConnectionString(this IConfiguration configuration)
             => configuration.GetConnectionString("DefaultConnection");
+        public static string GetAccountConnectionString(this IConfiguration configuration)
+           => configuration.GetConnectionString("AccountContextConnection");
 
     }
 }

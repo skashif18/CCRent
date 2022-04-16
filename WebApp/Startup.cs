@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Plugins.DataStore.SQL;
 using Plugins.DataStore.SQL.Infrastructure.Services;
 using Plugins.DataStore.SQL.Masters;
+using Syncfusion.Blazor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,7 @@ namespace WebApp
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
-           
+            services.AddSyncfusionBlazor();
 
             services.AddAuthorization(options =>
             {

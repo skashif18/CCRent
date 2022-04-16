@@ -1,6 +1,5 @@
 namespace Appo.Server
 {
-    using Data;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -49,8 +48,8 @@ namespace Appo.Server
                .UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();
-                })
-               .ApplyMigrations();
+                });
+               //.ApplyMigrations();
         }
     }
 }

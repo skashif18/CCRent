@@ -1,11 +1,9 @@
 ﻿namespace Appo.Server.Infrastructure
 {
+    using Appo.Server.Data;
     using Appo.Server.Features.Identity;
     using Appo.Server.Infrastructure.Extensions;
     using Appo.Server.Infrastructure.Filters;
-    using Appo.Server.Infrastructure.Services;
-    using Data;
-    using Data.Models;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
@@ -14,9 +12,9 @@
     using Microsoft.IdentityModel.Tokens;
     using Microsoft.OpenApi.Models;
     using Plugins.DataStore.SQL;
+    using Plugins.DataStore.SQL.Infrastructure.Services;
     using System;
     using System.Text;
-    using UseCases.DataStorePluginInterfaces;
 
     public static class ServiceCollectionExtensions
     {
@@ -31,7 +29,7 @@
         public static IServiceCollection AddIdentity(this IServiceCollection services)
         {
 
-            services.AddIdentity<User, IdentityRole>(option
+            services.AddIdentity<IdentityUser, IdentityRole>(option
                     =>
             {
                 option.Password.RequiredLength = 6;
@@ -41,7 +39,7 @@
                 option.Password.RequireUppercase = false;
 
             })
-                .AddEntityFrameworkStores<AppoDbContext>();
+                .AddEntityFrameworkStores<AccountContext>();
             return services;
         }
 
@@ -73,26 +71,24 @@
 
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services
-                .AddTransient<IIdentityService, IdentityService>()
-                .AddScoped<ICurrentUserService, CurrentUserService>();
-                
-             
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddTransient<IIdentityService, IdentityService>();
+
+
 
             return services;
         }
 
         public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
-            => services.AddDbContext<AppoDbContext>(
+            => services.AddDbContext<CarRentContext>(
                 options =>
                      options.UseSqlServer(
                          configuration.GetDefaultConnectionString()))
 
-            .AddDbContext<CarRentContext>(
+            .AddDbContext<AccountContext>(
                 options =>
                      options.UseSqlServer(
-                         configuration.GetDefaultConnectionString()));
-
+                         configuration.GetAccountConnectionString()));
 
         public static void AddApiController(this IServiceCollection services)
             => services

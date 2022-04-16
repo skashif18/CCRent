@@ -1,6 +1,5 @@
 ﻿namespace Appo.Server.Features
 {
-    using Appo.Server.Data.Models;
     using Appo.Server.Features.Identity;
     using Appo.Server.Features.Identity.Models;
     using Microsoft.AspNetCore.Authorization;
@@ -11,12 +10,12 @@
     public class IdentityController : ApiController
     {
 
-        private readonly UserManager<User> userManager;
+        private readonly UserManager<IdentityUser> userManager;
         private readonly IIdentityService identity;
         private readonly AppSettings appSetting;
 
         public IdentityController(
-            UserManager<User> userManager, 
+            UserManager<IdentityUser> userManager, 
             IIdentityService identity,
             IOptions<AppSettings> appSetting
             )
@@ -31,7 +30,7 @@
         [AllowAnonymous]
         public async Task<ActionResult> Register(RegisterRequestModel model)
         {
-            var user = new User
+            var user = new IdentityUser
             {
                 Email = model.Email,
                 UserName = model.UserName

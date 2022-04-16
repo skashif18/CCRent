@@ -8,39 +8,47 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Models\Base\**" />
     <Compile Remove="Features\Categories\**" />
     <Compile Remove="Features\Follows\**" />
     <Compile Remove="Features\Packages\**" />
     <Compile Remove="Features\Profiles\**" />
     <Compile Remove="Features\Search\**" />
+    <Compile Remove="Infrastructure\Services\**" />
     <Compile Remove="Models\**" />
+    <Content Remove="Data\Models\Base\**" />
     <Content Remove="Features\Categories\**" />
     <Content Remove="Features\Follows\**" />
     <Content Remove="Features\Packages\**" />
     <Content Remove="Features\Profiles\**" />
     <Content Remove="Features\Search\**" />
+    <Content Remove="Infrastructure\Services\**" />
     <Content Remove="Models\**" />
+    <EmbeddedResource Remove="Data\Models\Base\**" />
     <EmbeddedResource Remove="Features\Categories\**" />
     <EmbeddedResource Remove="Features\Follows\**" />
     <EmbeddedResource Remove="Features\Packages\**" />
     <EmbeddedResource Remove="Features\Profiles\**" />
     <EmbeddedResource Remove="Features\Search\**" />
+    <EmbeddedResource Remove="Infrastructure\Services\**" />
     <EmbeddedResource Remove="Models\**" />
+    <None Remove="Data\Models\Base\**" />
     <None Remove="Features\Categories\**" />
     <None Remove="Features\Follows\**" />
     <None Remove="Features\Packages\**" />
     <None Remove="Features\Profiles\**" />
     <None Remove="Features\Search\**" />
+    <None Remove="Infrastructure\Services\**" />
     <None Remove="Models\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\Migrations\20200729081933_PackageTable.cs" />
-    <Compile Remove="Data\Migrations\20200729081933_PackageTable.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200817190043_FieldNameChange.cs" />
-    <Compile Remove="Data\Migrations\20200817190043_FieldNameChange.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200818140128_AddedFollows.cs" />
-    <Compile Remove="Data\Migrations\20200818140128_AddedFollows.Designer.cs" />
+    <Compile Remove="Data\AppoDbContext.cs" />
+    <Compile Remove="Data\Models\Follow.cs" />
+    <Compile Remove="Data\Models\Gender.cs" />
+    <Compile Remove="Data\Models\Package.cs" />
+    <Compile Remove="Data\Models\Profile.cs" />
+    <Compile Remove="Data\Models\User.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,6 +64,10 @@
     <ProjectReference Include="..\CoreBusiness\CoreBusiness.csproj" />
     <ProjectReference Include="..\Plugins.DataStore.SQL\Plugins.DataStore.SQL.csproj" />
     <ProjectReference Include="..\UseCases\UseCases.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Models\" />
   </ItemGroup>
 
 </Project>

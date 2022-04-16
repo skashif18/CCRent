@@ -1,7 +1,7 @@
-﻿using Appo.Server.Data;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Plugins.DataStore.SQL;
 using System.Runtime.CompilerServices;
 
 namespace Appo.Server.Infrastructure.Extensions
@@ -18,7 +18,7 @@ namespace Appo.Server.Infrastructure.Extensions
                 });
         public static void ApplyMigrations(this IApplicationBuilder app) {
             using var services = app.ApplicationServices.CreateScope();
-            var dbContext = services.ServiceProvider.GetService<AppoDbContext>();
+            var dbContext = services.ServiceProvider.GetService<CarRentContext>();
             dbContext.Database.Migrate();
         }
     }
