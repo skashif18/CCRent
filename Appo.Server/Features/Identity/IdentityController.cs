@@ -19,19 +19,20 @@
         private readonly IIdentityService identity;
         private readonly AppSettings appSetting;
         private readonly ISupplierRepository supplier;
-        private readonly ICustomerRepository Customer;
+        private readonly ICustomerRepository customer;
         public IdentityController(
             UserManager<IdentityUser> userManager,
             IIdentityService identity,
             IOptions<AppSettings> appSetting,
             ISupplierRepository _supplier,
-            ICustomerRepository _Customer
+            ICustomerRepository _customer
             )
         {
             this.userManager = userManager;
             this.identity = identity;
             this.appSetting = appSetting.Value;
             supplier = _supplier;
+            customer = _customer;  
         }
 
         [HttpPost]
@@ -100,7 +101,7 @@
                 c.NameEn = model.Name;
                 c.Email = model.Email;
                 c.IsActive = false;
-                var v = Customer.Create(c);
+                var v = customer.Create(c);
                 return Ok(v);
             }
             return BadRequest(result.Errors);
