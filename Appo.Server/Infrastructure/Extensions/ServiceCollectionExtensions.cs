@@ -14,6 +14,7 @@
     using Plugins.DataStore.SQL;
     using Plugins.DataStore.SQL.Infrastructure.Services;
     using Plugins.DataStore.SQL.Masters;
+    using Plugins.DataStore.SQL.MastersRepositories;
     using Plugins.DataStore.SQL.ServiceRepository;
     using System;
     using System.Text;

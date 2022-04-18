@@ -25,23 +25,34 @@ namespace Plugins.DataStore.SQL.MastersRepositories
            };
 
         public IEnumerable<IdNameModel> GetGenders()
-        {
-            throw new NotImplementedException();
-        }
+        => from item in db.SysGenders
+           select new IdNameModel
+           {
+               Id = item.Id,
+               Name = item.NameEn
+           };
 
         public IEnumerable<IdNameModel> GetLanguages()
-        {
-            throw new NotImplementedException();
-        }
+        => from item in db.SysLanguages
+           select new IdNameModel
+           {
+               Id = item.Id,
+               Name = item.NameEn
+           };
 
         public IEnumerable<IdNameModel> GetNationalities()
-        {
-            throw new NotImplementedException();
-        }
-
+        => from item in db.SysNationalities
+           select new IdNameModel
+           {
+               Id = item.Id,
+               Name = item.NameEn
+           };
         public IEnumerable<IdNameModel> GetReligions()
-        {
-            throw new NotImplementedException();
-        }
+        => from item in db.SysReligions
+           select new IdNameModel
+           {
+               Id = item.Id,
+               Name = item.NameEn
+           };
     }
 }
