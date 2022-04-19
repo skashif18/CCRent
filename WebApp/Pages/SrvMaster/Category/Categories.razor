@@ -1,5 +1,7 @@
 ﻿@page "/category"
 @using Syncfusion.Blazor.DropDowns
+@using System.Collections.Specialized
+@using System.Collections
 
 @inject IToastService toastService
 @inject NavigationManager NavigationManager
@@ -8,30 +10,85 @@
 
 <h3>Manage Categories</h3>
 
+<EditForm Model="@list">
+
+    <div class="row">
+
+        @for (var j = 0; j < listOfVal.Count; j++)
+        {
+            <div class="col-md-6">
+                <select class="form-control" data-index="@j" @onchange="@((e) => getList(e,j))">
+                    <option value="index_@j">Select</option>
+                    @foreach (DictionaryEntry i in listOfVal[j])
+                    {
+                        <option value="@i.Key">@i.Value</option>
+
+                    }
+                </select>
+            </div>
+            <br />
+        }
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-header">
+            Add Category
+        </div>
+        <div class="card-body">
+            <div class="row mt-2">
+                <div class="col-6">
+                    <input id="name" placeholder="Name English" @bind="inputVal" class="form-control" />
+                </div>
+                <div class="col-6">
+                    <input id="nameAr" placeholder="Name Arabic" @bind="inputVal" class="form-control" />
+                </div>
+            </div>
+           
+        </div>
+        <div class="card-footer">
+             <div class="row mt-2 mb-3">
+                <div class="col-6">
+                    <button type="button" class="btn btn-warning btn-block">Add Child</button>
+                </div>
+                <div class="col-6">
+                    <button type="button" class="btn btn-success btn-block">Add Sibling</button>
+                </div>
+            </div> 
+        </div>
+    </div>
 
 
-<select class="form-control" @onchange="getList">
-     <option> Select Category </option>
-    @foreach(var v in Parentlist)
-    {
-       
-        <option value="@v.Id"> @v.NameEn </option>
-    }
-</select>
+
+
+
+</EditForm>
+
 
 <CategoryListComponent ParentId="ParentId"></CategoryListComponent>
 
 
-<button type="button" class="btn btn-primary">Add New</button>
 
 
 @code {
     private SrvCategory model;
 
+    public String inputVal;
+
     List<SrvCategory> list = new List<SrvCategory>();
 
     List<SrvCategory> Parentlist = new List<SrvCategory>();
 
+    List<SrvCategory> NumOfCategory = new List<SrvCategory>();
+
+    List<SrvCategory> NumOfCategory1 = new List<SrvCategory>();
+
+    List<ListDictionary> listOfVal = new List<ListDictionary>();
+
+    List<int> ListOfId = new List<int>();
+
+    public string LabelName { get; set; }
+
+    ListDictionary myDict = new ListDictionary();
 
     public int ParentId { get; set; }
 
@@ -39,13 +96,50 @@
     {
         base.OnInitialized();
         LoadParentlist();
+
     }
 
-    private void getList(ChangeEventArgs e)
+
+    private void getList(ChangeEventArgs e, int nIndex)
 
     {
+        string s = Convert.ToString(e.Value);
+        if (s.Contains("index_"))
+        {
+            s = s.Replace("index_", "0");
+            int Index_ = Convert.ToInt32(s);
+
+            DeleteCategories(Index_);
+        }
+        else
+        {
+            ParentId = Convert.ToInt32(e?.Value);
+            toastService.ShowInfo("parent Id" + e);
+            NumOfCategory = repository.GetChildByParentId(ParentId)?.ToList();
+            InitialiseCategories(nIndex);
+        }
+
+    }
+
+    public void getListSub(ChangeEventArgs e)
+
+    {
+        NumOfCategory = new List<SrvCategory>();
         ParentId = Convert.ToInt32(e.Value);
-        toastService.ShowInfo("parent Id" + ParentId);
+
+        string s = Convert.ToString(e.Value);
+        if (s.Contains("index_"))
+        {
+            s = s.Replace("index_", "0");
+            int Index_ = Convert.ToInt32(s);
+
+            DeleteCategories(Index_);
+        }
+        //toastService.ShowInfo("parent Id" + ParentId);
+        NumOfCategory = repository.GetChildByParentId(ParentId)?.ToList();
+        toastService.ShowInfo("parent Id" + NumOfCategory);
+        myDict.Add("name1", "name1");
+
     }
 
     private void OnClickAdd()
@@ -55,6 +149,62 @@
 
     private void LoadParentlist()
     {
-        Parentlist = repository.GetBaseParentAll()?.ToList();
+        NumOfCategory = repository.GetBaseParentAll()?.ToList();
+        InitialiseCategories(0);
     }
+
+    private void InitialiseCategories(int l)
+    {
+
+        myDict = new ListDictionary();
+        int IsPresent = 0;
+        foreach (var v in NumOfCategory)
+        {
+            myDict.Add(v.Id, v.NameEn);
+            for (var i = 0; i < ListOfId.Count; i++)
+            {
+                if (v.Id == ListOfId[i])
+                {
+                    IsPresent = 1;
+
+                }
+            }
+            if (IsPresent == 0)
+            {
+                ListOfId.Add(v.Id);
+
+            }
+        }
+        if (myDict.Count == 0)
+        {
+            toastService.ShowInfo("parentqw Id" + l);
+            l = Convert.ToInt32(l);
+            DeleteCategories(l);
+        }
+        if (myDict.Count > 0 && IsPresent == 0)
+        {
+            listOfVal.Add(myDict);
+
+        }
+    }
+    private void DeleteCategories(int Index_)
+    {
+        for (var i = Index_ + 1; i < listOfVal.Count; i++)
+        {
+            for (var j = i; j < listOfVal.Count; j++)
+            {
+                foreach (DictionaryEntry k in listOfVal[j])
+                {
+                    ListOfId.Remove((int)k.Key);
+
+                }
+                listOfVal.Remove(listOfVal[j]);
+                j--;
+
+
+            }
+
+        }
+    }
+
 }
