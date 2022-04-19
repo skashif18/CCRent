@@ -62,6 +62,25 @@
             }
         </li>
 
+         <li class="nav-item px-3">
+            <NavLink class="nav-link" @onclick="()=>expandSubMenusSuplier =!expandSubMenusSuplier">
+                <span class="oi oi-plus" aria-hidden="true"></span> Suplier
+            </NavLink>
+
+            @if (expandSubMenusSuplier)
+            {
+                <ul>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/class" Match="NavLinkMatch.All">
+                            <span class="oi oi-link-intact" aria-hidden="true"></span> Class 
+                        </NavLink>
+                    </li>
+                </ul>
+
+
+            }
+        </li>
+
 
     </ul>
 </div>
@@ -71,6 +90,7 @@
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
     private bool expandSubMenus;
+    private bool expandSubMenusSuplier;
 
     private void ToggleNavMenu()
     {

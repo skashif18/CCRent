@@ -1,18 +1,23 @@
-﻿namespace Plugins.DataStore.SQL.Masters
+﻿using CoreBusiness;
+using CoreBusiness.Master;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+
+namespace Plugins.DataStore.SQL.ServiceRepository
 {
-    using CoreBusiness;
-    using CoreBusiness.Master;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using UseCases.DataStorePluginInterfaces.Masters;
-    public class GenderRepository : IGenderRepository
+    internal class ClassValueRepository: IClassValueRepository
     {
         private readonly CarRentContext db;
         private readonly Response response = new();
-        public GenderRepository(CarRentContext _db) 
-        => db = _db;
-        public Response Create(SysGender model)
+        public ClassValueRepository(CarRentContext _db)
+        {
+            db = _db;
+        }
+
+        public Response Create(SrvClassValue model)
         {
             try
             {
@@ -29,18 +34,17 @@
             }
 
             return response;
-
         }
 
-        public IEnumerable<SysGender> GetAll()
-        => db.SysGenders;
+        public IEnumerable<SrvClassValue> GetAll()
+       => db.SrvClassValues;
 
-        public SysGender GetById(int id)
-        => db.SysGenders.Where(m => m.Id == id).FirstOrDefault();
+        public SrvClassValue GetById(int id)
+        => db.SrvClassValues.Where(m => m.Id == id).FirstOrDefault();
 
-        public Response Update(SysGender model)
+        public Response Update(SrvClassValue model)
         {
-            var _model = db.SysGenders.Find(model.Id);
+            var _model = db.SrvClasses.Find(model.Id);
             if (model != null)
             {
                 #region Updating the field
@@ -76,7 +80,7 @@
 
         public Response Delete(int Id)
         {
-            var _model = db.SysGenders.Find(Id);
+            var _model = db.SrvClassValues.Find(Id);
             if (_model == null)
             {
                 response.IsSuccess = false;
@@ -86,7 +90,7 @@
             try
             {
 
-                db.SysGenders.Remove(_model);
+                db.SrvClassValues.Remove(_model);
                 db.SaveChanges();
                 response.IsSuccess = true;
                 response.Message = "Record Deleted Successfully .";
@@ -100,4 +104,5 @@
 
         }
     }
+
 }

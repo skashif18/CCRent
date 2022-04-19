@@ -1,0 +1,19 @@
+﻿@page "/ClassValue"
+@attribute [Authorize(Policy ="AdminOnly")]
+@inject NavigationManager NavigationManager
+@inject IToastService toastService
+
+@inject IClassRepository repository
+
+
+<h3></h3>
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+    
+    public string Name { get; set; }
+
+    
+}

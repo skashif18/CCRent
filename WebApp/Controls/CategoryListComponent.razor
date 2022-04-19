@@ -1,0 +1,59 @@
+﻿
+@inject NavigationManager NavigationManager
+
+@inject ICategoryRepository repository
+
+@if (list != null)
+{
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name En</th>
+                <th>Name Ar</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in list)
+            {
+                <tr>
+                    <td>@item.NameEn</td>
+                    <td>@item.NameAr</td>
+                    <td>
+                        <button type="button" @onclick="@(() => Edit(item))" class="btn btn-link">Edit</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+
+    [Parameter]
+    public int ParentId { get; set; }
+
+    private List<SrvCategory> listmodel;
+
+
+     List<SrvCategory> list = new List<SrvCategory>();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        LoadList();
+    }
+
+    private void LoadList()
+    {   
+        list = repository.GetChildByParentId(ParentId)?.ToList(); 
+    }
+
+     private void Edit(SrvCategory model)
+    {
+        NavigationManager.NavigateTo($"/editCategory/{model.Id}");
+    }
+
+}

@@ -1,0 +1,60 @@
+﻿@page "/category"
+@using Syncfusion.Blazor.DropDowns
+
+@inject IToastService toastService
+@inject NavigationManager NavigationManager
+@inject ICategoryRepository repository
+
+
+<h3>Manage Categories</h3>
+
+
+
+<select class="form-control" @onchange="getList">
+     <option> Select Category </option>
+    @foreach(var v in Parentlist)
+    {
+       
+        <option value="@v.Id"> @v.NameEn </option>
+    }
+</select>
+
+<CategoryListComponent ParentId="ParentId"></CategoryListComponent>
+
+
+<button type="button" class="btn btn-primary">Add New</button>
+
+
+@code {
+    private SrvCategory model;
+
+    List<SrvCategory> list = new List<SrvCategory>();
+
+    List<SrvCategory> Parentlist = new List<SrvCategory>();
+
+
+    public int ParentId { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        LoadParentlist();
+    }
+
+    private void getList(ChangeEventArgs e)
+
+    {
+        ParentId = Convert.ToInt32(e.Value);
+        toastService.ShowInfo("parent Id" + ParentId);
+    }
+
+    private void OnClickAdd()
+    {
+        NavigationManager.NavigateTo("/AddClass");
+    }
+
+    private void LoadParentlist()
+    {
+        Parentlist = repository.GetBaseParentAll()?.ToList();
+    }
+}

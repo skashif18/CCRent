@@ -1,18 +1,22 @@
-﻿namespace Plugins.DataStore.SQL.Masters
+﻿using CoreBusiness;
+using CoreBusiness.Master;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UseCases.DataStorePluginInterfaces.SrvTable.SrvMaster;
+
+namespace Plugins.DataStore.SQL.ServiceRepository
 {
-    using CoreBusiness;
-    using CoreBusiness.Master;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using UseCases.DataStorePluginInterfaces.Masters;
-    public class GenderRepository : IGenderRepository
+    public class CategoryRepository : ICategoryRepository
     {
         private readonly CarRentContext db;
         private readonly Response response = new();
-        public GenderRepository(CarRentContext _db) 
-        => db = _db;
-        public Response Create(SysGender model)
+        public CategoryRepository(CarRentContext _db)
+        {
+            db = _db;
+        }
+        public Response Create(SrvCategory model)
         {
             try
             {
@@ -29,23 +33,30 @@
             }
 
             return response;
-
         }
 
-        public IEnumerable<SysGender> GetAll()
-        => db.SysGenders;
+        public IList<SrvCategory> GetAll()
+            =>db.SrvCategories.Where(category => category.ParentCategoryId == null)
+                            .Include(category => category.InverseParentCategory).ToList();
+        
 
-        public SysGender GetById(int id)
-        => db.SysGenders.Where(m => m.Id == id).FirstOrDefault();
+        public IEnumerable<SrvCategory> GetBaseParentAll()
+            => db.SrvCategories.Where(m => m.ParentCategoryId == null || m.ParentCategoryId == 0);
+        public IEnumerable<SrvCategory> GetChildByParentId(int Id)
+            => db.SrvCategories.Where(m => m.ParentCategoryId == Id);
 
-        public Response Update(SysGender model)
+        public SrvCategory GetById(int id)
+            =>db.SrvCategories.Where((m) => m.Id == id).FirstOrDefault();
+
+        public Response Update(SrvCategory model)
         {
-            var _model = db.SysGenders.Find(model.Id);
+            var _model = db.SrvCategories.Find(model.Id);
             if (model != null)
             {
                 #region Updating the field
                 _model.NameEn = model.NameEn;
                 _model.NameAr = model.NameAr;
+                _model.ParentCategoryId = model.ParentCategoryId;
                 _model.Note = model.Note;
                 _model.UserDefined1 = model.UserDefined1;
                 _model.UserDefined2 = model.UserDefined2;
@@ -74,30 +85,6 @@
             return response;
         }
 
-        public Response Delete(int Id)
-        {
-            var _model = db.SysGenders.Find(Id);
-            if (_model == null)
-            {
-                response.IsSuccess = false;
-                response.Message = "Error: Data not found with this Id:  - " + Id;
-                return response;
-            }
-            try
-            {
-
-                db.SysGenders.Remove(_model);
-                db.SaveChanges();
-                response.IsSuccess = true;
-                response.Message = "Record Deleted Successfully .";
-            }
-            catch (Exception ex)
-            {
-                response.IsSuccess = false;
-                response.Message = "Error: " + ex.Message;
-            }
-            return response;
-
-        }
+        
     }
 }

@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Plugins.DataStore.SQL;
 using Plugins.DataStore.SQL.Infrastructure.Services;
 using Plugins.DataStore.SQL.Masters;
+using Plugins.DataStore.SQL.ServiceRepository;
 using Syncfusion.Blazor;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ using System.Threading.Tasks;
 using UseCases;
 using UseCases.DataStorePluginInterfaces;
 using UseCases.DataStorePluginInterfaces.Masters;
+using UseCases.DataStorePluginInterfaces.SrvTable.SrvMaster;
 using WebApp.Data;
 
 namespace WebApp
@@ -69,6 +71,9 @@ namespace WebApp
             services.AddTransient<IGenderRepository, GenderRepository>();
             services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<ICityRepository, CityRepository>();
+            services.AddTransient<IClassRepository, ClassRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 
