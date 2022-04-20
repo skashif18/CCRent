@@ -36,10 +36,15 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         }
 
         public IList<SrvCategory> GetAll()
-            =>db.SrvCategories.Where(category => category.ParentCategoryId == null)
-                            .Include(category => category.InverseParentCategory).ToList();
-        
+        {
+            var v = db.SrvCategories.AsNoTrackingWithIdentityResolution()
+                              .Include(category => category.InverseParentCategory).ToList();
+            IList<SrvCategory> tree = v.Where(c => c.ParentCategoryId == null)
+                                                 .AsParallel()
+                                                 .ToList();
+            return tree;
 
+        }
         public IEnumerable<SrvCategory> GetBaseParentAll()
             => db.SrvCategories.Where(m => m.ParentCategoryId == null || m.ParentCategoryId == 0);
         public IEnumerable<SrvCategory> GetChildByParentId(int Id)
