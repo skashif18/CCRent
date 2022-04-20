@@ -14,6 +14,8 @@ namespace UseCases.DataStorePluginInterfaces.SrvTable.SrvMaster
 
         IList<SrvCategory> GetAll();
 
+        Response Delete(int id);
+
         Response Update(SrvCategory model);
 
         SrvCategory GetById(int id);

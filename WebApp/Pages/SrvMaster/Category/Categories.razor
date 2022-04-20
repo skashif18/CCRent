@@ -10,79 +10,72 @@
 
 <h3>Manage Categories</h3>
 
-<EditForm Model="@list">
-
-    <div class="row">
-
-        @for (var j = 0; j < listOfVal.Count; j++)
-        {
-            <div class="col-md-6">
-                <select class="form-control" data-index="@j" @onchange="@((e) => getList(e,j))">
-                    <option value="index_@j">Select</option>
-                    @foreach (DictionaryEntry i in listOfVal[j])
-                    {
-                        <option value="@i.Key">@i.Value</option>
-
-                    }
-                </select>
-            </div>
-            <br />
-        }
-    </div>
-
+<EditForm Model="@ModelSave">
     <div class="card mt-3">
         <div class="card-header">
             Add Category
         </div>
         <div class="card-body">
-            <div class="row mt-2">
+            <div class="row">
+
+                @for (var j = 0; j < listOfVal.Count; j++)
+                {
+                    <div class="col-md-6 mt-4">
+                        <select class="form-control" @onchange="@((e) => getList(e,j))">
+                            <option value="index_@j">Select</option>
+                            @foreach (DictionaryEntry i in listOfVal[j])
+                            {
+                                string s = @i.Key + "_" + @j;
+                                <option value="@s">@i.Value</option>
+
+                            }
+                        </select>
+                    </div>
+                }
+            </div>
+
+            <div class="row mt-4">
                 <div class="col-6">
-                    <input id="name" placeholder="Name English" @bind="inputVal" class="form-control" />
+                    <input id="name" placeholder="Name English" @bind-value="ModelSave.NameEn" class="form-control" />
                 </div>
                 <div class="col-6">
-                    <input id="nameAr" placeholder="Name Arabic" @bind="inputVal" class="form-control" />
+                    <input id="nameAr" placeholder="Name Arabic" @bind-value="ModelSave.NameAr" class="form-control" />
                 </div>
             </div>
-           
+
         </div>
         <div class="card-footer">
-             <div class="row mt-2 mb-3">
-                <div class="col-6">
-                    <button type="button" class="btn btn-warning btn-block">Add Child</button>
+            <div class="row mt-2 mb-3">
+                <div class="col-12">
+                    <button type="button" @onclick="SaveCategory" class="btn btn-warning btn-block">Add Node</button>
                 </div>
-                <div class="col-6">
-                    <button type="button" class="btn btn-success btn-block">Add Sibling</button>
-                </div>
-            </div> 
+
+            </div>
         </div>
     </div>
 
-
-
-
-
 </EditForm>
 
-
-<CategoryListComponent ParentId="ParentId"></CategoryListComponent>
+<CascadingValue Value="ParentId">
+    <CategoryListComponent @ref="child"></CategoryListComponent>
+</CascadingValue>
 
 
 
 
 @code {
-    private SrvCategory model;
 
-    public String inputVal;
+    CategoryListComponent child;
 
-    List<SrvCategory> list = new List<SrvCategory>();
+    private SrvCategory ModelSave;
 
     List<SrvCategory> Parentlist = new List<SrvCategory>();
 
     List<SrvCategory> NumOfCategory = new List<SrvCategory>();
 
-    List<SrvCategory> NumOfCategory1 = new List<SrvCategory>();
-
     List<ListDictionary> listOfVal = new List<ListDictionary>();
+
+    List<int> TrackParentId = new List<int>();
 
     List<int> ListOfId = new List<int>();
 
@@ -90,55 +83,50 @@
 
     ListDictionary myDict = new ListDictionary();
 
-    public int ParentId { get; set; }
+    public int ParentId { get; set; } = 0;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        ModelSave = new SrvCategory();
+        TrackParentId.Add(0);
         LoadParentlist();
+
 
     }
 
 
     private void getList(ChangeEventArgs e, int nIndex)
-
     {
+        
+
         string s = Convert.ToString(e.Value);
         if (s.Contains("index_"))
         {
             s = s.Replace("index_", "0");
             int Index_ = Convert.ToInt32(s);
-
             DeleteCategories(Index_);
+            TrackParentId[Index_] = 0;
+            
+            child.LoadList(ParentId);
+
         }
         else
         {
-            ParentId = Convert.ToInt32(e?.Value);
-            toastService.ShowInfo("parent Id" + e);
+            string selectedValue = Convert.ToString(e.Value);
+            string[] selectedValue1 = selectedValue.Split("_");
+
+            nIndex = Convert.ToInt32(selectedValue1[1]);
+
+            ParentId = Convert.ToInt32(selectedValue1[0]);
+            TrackParentId[nIndex] = ParentId;
+            child.LoadList(ParentId);
+
             NumOfCategory = repository.GetChildByParentId(ParentId)?.ToList();
             InitialiseCategories(nIndex);
+           child.LoadList(ParentId);
         }
-
-    }
-
-    public void getListSub(ChangeEventArgs e)
-
-    {
-        NumOfCategory = new List<SrvCategory>();
-        ParentId = Convert.ToInt32(e.Value);
-
-        string s = Convert.ToString(e.Value);
-        if (s.Contains("index_"))
-        {
-            s = s.Replace("index_", "0");
-            int Index_ = Convert.ToInt32(s);
-
-            DeleteCategories(Index_);
-        }
-        //toastService.ShowInfo("parent Id" + ParentId);
-        NumOfCategory = repository.GetChildByParentId(ParentId)?.ToList();
-        toastService.ShowInfo("parent Id" + NumOfCategory);
-        myDict.Add("name1", "name1");
+         RefState();
 
     }
 
@@ -155,7 +143,9 @@
 
     private void InitialiseCategories(int l)
     {
-
+        
+        RefState();
+        DeleteCategories(l);
         myDict = new ListDictionary();
         int IsPresent = 0;
         foreach (var v in NumOfCategory)
@@ -166,27 +156,25 @@
                 if (v.Id == ListOfId[i])
                 {
                     IsPresent = 1;
-
                 }
             }
             if (IsPresent == 0)
             {
                 ListOfId.Add(v.Id);
-
             }
         }
         if (myDict.Count == 0)
         {
-            toastService.ShowInfo("parentqw Id" + l);
             l = Convert.ToInt32(l);
-            DeleteCategories(l);
         }
         if (myDict.Count > 0 && IsPresent == 0)
         {
             listOfVal.Add(myDict);
+            TrackParentId.Add(0);
 
         }
     }
+
     private void DeleteCategories(int Index_)
     {
         for (var i = Index_ + 1; i < listOfVal.Count; i++)
@@ -198,13 +186,59 @@
                     ListOfId.Remove((int)k.Key);
 
                 }
+                TrackParentId.Remove(TrackParentId[j]);
                 listOfVal.Remove(listOfVal[j]);
                 j--;
-
-
             }
 
         }
+    }
+
+    private void SaveCategory()
+    {
+
+        if (TrackParentId[0] == 0)
+        {
+            ModelSave.ParentCategoryId = null;
+        }
+        else
+        {
+            int indexi = 0;
+            for (var i = 0; i < TrackParentId.Count; i++)
+            {
+                if (TrackParentId[i] == 0)
+                {
+                    indexi = i - 1;
+                    break;
+                }
+            }
+            ModelSave.ParentCategoryId = Convert.ToInt32(TrackParentId[indexi]);
+
+        }
+
+        var v = repository.Create(ModelSave);
+
+        if (v.IsSuccess)
+        {
+            toastService.ShowSuccess(v.Message + TrackParentId.Last());
+        }
+        else
+        {
+            toastService.ShowError(v.Message + TrackParentId.Last());
+        }
+        ModelSave = new SrvCategory();
+        listOfVal = new List<ListDictionary>();
+        TrackParentId = new List<int>();
+        ListOfId = new List<int>();
+        TrackParentId.Add(0);
+        LoadParentlist();
+
+
+    }
+
+    public void RefState()
+    {
+        this.StateHasChanged();
     }
 
 }

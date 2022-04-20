@@ -2,6 +2,8 @@
 @inject NavigationManager NavigationManager
 
 @inject ICategoryRepository repository
+@inject IToastService toastService
+@inject IJSRuntime JsRuntime
 
 @if (list != null)
 {
@@ -21,7 +23,9 @@
                     <td>@item.NameEn</td>
                     <td>@item.NameAr</td>
                     <td>
-                        <button type="button" @onclick="@(() => Edit(item))" class="btn btn-link">Edit</button>
+                        <button type="button" @onclick="@(() => Edit(item))" class="btn btn-link"> <span class="oi oi-pencil text-warning"></span> </button>
+
+                        <button type="button" @onclick="@(() => Delete(item.Id))" class="btn btn-link"> <span class="oi oi-trash text-danger"></span> </button>
                     </td>
                 </tr>
             }
@@ -32,28 +36,49 @@
 
 @code {
 
-    [Parameter]
+    [CascadingParameter]
     public int ParentId { get; set; }
 
     private List<SrvCategory> listmodel;
 
 
-     List<SrvCategory> list = new List<SrvCategory>();
+    List<SrvCategory> list = new List<SrvCategory>();
+
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        LoadList();
+        LoadList(0);
+        toastService.ShowInfo(""+ParentId);
+
     }
 
-    private void LoadList()
-    {   
-        list = repository.GetChildByParentId(ParentId)?.ToList(); 
-    }
-
-     private void Edit(SrvCategory model)
+    public void LoadList(int ParentId)
     {
-        NavigationManager.NavigateTo($"/editCategory/{model.Id}");
+        if (ParentId == 0)
+        {
+            list = repository.GetBaseParentAll()?.ToList();
+        }
+        else
+        {
+
+            list = repository.GetChildByParentId(ParentId)?.ToList(); 
+        }
     }
 
+
+    private void Edit(SrvCategory model)
+    {
+        NavigationManager.NavigateTo($"/edit-category/{model.Id}");
+    }
+
+    private async void Delete(int Id)
+    {
+        bool confirmed =  await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure?"); // Confirm
+        if (!confirmed)
+            return;
+
+        repository.Delete(Id);
+        LoadList(ParentId);
+    }
 }
