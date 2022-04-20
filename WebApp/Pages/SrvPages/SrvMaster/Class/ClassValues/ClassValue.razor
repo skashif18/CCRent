@@ -1,19 +1,86 @@
-﻿@page "/ClassValue"
+﻿@page "/ClassValue/{classId:int}/{ClassName}"
 @attribute [Authorize(Policy ="AdminOnly")]
 @inject NavigationManager NavigationManager
 @inject IToastService toastService
 
-@inject IClassRepository repository
+@inject IClassValueRepository repository
 
+<h4> Manage Class Values </h4>
 
-<h3></h3>
+@if (model != null)
+{
 
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name En</th>
+                <th>Name Ar</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in model)
+            {
+                <tr>
+                    <td>@item.NameEn</td>
+                    <td>@item.NameAr</td>
+                    <td>
+                        <button type="button" @onclick="@(() => Edit(item))" class="btn btn-link"> <span class="oi oi-pencil text-warning"></span> </button>
+                        <button type="button" @onclick="@(() => Delete(item.Id))" class="btn btn-link"> <span class="oi oi-trash text-danger"></span></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<br />
+<button type="button" @onclick="OnClickAddClass" class="btn btn-primary">Add New</button>
 @code {
 
     [Parameter]
-    public int Id { get; set; }
+    public int classId { get; set; }
     
-    public string Name { get; set; }
+    [Parameter]
+    public string ClassName { get; set; }
+
+   private IEnumerable<SrvClassValue> model;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        LoadList();
+    }
+
+    private void OnClickAddClass()
+    {
+        NavigationManager.NavigateTo($"/AddClassValues/{classId}/{ClassName}");
+    }
+
+    private void Edit(SrvClassValue model)
+    {
+        NavigationManager.NavigateTo($"/EditClassValues/{model.Id}");
+    }
+
+    private void Delete(int Id)
+    {
+        var v = repository.Delete(Id);
+        if (v.IsSuccess)
+        {
+            toastService.ShowSuccess(v.Message);
+        }
+        else
+        {
+            toastService.ShowError(v.Message);
+
+         }
+        
+        LoadList();
+    }
+
+    private void LoadList()
+    {
+        model = repository.GetAll()?.ToList();
+    }
 
     
 }

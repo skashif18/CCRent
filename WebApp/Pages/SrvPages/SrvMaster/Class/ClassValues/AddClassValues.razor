@@ -1,13 +1,12 @@
-﻿@page "/EditClass/{Id:int}"
-@attribute [Authorize(Policy = "AdminOnly")]
+﻿@page "/AddClassValues/{classId:int}/{ClassName}"
 
 @inject NavigationManager NavigationManager
-
+@inject IClassValueRepository repository
 @inject IToastService toastService
 
-@inject IClassRepository repository
 
-<h3>Edit Category</h3>
+<h3>Add Class Values For {@ClassName}</h3>
+
 
 @if (model != null)
 {
@@ -52,44 +51,41 @@
 
 
 @code {
-    [Parameter]
-    public int Id { get; set; }
 
-    private SrvClass model;
+
+    [Parameter]
+    public int classId { get; set; }
+
+    [Parameter]
+    public string ClassName { get; set; }
+
+    private SrvClassValue model;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-    }
-
-    protected override void OnParametersSet()
-    {
-        base.OnParametersSet();
-
-        var val = repository.GetById(Id);
-        this.model = val;
-
+        model = new();
     }
 
     private void OnValidSumit()
     {
-        var result = repository.Update(this.model);
-        if (result.IsSuccess)
+        var v = repository.Create(model);
+
+        if (v.IsSuccess)
         {
-            toastService.ShowSuccess(result.Message);
-            NavigationManager.NavigateTo("/class");
+            toastService.ShowSuccess(v.Message);
         }
         else
         {
-            toastService.ShowError(result.Message);
+            toastService.ShowError(v.Message);
         }
 
-
+        NavigationManager.NavigateTo($"/ClassValue/{classId}/{ClassName}");
     }
 
     private void OnCancel()
     {
-        NavigationManager.NavigateTo("/class");
+        NavigationManager.NavigateTo($"/ClassValue/{classId}/{ClassName}");
     }
 
 }
