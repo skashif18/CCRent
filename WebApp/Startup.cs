@@ -72,6 +72,10 @@ namespace WebApp
             services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<ICityRepository, CityRepository>();
             services.AddTransient<IClassRepository, ClassRepository>();
+
+            services.AddTransient<IClassValueRepository, ClassValueRepository>();
+
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
 
 

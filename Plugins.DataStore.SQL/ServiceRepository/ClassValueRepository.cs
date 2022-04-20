@@ -2,13 +2,12 @@
 using CoreBusiness.Master;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
+using UseCases.DataStorePluginInterfaces.SrvTable.SrvMaster;
 
 namespace Plugins.DataStore.SQL.ServiceRepository
 {
-    internal class ClassValueRepository: IClassValueRepository
+    public class ClassValueRepository: IClassValueRepository
     {
         private readonly CarRentContext db;
         private readonly Response response = new();
