@@ -25,6 +25,7 @@ namespace Appo.Server
                     .AddJWTAuthentication(services.GetAppSettings(this.Configuration))
                     .AddApplicationServices()
                     .AddSwagger()
+                    .AddAutoMappers()
                     .AddApiController();
 
 

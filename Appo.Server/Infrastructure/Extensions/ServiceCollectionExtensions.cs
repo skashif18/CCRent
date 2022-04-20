@@ -1,6 +1,7 @@
 ﻿namespace Appo.Server.Infrastructure
 {
     using Appo.Server.Data;
+    using Appo.Server.Features.Category.Services;
     using Appo.Server.Features.Identity;
     using Appo.Server.Infrastructure.Extensions;
     using Appo.Server.Infrastructure.Filters;
@@ -18,7 +19,9 @@
     using Plugins.DataStore.SQL.ServiceRepository;
     using System;
     using System.Text;
+    using System.Text.Json.Serialization;
     using UseCases.DataStorePluginInterfaces.Masters;
+    using UseCases.DataStorePluginInterfaces.SrvTable.SrvMaster;
     using UseCases.DataStorePluginInterfaces.SrvTable.Supplier;
 
     public static class ServiceCollectionExtensions
@@ -47,6 +50,13 @@
                 .AddEntityFrameworkStores<AccountContext>();
             return services;
         }
+
+        public static IServiceCollection AddAutoMappers(this IServiceCollection services)
+        {
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            return services;
+        }
+
 
         public static IServiceCollection AddJWTAuthentication(this IServiceCollection services, AppSettings appSetting)
         {
@@ -82,10 +92,19 @@
             services.AddTransient<ISupplierRepository, SupplierRepository>();
             services.AddTransient<ICustomerRepository, CustomerRepository>();
 
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+
+            services.AddTransient<ICategoryService, CategoryService>();
+
+            services.AddTransient<IClassRepository, ClassRepository>();
+            services.AddTransient<IClassValueRepository, ClassValueRepository>();
+
 
             return services;
         }
 
+
+       
         public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
             => services.AddDbContext<CarRentContext>(
                 options =>
@@ -101,7 +120,11 @@
             => services
             .AddControllers(option => option
                             .Filters
-                            .Add<ModelOrNotFoundActionFilter>());
+                            .Add<ModelOrNotFoundActionFilter>())
+            .AddControllersAsServices().AddJsonOptions(
+                x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve
+                );
+
         public static IServiceCollection AddSwagger(this IServiceCollection services)
             => services.AddSwaggerGen(c =>
             {
