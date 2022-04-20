@@ -48,6 +48,34 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         public SrvCategory GetById(int id)
             =>db.SrvCategories.Where((m) => m.Id == id).FirstOrDefault();
 
+        public Response Delete(int id)
+        {
+            var _model = db.SrvCategories.Find(id);
+            if (_model != null)
+            {
+                response.IsSuccess = false;
+                response.Message = "Error: Data not found with this Id:  - " + id;
+            }
+            try
+            {
+                db.SrvCategories.Remove(_model);
+                db.SaveChanges();
+                response.IsSuccess = true;
+                response.Message = "Deleted  Successfully";
+            }
+            catch
+            {
+                response.IsSuccess = false;
+                response.Message = "Deletion Failed";
+            }
+            return response;
+        }
+
+        private Response HttpNotFound()
+        {
+            throw new NotImplementedException();
+        }
+
         public Response Update(SrvCategory model)
         {
             var _model = db.SrvCategories.Find(model.Id);

@@ -33,7 +33,7 @@
                     </div>
                 }
             </div>
-        
+
             <div class="row mt-4">
                 <div class="col-6">
                     <input id="name" placeholder="Name English" @bind-value="ModelSave.NameEn" class="form-control" />
@@ -42,24 +42,30 @@
                     <input id="nameAr" placeholder="Name Arabic" @bind-value="ModelSave.NameAr" class="form-control" />
                 </div>
             </div>
-           
+
         </div>
         <div class="card-footer">
-             <div class="row mt-2 mb-3">
+            <div class="row mt-2 mb-3">
                 <div class="col-12">
                     <button type="button" @onclick="SaveCategory" class="btn btn-warning btn-block">Add Node</button>
                 </div>
 
-            </div> 
+            </div>
         </div>
     </div>
 
 </EditForm>
 
+<CascadingValue Value="ParentId">
+    <CategoryListComponent @ref="child"></CategoryListComponent>
+</CascadingValue>
 
-<CategoryListComponent ParentId="ParentId"></CategoryListComponent>
+
+
 
 @code {
+
+    CategoryListComponent child;
 
     private SrvCategory ModelSave;
 
@@ -77,7 +83,7 @@
 
     ListDictionary myDict = new ListDictionary();
 
-    public int ParentId { get; set; }
+    public int ParentId { get; set; } = 0;
 
     protected override void OnInitialized()
     {
@@ -86,12 +92,13 @@
         TrackParentId.Add(0);
         LoadParentlist();
 
+
     }
 
 
     private void getList(ChangeEventArgs e, int nIndex)
-
     {
+        
 
         string s = Convert.ToString(e.Value);
         if (s.Contains("index_"))
@@ -100,6 +107,8 @@
             int Index_ = Convert.ToInt32(s);
             DeleteCategories(Index_);
             TrackParentId[Index_] = 0;
+            
+            child.LoadList(ParentId);
 
         }
         else
@@ -111,10 +120,13 @@
 
             ParentId = Convert.ToInt32(selectedValue1[0]);
             TrackParentId[nIndex] = ParentId;
+            child.LoadList(ParentId);
 
             NumOfCategory = repository.GetChildByParentId(ParentId)?.ToList();
             InitialiseCategories(nIndex);
+           child.LoadList(ParentId);
         }
+         RefState();
 
     }
 
@@ -131,6 +143,8 @@
 
     private void InitialiseCategories(int l)
     {
+        
+        RefState();
         DeleteCategories(l);
         myDict = new ListDictionary();
         int IsPresent = 0;
@@ -190,9 +204,9 @@
         else
         {
             int indexi = 0;
-            for(var i = 0; i < TrackParentId.Count; i++)
+            for (var i = 0; i < TrackParentId.Count; i++)
             {
-                if(TrackParentId[i] == 0)
+                if (TrackParentId[i] == 0)
                 {
                     indexi = i - 1;
                     break;
@@ -219,7 +233,12 @@
         TrackParentId.Add(0);
         LoadParentlist();
 
-        
+
+    }
+
+    public void RefState()
+    {
+        this.StateHasChanged();
     }
 
 }
