@@ -3,6 +3,7 @@
     using Appo.Server.Data;
     using Appo.Server.Features.Category.Services;
     using Appo.Server.Features.Identity;
+    using Appo.Server.Features.ServiceType.Service;
     using Appo.Server.Infrastructure.Extensions;
     using Appo.Server.Infrastructure.Filters;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -91,12 +92,16 @@
             services.AddTransient<IGetMasterRepository, GetMasterRepository>();
             services.AddTransient<ISupplierRepository, SupplierRepository>();
             services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddTransient<IClassRepository, ClassRepository>();
 
             services.AddTransient<ICategoryRepository, CategoryRepository>();
-
             services.AddTransient<ICategoryService, CategoryService>();
 
-            services.AddTransient<IClassRepository, ClassRepository>();
+
+            services.AddTransient<IServiceTypeRepository, ServiceTypeRepository>();
+            services.AddTransient<IServiceTypeService, ServiceTypeService>();
+
+
             services.AddTransient<IClassValueRepository, ClassValueRepository>();
 
 
