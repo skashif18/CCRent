@@ -1,0 +1,261 @@
+﻿@page "/categoryTest"
+
+
+@using Syncfusion.Blazor.DropDowns
+@using System.Collections.Specialized
+@using System.Collections
+@using System.Reflection
+@inject IToastService toastService
+@inject NavigationManager NavigationManager
+@inject ICategoryRepository repository
+@typeparam TValue
+
+<h3>Manage Categories</h3>
+
+<EditForm Model="@ModelSave">
+    <div class="card mt-3">
+        <div class="card-header">
+            Add Category
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                @for (var j = 0; j < this.listOfVal.Count; j++)
+                {   
+                    <CategoryNestingComponent  CategoryInfo="@((args) => CategoryInfo(args.index, args.value))" j="@j" val="@listOfVal[j]">
+                        
+                    </CategoryNestingComponent>
+                }
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-6">
+                    <input id="name" placeholder="Name English" @bind-value="ModelSave.NameEn" class="form-control" />
+                </div>
+                <div class="col-6">
+                    <input id="nameAr" placeholder="Name Arabic" @bind-value="ModelSave.NameAr" class="form-control" />
+                </div>
+            </div>
+
+        </div>
+        <div class="card-footer">
+            <div class="row mt-2 mb-3">
+                <div class="col-12">
+                    <button type="button" @onclick="SaveCategory" class="btn btn-warning btn-block">Add Node</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    @foreach(var i in this.Test)
+    {
+        @foreach(var j in memberInfo){
+            @if(j.MemberType == MemberTypes.Property && IncludedColumn.Contains(j.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                <p>@i.GetType().GetProperty(j.Name).GetValue(i)</p>
+            }
+        }
+    }
+
+</EditForm>
+
+<CascadingValue Value="ParentId">
+    <CategoryListComponent @ref="child"></CategoryListComponent>
+</CascadingValue>
+
+
+
+
+@code {
+    private int io;
+    private string sd;
+
+    public string p_id1="0";
+
+    public int index;
+    public int value;
+
+    public   class categoryInfo
+    {
+        public  int value;
+        public  int index;
+    }
+
+    public void CategoryInfo(int value1, int index1)
+    {
+        index = index1;
+        value = value1;
+        getList(value, index);
+
+    }
+
+    private void ind(int value)
+    {
+        io = value;
+
+    }
+
+    private void str(string value)
+    {
+        sd = value;
+        p_id1 = value;
+        //getList(sd);
+    }
+
+    MemberInfo[] memberInfo;
+
+    CategoryListComponent child;
+
+    private SrvCategory ModelSave;
+
+    string IncludedColumn;
+
+    int r;
+
+    List<SrvCategory> Parentlist = new List<SrvCategory>();
+
+    List<SrvCategory> NumOfCategory = new List<SrvCategory>();
+
+    List<ListDictionary> listOfVal = new List<ListDictionary>();
+
+    List<SrvCategory> Test = new List<SrvCategory>();
+
+    List<int> TrackParentId = new List<int>();
+
+    List<int> ListOfId = new List<int>();
+
+    public string LabelName { get; set; }
+
+    ListDictionary myDict = new ListDictionary();
+
+    public int ParentId { get; set; } = 0;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        IncludedColumn = "NameEn, NameAr";
+        ModelSave = new SrvCategory();
+        TrackParentId.Add(0);
+        LoadParentlist();
+        if(Test != null && Test.Count > 0)
+        {
+            Type typeOfItem = this.Test[0].GetType();
+            memberInfo = typeOfItem.GetMembers();
+        }
+
+
+    }
+
+
+    private void getList(int value, int index)
+    {
+        if(value == 0)
+        {
+            DeleteCategories(index);
+        } else
+        {
+            ParentId = value;
+            NumOfCategory = repository.GetChildByParentId(ParentId)?.ToList();
+            Test.AddRange(NumOfCategory);
+            TrackParentId[index] = ParentId;
+            InitialiseCategories(index);
+        }
+
+        RefState();
+
+    }
+
+    private void OnClickAdd()
+    {
+        NavigationManager.NavigateTo("/AddClass");
+    }
+
+    private void LoadParentlist()
+    {
+        NumOfCategory = repository.GetBaseParentAll()?.ToList();
+        Test.AddRange(NumOfCategory);
+        InitialiseCategories(0);
+    }
+
+    private void InitialiseCategories(int index)
+    {
+
+        RefState();
+        DeleteCategories(index);
+        myDict = new ListDictionary();
+        int IsPresent = 0;
+        foreach (var v in NumOfCategory)
+        {
+            myDict.Add(v.Id, v.NameEn);
+
+        }
+        if (myDict.Count > 0 && IsPresent == 0)
+        {
+            listOfVal.Add(myDict);
+            TrackParentId.Add(0);
+
+        }
+    }
+
+    private void DeleteCategories(int Index_)
+    {
+        for (var i = 0; i < listOfVal.Count; i++)
+        {
+            if(i > index)
+            {
+                TrackParentId.Remove(TrackParentId[i]);
+                listOfVal.Remove(listOfVal[i]);
+                i--;
+            }
+
+        }
+    }
+
+    private void SaveCategory()
+    {
+
+        if (TrackParentId[0] == 0)
+        {
+            ModelSave.ParentCategoryId = null;
+        }
+        else
+        {
+            int indexi = 0;
+            for (var i = 0; i < TrackParentId.Count; i++)
+            {
+                if (TrackParentId[i] == 0)
+                {
+                    indexi = i - 1;
+                    break;
+                }
+            }
+            ModelSave.ParentCategoryId = Convert.ToInt32(TrackParentId[indexi]);
+
+        }
+
+        var v = repository.Create(ModelSave);
+
+        if (v.IsSuccess)
+        {
+            toastService.ShowSuccess(v.Message + TrackParentId.Last());
+        }
+        else
+        {
+            toastService.ShowError(v.Message + TrackParentId.Last());
+        }
+        ModelSave = new SrvCategory();
+        listOfVal = new List<ListDictionary>();
+        TrackParentId = new List<int>();
+        ListOfId = new List<int>();
+        TrackParentId.Add(0);
+        LoadParentlist();
+
+
+    }
+
+    public void RefState()
+    {
+        this.StateHasChanged();
+    }
+
+}
