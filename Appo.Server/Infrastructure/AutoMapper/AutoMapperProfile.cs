@@ -1,4 +1,6 @@
 ﻿using Appo.Server.Features.Category.Model;
+using Appo.Server.Features.Service.Model;
+using Appo.Server.Features.ServiceType.Model;
 using AutoMapper;
 using CoreBusiness.Master;
 
@@ -10,6 +12,13 @@ namespace Appo.Server.Infrastructure.AutoMapper
         {
             CreateMap<CategoryRequestModel, SrvCategory>();
             CreateMap<SrvCategory, CategoryResponseModel>();
+
+            CreateMap<ServiceTypeRequestModel, SrvServiceType>();
+            CreateMap<SrvServiceType, ServiceTypeResponseModel>();
+
+            CreateMap<ServiceRequestModel, SrvService>();
+            CreateMap<SrvService, ServiceResponseModel>();
+
         }
     }
 }

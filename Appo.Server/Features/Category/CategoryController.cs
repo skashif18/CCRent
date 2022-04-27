@@ -19,28 +19,28 @@ namespace Appo.Server.Features.Category
         }
 
         [HttpGet]
-        [Route("all-categories")]
+        [Route("all")]
         public IList<CategoryResponseModel> GetAll()
             => repository.GetAll();
 
         [HttpGet]
-        [Route("baseparent-categories")]
+        [Route("root")]
         public IEnumerable<CategoryResponseModel> GetBaseParent()
             => repository.GetBaseParentAll();
 
         [HttpGet]
-        [Route("childs-categories-by-parent")]
+        [Route("childs-by-parent")]
         public IEnumerable<CategoryResponseModel> GetChildParentByPrentId(int Id)
             => repository.GetChildByParentId(Id);
 
         [HttpGet]
-        [Route("category-by-Id")]
+        [Route("by-Id")]
         public CategoryResponseModel GetById(int Id)
             => repository.GetById(Id);
 
 
         [HttpPost]
-        [Route("create-category")]
+        [Route("create")]
         public IActionResult Create(CategoryRequestModel model)
         {
             var result = repository.Create(model);
@@ -51,7 +51,7 @@ namespace Appo.Server.Features.Category
         }
 
         [HttpPut]
-        [Route("update-category")]
+        [Route("update")]
         public IActionResult Update(CategoryRequestModel model)
         {
             var result = repository.Update(model);

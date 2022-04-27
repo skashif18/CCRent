@@ -3,6 +3,8 @@
     using Appo.Server.Data;
     using Appo.Server.Features.Category.Services;
     using Appo.Server.Features.Identity;
+    using Appo.Server.Features.Service.Service;
+    using Appo.Server.Features.ServiceType.Service;
     using Appo.Server.Infrastructure.Extensions;
     using Appo.Server.Infrastructure.Filters;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -21,6 +23,7 @@
     using System.Text;
     using System.Text.Json.Serialization;
     using UseCases.DataStorePluginInterfaces.Masters;
+    using UseCases.DataStorePluginInterfaces.SrvTable;
     using UseCases.DataStorePluginInterfaces.SrvTable.SrvMaster;
     using UseCases.DataStorePluginInterfaces.SrvTable.Supplier;
 
@@ -91,12 +94,18 @@
             services.AddTransient<IGetMasterRepository, GetMasterRepository>();
             services.AddTransient<ISupplierRepository, SupplierRepository>();
             services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddTransient<IClassRepository, ClassRepository>();
 
             services.AddTransient<ICategoryRepository, CategoryRepository>();
-
             services.AddTransient<ICategoryService, CategoryService>();
 
-            services.AddTransient<IClassRepository, ClassRepository>();
+
+            services.AddTransient<IServiceTypeRepository, ServiceTypeRepository>();
+            services.AddTransient<IServiceTypeService, ServiceTypeService>();
+
+            services.AddTransient<IServiceRepository, ServiceRepository>();
+            services.AddTransient<IServiceService, ServiceService>();
+
             services.AddTransient<IClassValueRepository, ClassValueRepository>();
 
 
@@ -104,7 +113,7 @@
         }
 
 
-       
+
         public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
             => services.AddDbContext<CarRentContext>(
                 options =>
@@ -131,8 +140,8 @@
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Appo.Server API",
-                    Description = "Appo.Server ASP.NET Core Web API",
+                    Title = "CCRent.Server API",
+                    Description = "CCRent.Server ASP.NET Core Web API",
                     TermsOfService = new Uri("https://kashifabbas.dev"),
                     Contact = new OpenApiContact
                     {
@@ -146,6 +155,31 @@
                         Url = new Uri("https://kashifabbas.dev"),
                     }
                 });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please enter token",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    Scheme = "bearer"
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type=ReferenceType.SecurityScheme,
+                                Id="Bearer"
+                            }
+                        },
+                        new string[]{}
+                    }
+                });
+
             });
 
     }

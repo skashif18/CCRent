@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <UserSecretsId>aspnet-Appo.Server-9503766F-A84D-4B6F-BC18-962FD43F5AB2</UserSecretsId>
      <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
-    <AspNetCoreModuleName>AspNetCoreModule</AspNetCoreModuleName>
+    <AspNetCoreModuleName>AspNetCoreModuleV2</AspNetCoreModuleName>
   </PropertyGroup>
 
   <ItemGroup>
