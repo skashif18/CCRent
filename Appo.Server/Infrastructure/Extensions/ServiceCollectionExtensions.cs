@@ -4,6 +4,8 @@
     using Appo.Server.Features.Category.Services;
     using Appo.Server.Features.Identity;
     using Appo.Server.Features.Service.Service;
+    using Appo.Server.Features.ServiceAttachment.Service;
+    using Appo.Server.Features.ServiceAttachmentType.Service;
     using Appo.Server.Features.ServiceType.Service;
     using Appo.Server.Infrastructure.Extensions;
     using Appo.Server.Infrastructure.Filters;
@@ -107,6 +109,12 @@
             services.AddTransient<IServiceService, ServiceService>();
 
             services.AddTransient<IClassValueRepository, ClassValueRepository>();
+
+            services.AddTransient<IServiceAttachmentRepository, ServiceAttachmentRepository>();
+            services.AddTransient<IServiceAttachmentService, ServiceAttachmentService>();
+
+            services.AddTransient<IServiceTypeAttachmentRepository, ServiceTypeAttachmentRepository>();
+            services.AddTransient<IServiceAttachmentType, ServiceAttachmentType>();
 
 
             return services;

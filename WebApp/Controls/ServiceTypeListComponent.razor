@@ -1,7 +1,7 @@
 ﻿
 @inject NavigationManager NavigationManager
 
-@inject ICategoryRepository repository
+@inject IServiceTypeRepository repository
 @inject IToastService toastService
 @inject IJSRuntime JsRuntime
 
@@ -39,17 +39,16 @@
     [CascadingParameter]
     public int ParentId { get; set; }
 
-    private List<SrvCategory> listmodel;
+    private List<SrvServiceType> listmodel;
 
 
-    List<SrvCategory> list = new List<SrvCategory>();
+    List<SrvServiceType> list = new List<SrvServiceType>();
 
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
         LoadList(0);
-        toastService.ShowInfo(""+ParentId);
 
     }
 
@@ -68,10 +67,10 @@
     }
 
 
-    private void Edit(SrvCategory model)
+    private void Edit(SrvServiceType model)
     {
-        NavigationManager.NavigateTo($"/edit-category/{model.Id}");
-    } 
+        NavigationManager.NavigateTo($"/edit-service-type/{model.Id}");
+    }
 
     private async void Delete(int Id)
     {
@@ -79,7 +78,18 @@
         if (!confirmed)
             return;
 
-        repository.Delete(Id);
+        toastService.ShowSuccess("" + Id);
+
+        var v = repository.Delete(Id);
+        if (v.IsSuccess)
+        {
+            toastService.ShowSuccess(v.Message);
+        }
+        else
+        {
+            toastService.ShowError(v.Message);
+
+         }
         LoadList(ParentId);
     }
 }

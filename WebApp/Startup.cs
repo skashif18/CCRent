@@ -76,7 +76,9 @@ namespace WebApp
             services.AddTransient<IClassValueRepository, ClassValueRepository>();
 
             services.AddTransient<ICategoryRepository, CategoryRepository>();
-            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IServiceTypeRepository, ServiceTypeRepository>();
+
+            services.AddTransient<IServiceTypeAttachmentRepository, ServiceTypeAttachmentRepository>();
 
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();

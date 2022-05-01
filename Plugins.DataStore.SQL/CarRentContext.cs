@@ -44,6 +44,12 @@ namespace Plugins.DataStore.SQL
         public virtual DbSet<SysNationality> SysNationalities { get; set; }
         public virtual DbSet<SysReligion> SysReligions { get; set; }
 
+        public virtual DbSet<SrvServiceTypeAttachment> SrvServiceTypeAttachment { get; set; }
+
+        public virtual DbSet<SrvServiceAttachment>  SrvServiceAttachment { get; set; }
+
+        public virtual DbSet<SrvServiceSchedule> SrvServiceSchedule { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SrvAddOn>(entity =>

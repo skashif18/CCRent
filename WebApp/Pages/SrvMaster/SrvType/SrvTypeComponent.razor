@@ -1,4 +1,4 @@
-﻿@page "/categoryTest"
+﻿@page "/Type"
 
 
 @using Syncfusion.Blazor.DropDowns
@@ -7,14 +7,14 @@
 @using System.Reflection
 @inject IToastService toastService
 @inject NavigationManager NavigationManager
-@inject ICategoryRepository repository
+@inject IServiceTypeRepository repository
 
 <h3>Manage Categories</h3>
 
 <EditForm Model="@ModelSave">
     <div class="card mt-3">
         <div class="card-header">
-            Add Category
+            Add Service Type
         </div>
         <div class="card-body">
             <div class="row">
@@ -40,7 +40,7 @@
         <div class="card-footer">
             <div class="row mt-2 mb-3">
                 <div class="col-12">
-                    <button type="button" @onclick="SaveCategory" class="btn btn-warning btn-block">Add Node</button>
+                    <button type="button" @onclick="SaveSrvType" class="btn btn-warning btn-block">Add Node</button>
                 </div>
 
             </div>
@@ -59,7 +59,7 @@
 </EditForm>
 
 <CascadingValue Value="ParentId">
-    <CategoryListComponent @ref="child"></CategoryListComponent>
+    <ServiceTypeListComponent @ref="child"></ServiceTypeListComponent>
 </CascadingValue>
 
 
@@ -81,17 +81,17 @@
 
     MemberInfo[] memberInfo;
 
-    CategoryListComponent child;
+    ServiceTypeListComponent child;
 
-    private SrvCategory ModelSave;
+    private SrvServiceType ModelSave;
 
     string IncludedColumn;
 
-    List<SrvCategory> NumOfCategory = new List<SrvCategory>();
+    List<SrvServiceType> NumOfSrvType = new List<SrvServiceType>();
 
     List<ListDictionary> listOfVal = new List<ListDictionary>();
 
-    List<SrvCategory> Test = new List<SrvCategory>();
+    List<SrvServiceType> Test = new List<SrvServiceType>();
 
     List<int> TrackParentId = new List<int>();
 
@@ -103,7 +103,7 @@
     {
         base.OnInitialized();
         IncludedColumn = "NameEn, NameAr";
-        ModelSave = new SrvCategory();
+        ModelSave = new SrvServiceType();
         TrackParentId.Add(0);
         LoadParentlist();
         if(Test != null && Test.Count > 0)
@@ -121,16 +121,16 @@
         {
             ParentId = 0;
             TrackParentId[index] = 0;
-            DeleteCategories(index);
+            DeleteSrvType(index);
 
         } else
         {
             ParentId = value;
-            NumOfCategory = repository.GetChildByParentId(ParentId)?.ToList();
-            Test.AddRange(NumOfCategory);
+            NumOfSrvType = repository.GetChildByParentId(ParentId)?.ToList();
+            Test.AddRange(NumOfSrvType);
 
 
-            InitialiseCategories(index);
+            InitialiseServiceType(index);
         }
         child.LoadList(ParentId);
 
@@ -143,18 +143,18 @@
 
     private void LoadParentlist()
     {
-        NumOfCategory = repository.GetBaseParentAll()?.ToList();
-        Test.AddRange(NumOfCategory);
-        InitialiseCategories(0);
+        NumOfSrvType = repository.GetBaseParentAll()?.ToList();
+        Test.AddRange(NumOfSrvType);
+        InitialiseServiceType(0);
     }
 
-    private void InitialiseCategories(int index)
+    private void InitialiseServiceType(int index)
     {
 
-        DeleteCategories(index);
+        DeleteSrvType(index);
         myDict = new ListDictionary();
         int IsPresent = 0;
-        foreach (var v in NumOfCategory)
+        foreach (var v in NumOfSrvType)
         {
             myDict.Add(v.Id, v.NameEn);
 
@@ -170,7 +170,7 @@
         StateHasChanged();
     }
 
-    private void DeleteCategories(int Index_)
+    private void DeleteSrvType(int Index_)
     {
         for (var i = 0; i < listOfVal.Count; i++)
         {
@@ -184,12 +184,12 @@
         }
     }
 
-    private void SaveCategory()
+    private void SaveSrvType()
     {
 
         if (TrackParentId[0] == 0)
         {
-            ModelSave.ParentCategoryId = null;
+            ModelSave.ServiceTypeId = null;
         }
         else
         {
@@ -203,7 +203,7 @@
                 }
                 indexi = i;
             }
-            ModelSave.ParentCategoryId = Convert.ToInt32(TrackParentId[indexi]);
+            ModelSave.ServiceTypeId = Convert.ToInt32(TrackParentId[indexi]);
 
         }
 
@@ -211,19 +211,17 @@
 
         if (v.IsSuccess)
         {
-            toastService.ShowSuccess(v.Message + ModelSave.ParentCategoryId);
+            toastService.ShowSuccess(v.Message + ModelSave.ServiceTypeId);
         }
         else
         {
             toastService.ShowError(v.Message + TrackParentId.Last());
         }
-        ModelSave = new SrvCategory();
+        ModelSave = new SrvServiceType();
         listOfVal = new List<ListDictionary>();
         TrackParentId = new List<int>();
         TrackParentId.Add(0);
         LoadParentlist();
-
-
     }
 
 }

@@ -1,16 +1,7 @@
-﻿using CoreBusiness.Base;
-using System;
-using System.Collections.Generic;
-
-namespace CoreBusiness.Master
+﻿namespace Appo.Server.Features.ServiceAttachmentType.Model
 {
-    public partial class SrvServiceTypeAttachment:Entity
+    public class ServiceAttachmentTypeResponseModel
     {
-        public SrvServiceTypeAttachment()
-        {
-            SrvServiceAttachments = new HashSet<SrvServiceAttachment>();
-        }
-
         public int Id { get; set; }
         public string NameEn { get; set; }
         public string NameAr { get; set; }
@@ -22,9 +13,5 @@ namespace CoreBusiness.Master
         public string UserDefined2 { get; set; }
         public string UserDefined3 { get; set; }
         public string UserDefined4 { get; set; }
-       
-
-        public virtual SrvServiceType ServiceType { get; set; }
-        public virtual ICollection<SrvServiceAttachment> SrvServiceAttachments { get; set; }
     }
 }

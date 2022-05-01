@@ -1,0 +1,76 @@
+﻿@page "/edit-service-type/{Id:int}"
+@attribute [Authorize(Policy = "AdminOnly")]
+
+@inject NavigationManager NavigationManager
+
+@inject IToastService toastService
+
+@inject IServiceTypeRepository repository
+
+<h3>Edit Service Type</h3>
+
+@if (model != null)
+{
+    <EditForm Model="model" OnValidSubmit="OnValidSumit">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+        <div class="row">
+            <div class="form-group col-6">
+                <label for="name">Name</label>
+                <InputText id="nameen" @bind-Value="model.NameEn" class="form-control"></InputText>
+            </div>
+            <div class="form-group col-6">
+                <label for="description">Name Ar</label>
+                <InputText id="namear" @bind-Value="model.NameAr" class="form-control"></InputText>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-primary" @onclick="OnCancel">Cancel</button>
+    </EditForm>
+
+}
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private SrvServiceType model;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        var val = repository.GetById(Id);
+        this.model = val;
+
+    }
+
+    private void OnValidSumit()
+    {
+        var result = repository.Update(this.model);
+        if (result.IsSuccess)
+        {
+            toastService.ShowSuccess(result.Message);
+            NavigationManager.NavigateTo("/Type");
+        }
+        else
+        {
+            toastService.ShowError(result.Message);
+        }
+
+
+    }
+
+    private void OnCancel()
+    {
+        NavigationManager.NavigateTo("/Type");
+    }
+
+}

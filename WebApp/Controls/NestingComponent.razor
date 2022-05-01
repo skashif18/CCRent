@@ -1,0 +1,57 @@
+﻿@using Syncfusion.Blazor.DropDowns
+@using System.Collections.Specialized
+@using System.Collections
+@using System.Reflection
+@inject IToastService toastService
+@inject NavigationManager NavigationManager
+@inject ICategoryRepository repository
+ 
+
+ 
+<div class="col-md-6 mt-4">
+    <select class="form-control" @onchange="@((e) => getList(e,j))">
+        <option value="0">Select</option>
+
+        @foreach (DictionaryEntry i in val)
+        {
+            string s = @i.Key + "_" + @j;
+            <option value="@i.Key">@i.Value</option>
+
+        }
+    </select>
+</div>
+    
+
+@code {
+    [Parameter]
+    public ListDictionary val { get; set; }
+
+    [Parameter]
+    public int j {get;set;}
+
+    [Parameter]
+    public EventCallback<categoryInfo> CategoryInfo { get; set; }
+
+    categoryInfo catInfo = new();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+    }
+
+
+    private void getList(ChangeEventArgs e, int nIndex)
+    {
+        catInfo.value = Convert.ToInt32(e.Value);
+        catInfo.index = Convert.ToInt32(nIndex);
+        CategoryInfo.InvokeAsync(catInfo);
+
+    }
+
+    public   class categoryInfo
+    {
+        public  int value;
+        public  int index;
+    }
+}

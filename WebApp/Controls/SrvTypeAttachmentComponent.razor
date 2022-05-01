@@ -1,7 +1,7 @@
 ﻿
 @inject NavigationManager NavigationManager
 
-@inject ICategoryRepository repository
+@inject IServiceTypeAttachmentRepository repository
 @inject IToastService toastService
 @inject IJSRuntime JsRuntime
 
@@ -13,6 +13,7 @@
             <tr>
                 <th>Name En</th>
                 <th>Name Ar</th>
+                <th>Required</th>
                 <th></th>
             </tr>
         </thead>
@@ -22,6 +23,11 @@
                 <tr>
                     <td>@item.NameEn</td>
                     <td>@item.NameAr</td>
+                    @if (item.IsRequired) {
+                        <td>Yes</td>
+                    } else {
+                        <td>No</td>
+                    }
                     <td>
                         <button type="button" @onclick="@(() => Edit(item))" class="btn btn-link"> <span class="oi oi-pencil text-warning"></span> </button>
 
@@ -39,17 +45,16 @@
     [CascadingParameter]
     public int ParentId { get; set; }
 
-    private List<SrvCategory> listmodel;
+    private List<SrvServiceTypeAttachment> listmodel;
 
 
-    List<SrvCategory> list = new List<SrvCategory>();
+    List<SrvServiceTypeAttachment> list = new List<SrvServiceTypeAttachment>();
 
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
         LoadList(0);
-        toastService.ShowInfo(""+ParentId);
 
     }
 
@@ -57,21 +62,21 @@
     {
         if (ParentId == 0)
         {
-            list = repository.GetBaseParentAll()?.ToList();
+            list = repository.GetAll()?.ToList();
         }
         else
         {
 
-            list = repository.GetChildByParentId(ParentId)?.ToList(); 
+            list = repository.GetByServiceTypeId(ParentId)?.ToList(); 
         }
         StateHasChanged();
     }
 
 
-    private void Edit(SrvCategory model)
+    private void Edit(SrvServiceTypeAttachment model)
     {
-        NavigationManager.NavigateTo($"/edit-category/{model.Id}");
-    } 
+        NavigationManager.NavigateTo($"/edit-attachmenttype/{model.Id}");
+    }
 
     private async void Delete(int Id)
     {
@@ -79,7 +84,18 @@
         if (!confirmed)
             return;
 
-        repository.Delete(Id);
+        var v = repository.Delete(Id);
+        if (v.IsSuccess)
+        {
+            toastService.ShowSuccess(v.Message);
+        }
+        else
+        {
+            toastService.ShowError(v.Message);
+
+         }
+        LoadList(ParentId);
+
         LoadList(ParentId);
     }
 }

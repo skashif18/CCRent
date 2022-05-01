@@ -1,5 +1,6 @@
 ﻿using Appo.Server.Features.Category.Model;
 using Appo.Server.Features.Service.Model;
+using Appo.Server.Features.ServiceAttachment.Model;
 using Appo.Server.Features.ServiceType.Model;
 using AutoMapper;
 using CoreBusiness.Master;
@@ -18,6 +19,9 @@ namespace Appo.Server.Infrastructure.AutoMapper
 
             CreateMap<ServiceRequestModel, SrvService>();
             CreateMap<SrvService, ServiceResponseModel>();
+
+            CreateMap<ServiceAttachmentRequestModel, SrvServiceAttachment>();
+            CreateMap<SrvServiceAttachment, ServiceAttachmentRequestModel>();
 
         }
     }
