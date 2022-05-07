@@ -48,7 +48,7 @@ namespace Appo.Server.Features.ServiceAttachmentType.Service
             string wwwPath = this.Environment.WebRootPath;
             string contentPath = this.Environment.ContentRootPath;
 
-            string path = contentPath + $"\\Features\\ServiceAttachmentType\\Image\\{data["serviceId"]}";
+            string path = contentPath + $"\\Features\\upload\\serviceImage\\{data["serviceId"]}";
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
