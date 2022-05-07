@@ -1,5 +1,6 @@
 ﻿using Appo.Server.Features.ServiceAttachment.Model;
 using Appo.Server.Features.ServiceAttachment.Service;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -9,10 +10,11 @@ namespace Appo.Server.Features.ServiceAttachment
     {
         private readonly IServiceAttachmentService repository;
 
-
-        public ServiceAttachmentController(IServiceAttachmentService _repository )
+        private readonly IWebHostEnvironment Environment;
+        public ServiceAttachmentController(IServiceAttachmentService _repository, IWebHostEnvironment _hostEnvironment)
         {
             repository = _repository;
+            Environment = _hostEnvironment;
         }
 
 
@@ -35,6 +37,12 @@ namespace Appo.Server.Features.ServiceAttachment
         [Route("create")]
         public IActionResult Create(ServiceAttachmentRequestModel model)
         {
+            string contentPath = this.Environment.ContentRootPath;
+
+            model.ServerLocalPath = contentPath;
+
+            model.FileUrlpath = $"\\Features\\ServiceAttachmentType\\Image\\{(model.ServiceId).ToString()}";
+
             var result = repository.Create(model);
 
             if (!result.IsSuccess) return BadRequest(result.Message);

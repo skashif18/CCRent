@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CoreBusiness.Master
 {
-    public partial class SrvServiceSchedule:Entity
+    public partial class SrvServiceSchedule :Entity
     {
         public int Id { get; set; }
         public int ServiceId { get; set; }
@@ -16,6 +16,7 @@ namespace CoreBusiness.Master
         public string UserDefined2 { get; set; }
         public string UserDefined3 { get; set; }
         public string UserDefined4 { get; set; }
+       
 
         public virtual SrvService Service { get; set; }
     }

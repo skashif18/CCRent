@@ -23,6 +23,7 @@ namespace Plugins.DataStore.SQL
             this.currentUser = currentUser;
         }
 
+
         public virtual DbSet<SrvAddOn> SrvAddOns { get; set; }
         public virtual DbSet<SrvCategory> SrvCategories { get; set; }
         public virtual DbSet<SrvClass> SrvClasses { get; set; }
@@ -33,9 +34,11 @@ namespace Plugins.DataStore.SQL
         public virtual DbSet<SrvImage> SrvImages { get; set; }
         public virtual DbSet<SrvService> SrvServices { get; set; }
         public virtual DbSet<SrvServiceAddOn> SrvServiceAddOns { get; set; }
-        public virtual DbSet<SrvServiceClass> SrvServiceClasses { get; set; }
+        public virtual DbSet<SrvServiceAttachment> SrvServiceAttachments { get; set; }
         public virtual DbSet<SrvServiceClassValue> SrvServiceClassValues { get; set; }
+        public virtual DbSet<SrvServiceSchedule> SrvServiceSchedules { get; set; }
         public virtual DbSet<SrvServiceType> SrvServiceTypes { get; set; }
+        public virtual DbSet<SrvServiceTypeAttachment> SrvServiceTypeAttachments { get; set; }
         public virtual DbSet<SrvSupplier> SrvSuppliers { get; set; }
         public virtual DbSet<SysCity> SysCities { get; set; }
         public virtual DbSet<SysCountry> SysCountries { get; set; }
@@ -44,17 +47,22 @@ namespace Plugins.DataStore.SQL
         public virtual DbSet<SysNationality> SysNationalities { get; set; }
         public virtual DbSet<SysReligion> SysReligions { get; set; }
 
-        public virtual DbSet<SrvServiceTypeAttachment> SrvServiceTypeAttachment { get; set; }
-
-        public virtual DbSet<SrvServiceAttachment>  SrvServiceAttachment { get; set; }
-
-        public virtual DbSet<SrvServiceSchedule> SrvServiceSchedule { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=135.181.134.124;Initial Catalog=CarRent;User ID=sa;Password=Abbas@123;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SrvAddOn>(entity =>
             {
                 entity.ToTable("SrvAddOn");
+
+                entity.HasIndex(e => e.IconId, "IX_SrvAddOn_IconId");
 
                 entity.Property(e => e.CreationDate)
                     .HasColumnType("datetime")
@@ -84,6 +92,8 @@ namespace Plugins.DataStore.SQL
             modelBuilder.Entity<SrvCategory>(entity =>
             {
                 entity.ToTable("SrvCategory");
+
+                entity.HasIndex(e => e.ParentCategoryId, "IX_SrvCategory_ParentCategoryId");
 
                 entity.Property(e => e.CreationDate)
                     .HasColumnType("datetime")
@@ -138,6 +148,8 @@ namespace Plugins.DataStore.SQL
             {
                 entity.ToTable("SrvClassValue");
 
+                entity.HasIndex(e => e.ClassId, "IX_SrvClassValue_ClassId");
+
                 entity.Property(e => e.CreationDate)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(dateadd(hour,(3),getutcdate()))");
@@ -166,6 +178,16 @@ namespace Plugins.DataStore.SQL
             modelBuilder.Entity<SrvCustomer>(entity =>
             {
                 entity.ToTable("SrvCustomer");
+
+                entity.HasIndex(e => e.CityId, "IX_SrvCustomer_CityId");
+
+                entity.HasIndex(e => e.GenderId, "IX_SrvCustomer_GenderId");
+
+                entity.HasIndex(e => e.LanguageId, "IX_SrvCustomer_LanguageId");
+
+                entity.HasIndex(e => e.NationalityId, "IX_SrvCustomer_NationalityId");
+
+                entity.HasIndex(e => e.ReligionId, "IX_SrvCustomer_ReligionId");
 
                 entity.Property(e => e.CreationDate)
                     .HasColumnType("datetime")
@@ -219,6 +241,8 @@ namespace Plugins.DataStore.SQL
             modelBuilder.Entity<SrvDocument>(entity =>
             {
                 entity.ToTable("SrvDocument");
+
+                entity.HasIndex(e => e.FileType, "IX_SrvDocument_FileType");
 
                 entity.Property(e => e.CreationDate)
                     .HasColumnType("datetime")
@@ -280,6 +304,8 @@ namespace Plugins.DataStore.SQL
             {
                 entity.ToTable("SrvImage");
 
+                entity.HasIndex(e => e.FileType, "IX_SrvImage_FileType");
+
                 entity.Property(e => e.CreationDate)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(dateadd(hour,(3),getutcdate()))");
@@ -313,6 +339,10 @@ namespace Plugins.DataStore.SQL
             modelBuilder.Entity<SrvService>(entity =>
             {
                 entity.ToTable("SrvService");
+
+                entity.HasIndex(e => e.CategoryId, "IX_SrvService_CategoryId");
+
+                entity.HasIndex(e => e.ServiceTypeId, "IX_SrvService_ServiceTypeId");
 
                 entity.Property(e => e.CreationDate)
                     .HasColumnType("datetime")
@@ -350,6 +380,12 @@ namespace Plugins.DataStore.SQL
             {
                 entity.ToTable("SrvServiceAddOn");
 
+                entity.HasIndex(e => e.AddOnId, "IX_SrvServiceAddOn_AddOnId");
+
+                entity.HasIndex(e => e.ImageId, "IX_SrvServiceAddOn_ImageId");
+
+                entity.HasIndex(e => e.ServiceId, "IX_SrvServiceAddOn_ServiceId");
+
                 entity.Property(e => e.CreationDate)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(dateadd(hour,(3),getutcdate()))");
@@ -385,9 +421,9 @@ namespace Plugins.DataStore.SQL
                     .HasConstraintName("FK_SrvServiceAddOn_SrvService");
             });
 
-            modelBuilder.Entity<SrvServiceClass>(entity =>
+            modelBuilder.Entity<SrvServiceAttachment>(entity =>
             {
-                entity.ToTable("SrvServiceClass");
+                entity.ToTable("SrvServiceAttachment");
 
                 entity.Property(e => e.CreationDate)
                     .HasColumnType("datetime")
@@ -398,6 +434,10 @@ namespace Plugins.DataStore.SQL
                     .HasMaxLength(50)
                     .HasDefaultValueSql("('')");
 
+                entity.Property(e => e.FileUrlpath)
+                    .IsRequired()
+                    .HasColumnName("FileURLPath");
+
                 entity.Property(e => e.IsActive)
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
@@ -406,23 +446,35 @@ namespace Plugins.DataStore.SQL
 
                 entity.Property(e => e.LastUpdateUserName).HasMaxLength(50);
 
-                entity.HasOne(d => d.Class)
-                    .WithMany(p => p.SrvServiceClasses)
-                    .HasForeignKey(d => d.ClassId)
+                entity.Property(e => e.ServerLocalPath).IsRequired();
+
+                entity.HasOne(d => d.FileTypeNavigation)
+                    .WithMany(p => p.SrvServiceAttachments)
+                    .HasForeignKey(d => d.FileType)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SrvServiceClass_SrvClass");
+                    .HasConstraintName("FK_SrvServiceAttachment_SrvFileType");
 
                 entity.HasOne(d => d.Service)
-                    .WithMany(p => p.SrvServiceClasses)
+                    .WithMany(p => p.SrvServiceAttachments)
                     .HasForeignKey(d => d.ServiceId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SrvServiceClass_SrvService");
+                    .HasConstraintName("FK_SrvServiceAttachment_SrvService");
+
+                entity.HasOne(d => d.ServiceTypeAttachment)
+                    .WithMany(p => p.SrvServiceAttachments)
+                    .HasForeignKey(d => d.ServiceTypeAttachmentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SrvServiceAttachment_SrvServiceTypeAttachment");
             });
 
             modelBuilder.Entity<SrvServiceClassValue>(entity =>
             {
                 entity.ToTable("SrvServiceClassValue");
 
+                entity.HasIndex(e => e.ClassValueId, "IX_SrvServiceClassValue_ClassValueId");
+
+                entity.HasIndex(e => e.ServiceId, "IX_SrvServiceClassValue_ServiceId");
+
                 entity.Property(e => e.CreationDate)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(dateadd(hour,(3),getutcdate()))");
@@ -439,12 +491,6 @@ namespace Plugins.DataStore.SQL
                 entity.Property(e => e.LastUpdateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.LastUpdateUserName).HasMaxLength(50);
-
-                entity.HasOne(d => d.Class)
-                    .WithMany(p => p.SrvServiceClassValues)
-                    .HasForeignKey(d => d.ClassId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SrvServiceClassValue_SrvClass");
 
                 entity.HasOne(d => d.ClassValue)
                     .WithMany(p => p.SrvServiceClassValues)
@@ -459,9 +505,43 @@ namespace Plugins.DataStore.SQL
                     .HasConstraintName("FK_SrvServiceClassValue_SrvService");
             });
 
+            modelBuilder.Entity<SrvServiceSchedule>(entity =>
+            {
+                entity.ToTable("SrvServiceSchedule");
+
+                entity.Property(e => e.CreationDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(dateadd(hour,(3),getutcdate()))");
+
+                entity.Property(e => e.CreationUserName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasDefaultValueSql("('')");
+
+                entity.Property(e => e.FromDatetime).HasColumnType("datetime");
+
+                entity.Property(e => e.IsActive)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.LastUpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.LastUpdateUserName).HasMaxLength(50);
+
+                entity.Property(e => e.ToDateTime).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Service)
+                    .WithMany(p => p.SrvServiceSchedules)
+                    .HasForeignKey(d => d.ServiceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SrvServiceSchedule_SrvService");
+            });
+
             modelBuilder.Entity<SrvServiceType>(entity =>
             {
                 entity.ToTable("SrvServiceType");
+
+                entity.HasIndex(e => e.ServiceTypeId, "IX_SrvServiceType_ServiceTypeId");
 
                 entity.Property(e => e.CreationDate)
                     .HasColumnType("datetime")
@@ -488,9 +568,49 @@ namespace Plugins.DataStore.SQL
                     .HasConstraintName("FK_SrvServiceType_SrvServiceType");
             });
 
+            modelBuilder.Entity<SrvServiceTypeAttachment>(entity =>
+            {
+                entity.ToTable("SrvServiceTypeAttachment");
+
+                entity.Property(e => e.CreationDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(dateadd(hour,(3),getutcdate()))");
+
+                entity.Property(e => e.CreationUserName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasDefaultValueSql("('')");
+
+                entity.Property(e => e.IsActive)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.LastUpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.LastUpdateUserName).HasMaxLength(50);
+
+                entity.Property(e => e.NameEn).IsRequired();
+
+                entity.HasOne(d => d.ServiceType)
+                    .WithMany(p => p.SrvServiceTypeAttachments)
+                    .HasForeignKey(d => d.ServiceTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SrvServiceTypeAttachment_SrvServiceType");
+            });
+
             modelBuilder.Entity<SrvSupplier>(entity =>
             {
                 entity.ToTable("SrvSupplier");
+
+                entity.HasIndex(e => e.CityId, "IX_SrvSupplier_CityId");
+
+                entity.HasIndex(e => e.GenderId, "IX_SrvSupplier_GenderId");
+
+                entity.HasIndex(e => e.LanguageId, "IX_SrvSupplier_LanguageId");
+
+                entity.HasIndex(e => e.NationalityId, "IX_SrvSupplier_NationalityId");
+
+                entity.HasIndex(e => e.ReligionId, "IX_SrvSupplier_ReligionId");
 
                 entity.Property(e => e.CreationDate)
                     .HasColumnType("datetime")
@@ -544,6 +664,8 @@ namespace Plugins.DataStore.SQL
             modelBuilder.Entity<SysCity>(entity =>
             {
                 entity.ToTable("SysCity");
+
+                entity.HasIndex(e => e.CountryId, "IX_SysCity_CountryId");
 
                 entity.Property(e => e.CreationDate)
                     .HasColumnType("datetime")
@@ -692,6 +814,8 @@ namespace Plugins.DataStore.SQL
 
             OnModelCreatingPartial(modelBuilder);
         }
+
+
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 

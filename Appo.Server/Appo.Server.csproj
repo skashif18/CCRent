@@ -69,6 +69,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Models\" />
+    <Folder Include="Features\ServiceAttachmentType\Image\" />
   </ItemGroup>
 
 </Project>

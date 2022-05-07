@@ -14,5 +14,6 @@ namespace Appo.Server.Features.ServiceAttachment.Service
         IEnumerable<ServiceAttachmentResponseModel> GetByServiceId(int serviceId);
 
         Response Delete(int Id);
+
     }
 }

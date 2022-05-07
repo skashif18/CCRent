@@ -23,6 +23,7 @@ namespace Plugins.DataStore.SQL.ServiceRepository
             try
             {
                 db.Add(model);
+                
                 db.SaveChanges();
                 response.IsSuccess = true;
                 response.Message = "Added Successfully";
@@ -39,7 +40,7 @@ namespace Plugins.DataStore.SQL.ServiceRepository
 
         public Response Delete(int Id)
         {
-            var _model = db.SrvServiceAttachment.Find(Id);
+            var _model = db.SrvServiceAttachments.Find(Id);
             if (_model == null)
             {
                 response.IsSuccess = false;
@@ -49,7 +50,7 @@ namespace Plugins.DataStore.SQL.ServiceRepository
             try
             {
 
-                db.SrvServiceAttachment.Remove(_model);
+                db.SrvServiceAttachments.Remove(_model);
                 db.SaveChanges();
                 response.IsSuccess = true;
                 response.Message = "Record Deleted Successfully .";
@@ -63,13 +64,13 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         }
 
         public SrvServiceAttachment GetById(int Id)
-        =>db.SrvServiceAttachment.Where(m=>m.Id ==Id).FirstOrDefault();
+        =>db.SrvServiceAttachments.Where(m=>m.Id ==Id).FirstOrDefault();
         public IEnumerable<SrvServiceAttachment> GetByServiceId(int serviceId)
-        => db.SrvServiceAttachment.Where(m => m.ServiceId == serviceId);
+        => db.SrvServiceAttachments.Where(m => m.ServiceId == serviceId);
 
         public Response Update(SrvServiceAttachment model)
         {
-            var _model = db.SrvServiceAttachment.Find(model.Id);
+            var _model = db.SrvServiceAttachments.Find(model.Id);
             if (model != null)
             {
                 #region Updating the field

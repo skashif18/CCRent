@@ -13,10 +13,12 @@ namespace Plugins.DataStore.SQL.ServiceRepository
     {
         private readonly CarRentContext db;
         private readonly Response response = new();
+
         public ServiceTypeAttachmentRepository(CarRentContext _db)
         {
             db = _db;
         }
+
         public Response Create(SrvServiceTypeAttachment model)
         {
             try
@@ -37,17 +39,17 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         }
 
         public IEnumerable<SrvServiceTypeAttachment> GetAll()
-        => db.SrvServiceTypeAttachment;
+        => db.SrvServiceTypeAttachments;
 
         public SrvServiceTypeAttachment GetById(int Id)
-        =>db.SrvServiceTypeAttachment.Where(x => x.Id == Id).FirstOrDefault();
+        =>db.SrvServiceTypeAttachments.Where(x => x.Id == Id).FirstOrDefault();
 
         public IEnumerable<SrvServiceTypeAttachment> GetByServiceTypeId(int Id)
-        => db.SrvServiceTypeAttachment.Where(m => m.ServiceTypeId == Id);
+        => db.SrvServiceTypeAttachments.Where(m => m.ServiceTypeId == Id);
 
         public Response Update(SrvServiceTypeAttachment model)
         {
-            var _model = db.SrvServiceTypeAttachment.Find(model.Id);
+            var _model = db.SrvServiceTypeAttachments.Find(model.Id);
             if (model != null)
             {
                 #region Updating the field
@@ -85,7 +87,7 @@ namespace Plugins.DataStore.SQL.ServiceRepository
 
         public Response Delete(int Id)
         {
-            var _model = db.SrvServiceTypeAttachment.Find(Id);
+            var _model = db.SrvServiceTypeAttachments.Find(Id);
             if (_model == null)
             {
                 response.IsSuccess = false;
@@ -95,7 +97,7 @@ namespace Plugins.DataStore.SQL.ServiceRepository
             try
             {
 
-                db.SrvServiceTypeAttachment.Remove(_model);
+                db.SrvServiceTypeAttachments.Remove(_model);
                 db.SaveChanges();
                 response.IsSuccess = true;
                 response.Message = "Record Deleted Successfully .";
