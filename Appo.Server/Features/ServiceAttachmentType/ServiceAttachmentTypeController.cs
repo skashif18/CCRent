@@ -45,7 +45,7 @@ namespace Appo.Server.Features.ServiceAttachmentType
             payload.Add("serviceId", data["serviceId"]);
             var result = repository.UploadFile(files, payload); ;
 
-            return Ok(true);
+            return Ok(true);    
         }
 
     }
