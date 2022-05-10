@@ -41,7 +41,7 @@ namespace Appo.Server.Features.ServiceAttachment
 
             model.ServerLocalPath = contentPath;
 
-            model.FileUrlpath = $"\\Features\\upload\\serviveImage\\{(model.ServiceId).ToString()}";
+            model.FileUrlpath = $"\\upload\\serviveImage";
 
             var result = repository.Create(model);
 

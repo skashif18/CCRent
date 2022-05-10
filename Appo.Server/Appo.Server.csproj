@@ -69,7 +69,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Models\" />
-    <Folder Include="Features\ServiceAttachmentType\Image\" />
+    <Folder Include="Features\upload\serviceImage\" />
     <Folder Include="upload\serviceImage\" />
   </ItemGroup>
 

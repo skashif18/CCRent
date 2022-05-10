@@ -48,7 +48,7 @@ namespace Appo.Server.Features.ServiceAttachmentType.Service
             string wwwPath = this.Environment.WebRootPath;
             string contentPath = this.Environment.ContentRootPath;
 
-            string path = contentPath + $"\\Features\\upload\\serviceImage\\{data["serviceId"]}";
+            string path = contentPath + $"\\upload\\serviceImage";
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -58,7 +58,8 @@ namespace Appo.Server.Features.ServiceAttachmentType.Service
             foreach (IFormFile postedFile in files)
             {
                 string fileName = Path.GetFileName(postedFile.FileName);
-                using (FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
+                string[] fileName1 = fileName.Split(".");
+                using (FileStream stream = new FileStream(Path.Combine(path, $"{data["serviceId"]}_{data["attachmentId"]}.{fileName1[1]}"), FileMode.Create))
                 {
                     postedFile.CopyTo(stream);
                     uploadedFiles.Add(fileName);
