@@ -1,11 +1,15 @@
 ﻿using Appo.Server.Features.ServiceAttachment.Model;
 using Appo.Server.Features.ServiceAttachment.Service;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Appo.Server.Features.ServiceAttachment
 {
+
     public class ServiceAttachmentController : ApiController
     {
         private readonly IServiceAttachmentService repository;
@@ -35,15 +39,10 @@ namespace Appo.Server.Features.ServiceAttachment
 
         [HttpPost]
         [Route("create")]
-        public IActionResult Create(ServiceAttachmentRequestModel model)
+        public IActionResult Create(IFormFile files, IFormCollection formFileCollection)
         {
-            string contentPath = this.Environment.ContentRootPath;
 
-            model.ServerLocalPath = contentPath;
-
-            model.FileUrlpath = $"\\upload\\serviceImage";
-
-            var result = repository.Create(model);
+            var result = repository.Create(files,formFileCollection);
 
             if (!result.IsSuccess) return BadRequest(result.Message);
 
@@ -60,5 +59,7 @@ namespace Appo.Server.Features.ServiceAttachment
 
             return Ok(result);
         }
+
+        
     }
 }

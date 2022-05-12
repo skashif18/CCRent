@@ -7,18 +7,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Hosting;
+using Appo.Server.Features.ServiceAttachment.Model;
 
 namespace Appo.Server.Features.ServiceAttachmentType
 {
     public class ServiceAttachmentTypeController : ApiController
     {
-        private readonly IServiceAttachmentType repository;
+        private readonly IServiceAttachmentTypeService repository;
 
         private IWebHostEnvironment _hostEnvironment;
 
 
 
-        public ServiceAttachmentTypeController(IServiceAttachmentType _repository, IWebHostEnvironment hostEnvironment)
+        public ServiceAttachmentTypeController(IServiceAttachmentTypeService _repository, IWebHostEnvironment hostEnvironment)
         {
             repository = _repository;
             _hostEnvironment = hostEnvironment;
@@ -34,29 +35,6 @@ namespace Appo.Server.Features.ServiceAttachmentType
         [Route("by-Id")]
         public ServiceAttachmentTypeResponseModel GetById(int Id)
             => repository.GetById(Id);
-
-
-        [HttpPost]
-        [Route("upload")]
-        public IActionResult UploadFile(IList<IFormFile> files, IFormCollection data)
-        {
-
-            IDictionary<string, string> payload = new Dictionary<string, string>();
-            payload.Add("serviceId", data["serviceId"]);
-            payload.Add("attachmentId", data["attachmentId"]);
-            var result = repository.UploadFile(files, payload);
-
-            return Ok(true);    
-        }
-
-        [HttpGet]
-        [Route("fetchImage")]
-        public IActionResult GetImage(int serviceId,int attachmentId)
-        {
-            Stream objFiles = repository.GetImage(serviceId, attachmentId);
-
-            return File(objFiles,contentType:"image/jpeg");
-        }
 
     }
 }

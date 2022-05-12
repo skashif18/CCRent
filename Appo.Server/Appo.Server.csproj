@@ -49,6 +49,7 @@
     <Compile Remove="Data\Models\Package.cs" />
     <Compile Remove="Data\Models\Profile.cs" />
     <Compile Remove="Data\Models\User.cs" />
+    <Compile Remove="Features\ImageController.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -69,6 +70,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Models\" />
+    <Folder Include="wwwroot\" />
     <Folder Include="upload\serviceImage\" />
   </ItemGroup>
 

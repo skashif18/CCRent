@@ -114,7 +114,7 @@
             services.AddTransient<IServiceAttachmentService, ServiceAttachmentService>();
 
             services.AddTransient<IServiceTypeAttachmentRepository, ServiceTypeAttachmentRepository>();
-            services.AddTransient<IServiceAttachmentType, ServiceAttachmentType>();
+            services.AddTransient<IServiceAttachmentTypeService, ServiceAttachmentTypeService>();
 
 
             return services;

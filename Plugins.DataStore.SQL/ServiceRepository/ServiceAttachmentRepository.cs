@@ -23,11 +23,13 @@ namespace Plugins.DataStore.SQL.ServiceRepository
             try
             {
                 db.Add(model);
-                
                 db.SaveChanges();
                 response.IsSuccess = true;
                 response.Message = "Added Successfully";
+                response.Id = model.Id;
                 response.Objects = model;
+
+
             }
             catch (Exception ex)
             {
