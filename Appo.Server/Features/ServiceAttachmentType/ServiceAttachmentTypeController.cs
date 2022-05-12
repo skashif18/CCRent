@@ -44,9 +44,18 @@ namespace Appo.Server.Features.ServiceAttachmentType
             IDictionary<string, string> payload = new Dictionary<string, string>();
             payload.Add("serviceId", data["serviceId"]);
             payload.Add("attachmentId", data["attachmentId"]);
-            var result = repository.UploadFile(files, payload); ;
+            var result = repository.UploadFile(files, payload);
 
             return Ok(true);    
+        }
+
+        [HttpGet]
+        [Route("fetchImage")]
+        public IActionResult GetImage(int serviceId,int attachmentId)
+        {
+            Stream objFiles = repository.GetImage(serviceId, attachmentId);
+
+            return File(objFiles,contentType:"image/jpeg");
         }
 
     }

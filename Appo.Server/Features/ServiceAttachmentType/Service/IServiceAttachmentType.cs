@@ -2,6 +2,7 @@
 using CoreBusiness;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Appo.Server.Features.ServiceAttachmentType.Service
 {
@@ -12,5 +13,7 @@ namespace Appo.Server.Features.ServiceAttachmentType.Service
         IEnumerable<ServiceAttachmentTypeResponseModel> GetByServiceTypeId(int serviceId);
 
         Response UploadFile(IList<IFormFile> files, IDictionary<string, string> data);
+
+        Stream GetImage(int serviceId, int attachmentId);
     }
 }

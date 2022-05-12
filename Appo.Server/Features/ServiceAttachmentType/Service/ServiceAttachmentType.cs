@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Net.Http.Headers;
 using UseCases.DataStorePluginInterfaces.SrvTable.SrvMaster;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Appo.Server.Features.ServiceAttachmentType.Service
 {
@@ -69,6 +71,21 @@ namespace Appo.Server.Features.ServiceAttachmentType.Service
             return null;
 
 
+        }
+
+        public Stream GetImage(int serviceId, int attachmentId)
+        {
+            string contentPath = this.Environment.ContentRootPath;
+
+            string path = contentPath + $"\\upload\\serviceImage\\{"" + serviceId}_{"" + attachmentId}.png";
+            Stream stream = null;
+
+            if (File.Exists(path))
+            {
+                stream = File.OpenRead(path);
+            }
+
+            return stream;
         }
     }
 }
