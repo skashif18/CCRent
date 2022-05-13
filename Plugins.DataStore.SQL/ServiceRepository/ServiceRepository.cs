@@ -1,5 +1,6 @@
 ﻿using CoreBusiness;
 using CoreBusiness.Master;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -103,6 +104,11 @@ namespace Plugins.DataStore.SQL.ServiceRepository
             }
 
             return response;
+        }
+        public IEnumerable<SrvService> GetService()
+        {
+            return db.SrvServices
+                .Include(m => m.SrvServiceAttachments);
         }
     }
 }

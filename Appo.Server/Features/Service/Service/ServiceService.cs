@@ -48,5 +48,10 @@ namespace Appo.Server.Features.Service.Service
             dbmodel = mapper.Map<SrvService>(model);
             return repository.Update(dbmodel);
         }
+
+        public IEnumerable<SrvService> GetService()
+        {
+            return repository.GetService();
+        }
     }
 }

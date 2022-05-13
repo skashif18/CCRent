@@ -16,6 +16,7 @@
     <Compile Remove="Features\Search\**" />
     <Compile Remove="Infrastructure\Services\**" />
     <Compile Remove="Models\**" />
+    <Compile Remove="wwwroot\**" />
     <Content Remove="Data\Models\Base\**" />
     <Content Remove="Features\Categories\**" />
     <Content Remove="Features\Follows\**" />
@@ -24,6 +25,7 @@
     <Content Remove="Features\Search\**" />
     <Content Remove="Infrastructure\Services\**" />
     <Content Remove="Models\**" />
+    <Content Remove="wwwroot\**" />
     <EmbeddedResource Remove="Data\Models\Base\**" />
     <EmbeddedResource Remove="Features\Categories\**" />
     <EmbeddedResource Remove="Features\Follows\**" />
@@ -32,6 +34,7 @@
     <EmbeddedResource Remove="Features\Search\**" />
     <EmbeddedResource Remove="Infrastructure\Services\**" />
     <EmbeddedResource Remove="Models\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
     <None Remove="Data\Models\Base\**" />
     <None Remove="Features\Categories\**" />
     <None Remove="Features\Follows\**" />
@@ -40,6 +43,7 @@
     <None Remove="Features\Search\**" />
     <None Remove="Infrastructure\Services\**" />
     <None Remove="Models\**" />
+    <None Remove="wwwroot\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -70,7 +74,6 @@
 
   <ItemGroup>
     <Folder Include="Data\Models\" />
-    <Folder Include="wwwroot\" />
     <Folder Include="upload\serviceImage\" />
   </ItemGroup>
 

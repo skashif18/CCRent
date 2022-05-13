@@ -15,7 +15,7 @@ namespace UseCases.DataStorePluginInterfaces.SrvTable
         IEnumerable<SrvService> GetAll(string email);
         Response Delete(int Id);
         SrvService GetById(int Id);
-
+        IEnumerable<SrvService>GetService();
 
     }
 }

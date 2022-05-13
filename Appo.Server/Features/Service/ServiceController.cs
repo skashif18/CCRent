@@ -1,5 +1,7 @@
 ﻿using Appo.Server.Features.Service.Model;
 using Appo.Server.Features.Service.Service;
+using CoreBusiness.Master;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Plugins.DataStore.SQL.Infrastructure.Services;
 using System.Collections.Generic;
@@ -23,9 +25,16 @@ namespace Appo.Server.Features.Service
         public IEnumerable<ServiceResponseModel> GetAll()
             => repository.GetAll(currentUserService.GetUserName());
 
-        
 
-       
+        [HttpGet]
+        [Route("GetService")]
+        [AllowAnonymous]
+        public IEnumerable<SrvService> GetService()
+            => repository.GetService();
+
+
+
+
 
         [HttpGet]
         [Route("by-Id")]

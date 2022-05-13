@@ -1,5 +1,6 @@
 ﻿using Appo.Server.Features.Service.Model;
 using CoreBusiness;
+using CoreBusiness.Master;
 using System.Collections.Generic;
 
 namespace Appo.Server.Features.Service.Service
@@ -11,5 +12,6 @@ namespace Appo.Server.Features.Service.Service
         IEnumerable<ServiceResponseModel> GetAll(string email);
         Response Delete(int Id);
         ServiceResponseModel GetById(int Id);
+        IEnumerable<SrvService> GetService();
     }
 }
