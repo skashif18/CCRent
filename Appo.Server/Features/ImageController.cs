@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Appo.Server.Features
 {
-    [Route("[controller]")]
+    [Route("upload/[controller]")]
     [AllowAnonymous]
     public class ImageController : ApiController
     {
@@ -30,8 +30,8 @@ namespace Appo.Server.Features
         public Stream GetImage(string imagePath)
         {
             string wwwPath = env.WebRootPath;
-
-            string path = Path.Combine(env.ContentRootPath, imagePath);
+            string path1 = Path.Combine(env.ContentRootPath, UploadDirectory);
+            string path = Path.Combine(path1, imagePath);
 
             FileStream stream = null;
             

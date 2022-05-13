@@ -1,5 +1,7 @@
 ﻿using Appo.Server.Features.ServiceAttachment.Model;
 using Appo.Server.Features.ServiceAttachment.Service;
+using CoreBusiness;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,9 +28,6 @@ namespace Appo.Server.Features.ServiceAttachment
         [Route("by-service-Id")]
         public IEnumerable<ServiceAttachmentResponseModel> GetByServiceId(int Id)
             => repository.GetByServiceId(Id);
-
-
-
 
 
         [HttpGet]
@@ -60,6 +59,16 @@ namespace Appo.Server.Features.ServiceAttachment
             return Ok(result);
         }
 
-        
+        [HttpGet]
+        [Route("fetchImage")]
+        [AllowAnonymous]
+        public Stream GetImage(string filePath)
+        {
+            var image = repository.GetImage(filePath);
+            return image;
+
+        }
+
+
     }
 }
