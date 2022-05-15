@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CoreBusiness.Master
 {
-    public partial class SrvService : Entity
+    public partial class SrvService: Entity
     {
         public SrvService()
         {
@@ -25,10 +25,6 @@ namespace CoreBusiness.Master
         public string UserDefined2 { get; set; }
         public string UserDefined3 { get; set; }
         public string UserDefined4 { get; set; }
-        public string CreationUserName { get; set; }
-        public DateTime CreationDate { get; set; }
-        public string LastUpdateUserName { get; set; }
-        public DateTime? LastUpdateDate { get; set; }
 
         public virtual SrvCategory Category { get; set; }
         public virtual SrvServiceType ServiceType { get; set; }
