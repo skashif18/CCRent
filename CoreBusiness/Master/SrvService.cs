@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CoreBusiness.Master
 {
-    public partial class SrvService
+    public partial class SrvService : Entity
     {
         public SrvService()
         {
