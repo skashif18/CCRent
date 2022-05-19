@@ -13,7 +13,6 @@
     <EditForm Model="model" OnValidSubmit="OnValidSumit">
         <DataAnnotationsValidator></DataAnnotationsValidator>
         <ValidationSummary></ValidationSummary>
-
         <div class="form-group">
             <label for="name">Name</label>
             <InputText id="nameen" @bind-Value="model.NameEn" class="form-control"></InputText>
@@ -69,6 +68,7 @@
 
     private void OnValidSumit()
     {
+        model.ClassId = classId;
         var v = repository.Create(model);
 
         if (v.IsSuccess)

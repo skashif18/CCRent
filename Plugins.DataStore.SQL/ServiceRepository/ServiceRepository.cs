@@ -108,7 +108,8 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         public IEnumerable<SrvService> GetService()
         {
             return db.SrvServices
-                .Include(m => m.SrvServiceAttachments);
+                .Include(m => m.SrvServiceAttachments)
+                .Include(m=>m.SrvServiceClassValues);
         }
     }
 }

@@ -1,12 +1,11 @@
-﻿using CoreBusiness.Base;
-using System;
-using System.Collections.Generic;
-
-namespace CoreBusiness.Master
+﻿namespace Appo.Server.Features.ServiceClassValue.Model
 {
-    public partial class SrvServiceClassValue: Entity
+    public class ServiceClassValueResponseModel
     {
+
         public int Id { get; set; }
+
+
         public int ServiceId { get; set; }
         public int ClassValueId { get; set; }
         public bool? IsActive { get; set; }
@@ -15,8 +14,6 @@ namespace CoreBusiness.Master
         public string UserDefined2 { get; set; }
         public string UserDefined3 { get; set; }
         public string UserDefined4 { get; set; }
-      
-        public virtual SrvClassValue ClassValue { get; set; }
-        public virtual SrvService Service { get; set; }
+
     }
 }

@@ -54,5 +54,22 @@ namespace Plugins.DataStore.SQL.MastersRepositories
                Id = item.Id,
                Name = item.NameEn
            };
+
+        public IEnumerable<IdNameModel> GetClass()
+        => from item in db.SrvClasses
+           select new IdNameModel
+           {
+               Id = item.Id,
+               Name = item.NameEn
+           };
+
+        public IEnumerable<IdNameModel> GetValuesByClassId(int Id)
+        => from item in db.SrvClassValues
+           where item.ClassId == Id
+           select new IdNameModel
+           {
+               Id = item.Id,
+               Name = item.NameEn
+           };
     }
 }

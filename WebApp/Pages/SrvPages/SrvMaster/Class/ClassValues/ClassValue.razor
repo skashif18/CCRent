@@ -79,7 +79,7 @@
 
     private void LoadList()
     {
-        model = repository.GetAll()?.ToList();
+        model = repository.GetAllByClassId(classId)?.ToList();
     }
 
     

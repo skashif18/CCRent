@@ -13,7 +13,9 @@ namespace UseCases.DataStorePluginInterfaces.SrvTable.SrvMaster
         Response Create(SrvClassValue model);
         Response Update(SrvClassValue model);
         IEnumerable<SrvClassValue> GetAll();
+        IEnumerable<SrvClassValue> GetAllByClassId(int classId);
         SrvClassValue GetById(int id);
         Response Delete(int Id);
+
     }
 }

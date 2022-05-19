@@ -1,5 +1,6 @@
 ﻿using CoreBusiness;
 using CoreBusiness.Master;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -101,7 +102,12 @@ namespace Plugins.DataStore.SQL.ServiceRepository
             return response;
 
         }
+
+        public IEnumerable<SrvClass> GetClassesWithValues()
+        {
+            return db.SrvClasses
+                    .Include(m => m.SrvClassValues)
+                    .Where(m => m.IsActive == true);
+        }
     }
 }
-
-    

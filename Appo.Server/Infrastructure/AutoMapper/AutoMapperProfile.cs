@@ -1,4 +1,5 @@
 ﻿using Appo.Server.Features.Category.Model;
+using Appo.Server.Features.Master.Model;
 using Appo.Server.Features.Service.Model;
 using Appo.Server.Features.ServiceAttachment.Model;
 using Appo.Server.Features.ServiceAttachmentType.Model;
@@ -25,6 +26,8 @@ namespace Appo.Server.Infrastructure.AutoMapper
             CreateMap<SrvServiceAttachment, ServiceAttachmentResponseModel>();
 
             CreateMap<SrvServiceTypeAttachment, ServiceAttachmentTypeResponseModel>();
+
+            CreateMap<SrvClass, SrvClassResponseModel>();
 
         }
     }

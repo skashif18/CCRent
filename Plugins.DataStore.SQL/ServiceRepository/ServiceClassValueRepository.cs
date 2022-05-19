@@ -3,20 +3,21 @@ using CoreBusiness.Master;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UseCases.DataStorePluginInterfaces.SrvTable.SrvMaster;
+using System.Text;
+using System.Threading.Tasks;
+using UseCases.DataStorePluginInterfaces.SrvTable;
 
 namespace Plugins.DataStore.SQL.ServiceRepository
 {
-    public class ClassValueRepository: IClassValueRepository
+    public class ServiceClassValueRepository: IServiceClassValueRepository
     {
         private readonly CarRentContext db;
         private readonly Response response = new();
-        public ClassValueRepository(CarRentContext _db)
+        public ServiceClassValueRepository(CarRentContext _db)
         {
             db = _db;
         }
-
-        public Response Create(SrvClassValue model)
+        public Response Create(SrvServiceClassValue model)
         {
             try
             {
@@ -24,7 +25,10 @@ namespace Plugins.DataStore.SQL.ServiceRepository
                 db.SaveChanges();
                 response.IsSuccess = true;
                 response.Message = "Added Successfully";
+                response.Id = model.Id;
                 response.Objects = model;
+
+
             }
             catch (Exception ex)
             {
@@ -35,23 +39,44 @@ namespace Plugins.DataStore.SQL.ServiceRepository
             return response;
         }
 
-        public IEnumerable<SrvClassValue> GetAll()
-       => db.SrvClassValues;
-
-        public IEnumerable<SrvClassValue> GetAllByClassId(int classId)
-       => db.SrvClassValues.Where(m=>m.ClassId == classId);
-
-        public SrvClassValue GetById(int id)
-        => db.SrvClassValues.Where(m => m.Id == id).FirstOrDefault();
-
-        public Response Update(SrvClassValue model)
+        public Response Delete(int Id)
         {
-            var _model = db.SrvClasses.Find(model.Id);
+            var _model = db.SrvServiceAttachments.Find(Id);
+            if (_model == null)
+            {
+                response.IsSuccess = false;
+                response.Message = "Error: Data not found with this Id:  - " + Id;
+                return response;
+            }
+            try
+            {
+
+                db.SrvServiceAttachments.Remove(_model);
+                db.SaveChanges();
+                response.IsSuccess = true;
+                response.Message = "Record Deleted Successfully .";
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Error: " + ex.Message;
+            }
+            return response;
+        }
+
+        public SrvServiceClassValue GetById(int Id)
+        => db.SrvServiceClassValues.Where(m => m.Id == Id).FirstOrDefault();
+        public IEnumerable<SrvServiceClassValue> GetByServiceId(int serviceId)
+        => db.SrvServiceClassValues.Where(m => m.ServiceId == serviceId);
+
+        public Response Update(SrvServiceClassValue model)
+        {
+            var _model = db.SrvServiceClassValues.Find(model.Id);
             if (model != null)
             {
                 #region Updating the field
-                _model.NameEn = model.NameEn;
-                _model.NameAr = model.NameAr;
+                _model.ServiceId = model.ServiceId;
+                _model.ClassValueId = model.ClassValueId;
                 _model.Note = model.Note;
                 _model.UserDefined1 = model.UserDefined1;
                 _model.UserDefined2 = model.UserDefined2;
@@ -79,32 +104,5 @@ namespace Plugins.DataStore.SQL.ServiceRepository
 
             return response;
         }
-
-        public Response Delete(int Id)
-        {
-            var _model = db.SrvClassValues.Find(Id);
-            if (_model == null)
-            {
-                response.IsSuccess = false;
-                response.Message = "Error: Data not found with this Id:  - " + Id;
-                return response;
-            }
-            try
-            {
-
-                db.SrvClassValues.Remove(_model);
-                db.SaveChanges();
-                response.IsSuccess = true;
-                response.Message = "Record Deleted Successfully .";
-            }
-            catch (Exception ex)
-            {
-                response.IsSuccess = false;
-                response.Message = "Error: " + ex.Message;
-            }
-            return response;
-
-        }
     }
-
 }

@@ -15,5 +15,6 @@ namespace UseCases.DataStorePluginInterfaces.SrvTable.SrvMaster
         IEnumerable<SrvClass> GetAll();
         SrvClass GetById(int id);
         Response Delete(int Id);
+        IEnumerable<SrvClass> GetClassesWithValues();
     }
 }

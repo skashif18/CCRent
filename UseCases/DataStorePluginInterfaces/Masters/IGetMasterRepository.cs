@@ -15,5 +15,13 @@ namespace UseCases.DataStorePluginInterfaces.Masters
         IEnumerable<IdNameModel> GetReligions();
         IEnumerable<IdNameModel> GetLanguages();
         IEnumerable<IdNameModel> GetCities();
+
+
+        IEnumerable<IdNameModel> GetClass();
+        IEnumerable<IdNameModel> GetValuesByClassId(int Id);
+
+
+
+
     }
 }
