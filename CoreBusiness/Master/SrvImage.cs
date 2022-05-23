@@ -1,9 +1,9 @@
-﻿using CoreBusiness.Base;
+﻿using System;
 using System.Collections.Generic;
-
+using CoreBusiness.Base;
 namespace CoreBusiness.Master
 {
-    public partial class SrvImage :Entity 
+    public partial class SrvImage : Entity
     {
         public SrvImage()
         {
@@ -21,6 +21,7 @@ namespace CoreBusiness.Master
         public string UserDefined2 { get; set; }
         public string UserDefined3 { get; set; }
         public string UserDefined4 { get; set; }
+        
 
         public virtual SrvFileType FileTypeNavigation { get; set; }
         public virtual ICollection<SrvAddOn> SrvAddOns { get; set; }

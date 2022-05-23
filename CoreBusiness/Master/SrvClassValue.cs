@@ -1,6 +1,6 @@
-﻿using CoreBusiness.Base;
+﻿using System;
 using System.Collections.Generic;
-
+using CoreBusiness.Base;
 namespace CoreBusiness.Master
 {
     public partial class SrvClassValue : Entity

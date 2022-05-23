@@ -1,10 +1,9 @@
-﻿using CoreBusiness.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
-
+using CoreBusiness.Base;
 namespace CoreBusiness.Master
 {
-    public partial class SysGender :Entity
+    public partial class SysGender : Entity
     {
         public SysGender()
         {
@@ -21,7 +20,8 @@ namespace CoreBusiness.Master
         public string UserDefined2 { get; set; }
         public string UserDefined3 { get; set; }
         public string UserDefined4 { get; set; }
-       
+        
+
         public virtual ICollection<SrvCustomer> SrvCustomers { get; set; }
         public virtual ICollection<SrvSupplier> SrvSuppliers { get; set; }
     }

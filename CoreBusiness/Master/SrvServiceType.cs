@@ -1,9 +1,9 @@
-﻿using CoreBusiness.Base;
+﻿using System;
 using System.Collections.Generic;
-
+using CoreBusiness.Base;
 namespace CoreBusiness.Master
 {
-    public partial class SrvServiceType:Entity
+    public partial class SrvServiceType : Entity
     {
         public SrvServiceType()
         {
@@ -22,7 +22,7 @@ namespace CoreBusiness.Master
         public string UserDefined2 { get; set; }
         public string UserDefined3 { get; set; }
         public string UserDefined4 { get; set; }
-        
+       
 
         public virtual SrvServiceType ServiceType { get; set; }
         public virtual ICollection<SrvServiceType> InverseServiceType { get; set; }

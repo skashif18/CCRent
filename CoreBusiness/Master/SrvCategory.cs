@@ -1,9 +1,9 @@
-﻿using CoreBusiness.Base;
+﻿using System;
 using System.Collections.Generic;
-
+using CoreBusiness.Base;
 namespace CoreBusiness.Master
 {
-    public partial class SrvCategory:Entity
+    public partial class SrvCategory : Entity
     {
         public SrvCategory()
         {
@@ -21,7 +21,10 @@ namespace CoreBusiness.Master
         public string UserDefined2 { get; set; }
         public string UserDefined3 { get; set; }
         public string UserDefined4 { get; set; }
-       
+        public string CreationUserName { get; set; }
+        public DateTime CreationDate { get; set; }
+        public string LastUpdateUserName { get; set; }
+        public DateTime? LastUpdateDate { get; set; }
 
         public virtual SrvCategory ParentCategory { get; set; }
         public virtual ICollection<SrvCategory> InverseParentCategory { get; set; }
