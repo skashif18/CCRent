@@ -8,6 +8,7 @@
     using Appo.Server.Features.ServiceAttachment.Service;
     using Appo.Server.Features.ServiceAttachmentType.Service;
     using Appo.Server.Features.ServiceClassValue.Service;
+    using Appo.Server.Features.ServiceSchedule.Service;
     using Appo.Server.Features.ServiceType.Service;
     using Appo.Server.Infrastructure.Extensions;
     using Appo.Server.Infrastructure.Filters;
@@ -122,6 +123,9 @@
 
             services.AddTransient<IServiceClassValueRepository, ServiceClassValueRepository>();
             services.AddTransient<IServiceClassValueService, ServiceClassValueService>();
+
+            services.AddTransient<IServiceScheduleRepository, ServiceScheduleRepository>();
+            services.AddTransient<IServiceScheduleService, ServiceScheduleService>();
 
 
             return services;
