@@ -63,7 +63,9 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         }
 
         public IEnumerable<SrvService> GetAll(string email)
-        => db.SrvServices.Where(m=>m.CreationUserName.Equals(email));
+             => db.SrvServices.Where(m=>m.CreationUserName.Equals(email))
+            .Include(m => m.SrvServiceAttachments)
+            .Include(m => m.SrvServiceClassValues);
 
         public SrvService GetById(int Id)
         =>db.SrvServices.Find(Id);

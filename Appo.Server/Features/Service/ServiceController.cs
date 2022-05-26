@@ -22,6 +22,7 @@ namespace Appo.Server.Features.Service
 
         [HttpGet]
         [Route("all")]
+        [AllowAnonymous]
         public IEnumerable<ServiceResponseModel> GetAll()
             => repository.GetAll(currentUserService.GetUserName());
 
