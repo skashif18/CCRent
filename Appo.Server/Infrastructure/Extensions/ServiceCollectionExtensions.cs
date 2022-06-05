@@ -5,6 +5,7 @@
     using Appo.Server.Features.Identity;
     using Appo.Server.Features.Master.Service;
     using Appo.Server.Features.Service.Service;
+    using Appo.Server.Features.ServiceAddOn.Service;
     using Appo.Server.Features.ServiceAttachment.Service;
     using Appo.Server.Features.ServiceAttachmentType.Service;
     using Appo.Server.Features.ServiceClassValue.Service;
@@ -126,6 +127,10 @@
 
             services.AddTransient<IServiceScheduleRepository, ServiceScheduleRepository>();
             services.AddTransient<IServiceScheduleService, ServiceScheduleService>();
+
+
+            services.AddTransient<IServiceAddOnRepository, ServiceAddOnRepository>();
+            services.AddTransient<IServiceAddOnService, ServiceAddOnService>();
 
 
             return services;
