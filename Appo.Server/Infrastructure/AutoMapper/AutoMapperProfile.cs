@@ -37,6 +37,9 @@ namespace Appo.Server.Infrastructure.AutoMapper
             CreateMap<SrvServiceSchedule, ServiceScheduleResponseModel>();
             CreateMap<ServiceScheduleRequestModel, SrvServiceSchedule>();
 
+            CreateMap<SrvServiceAddOn, ServiceAddOnResponseModel>();
+            CreateMap<ServiceAddOnRequestModel, SrvServiceAddOn>();
+
         }
     }
 }

@@ -26,5 +26,7 @@ namespace Appo.Server.Features.Service.Model
         public virtual ICollection<SrvServiceAttachment> SrvServiceAttachments { get; set; }
         public virtual ICollection<SrvServiceClassValue> SrvServiceClassValues { get; set; }
         public virtual ICollection<SrvServiceSchedule> SrvServiceSchedules { get; set; }
+
+
     }
 }
