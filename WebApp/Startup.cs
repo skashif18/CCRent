@@ -71,15 +71,15 @@ namespace WebApp
             services.AddTransient<IGenderRepository, GenderRepository>();
             services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<ICityRepository, CityRepository>();
+
+
+            // Srv Repositories
             services.AddTransient<IClassRepository, ClassRepository>();
-
             services.AddTransient<IClassValueRepository, ClassValueRepository>();
-
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IServiceTypeRepository, ServiceTypeRepository>();
-
             services.AddTransient<IServiceTypeAttachmentRepository, ServiceTypeAttachmentRepository>();
-
+            services.AddTransient<IAddOnRepository, AddOnRepository>();
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 

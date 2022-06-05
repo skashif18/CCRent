@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using CoreBusiness.Base;
 using CoreBusiness.Master;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Plugins.DataStore.SQL.Infrastructure.Services;
 
 namespace Plugins.DataStore.SQL
@@ -15,7 +14,7 @@ namespace Plugins.DataStore.SQL
     {
 
         private readonly ICurrentUserService currentUser;
-       
+
 
         public CarRentContext(DbContextOptions<CarRentContext> options, ICurrentUserService currentUser)
             : base(options)
@@ -46,15 +45,6 @@ namespace Plugins.DataStore.SQL
         public virtual DbSet<SysLanguage> SysLanguages { get; set; }
         public virtual DbSet<SysNationality> SysNationalities { get; set; }
         public virtual DbSet<SysReligion> SysReligions { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=135.181.134.124;Initial Catalog=CarRent;User ID=sa;Password=Abbas@123;");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -835,7 +825,8 @@ namespace Plugins.DataStore.SQL
             => this.ChangeTracker
                 .Entries()
                 .ToList()
-                .ForEach(entry => {
+                .ForEach(entry =>
+                {
                     var userName = this.currentUser.GetUserName();
                     if (entry.Entity is IDeletableEntity deletableEntity)
                     {
