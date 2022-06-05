@@ -71,5 +71,13 @@ namespace Plugins.DataStore.SQL.MastersRepositories
                Id = item.Id,
                Name = item.NameEn
            };
+
+        public IEnumerable<IdNameModel> GetAddOn()
+        => from item in db.SrvAddOns
+          select new IdNameModel
+          {
+              Id = item.Id,
+              Name = item.NameEn
+          };
     }
 }

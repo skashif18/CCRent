@@ -19,9 +19,7 @@ namespace UseCases.DataStorePluginInterfaces.Masters
 
         IEnumerable<IdNameModel> GetClass();
         IEnumerable<IdNameModel> GetValuesByClassId(int Id);
-
-
-
+        IEnumerable<IdNameModel> GetAddOn();
 
     }
 }

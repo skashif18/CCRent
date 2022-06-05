@@ -58,6 +58,11 @@ namespace Appo.Server.Features.Master
         public IEnumerable<SrvClassResponseModel> GetClassesWithValues()
           => service.GetClassesWithValues();
 
+        [HttpGet]
+        [Route("GetAddOn")]
+        public IEnumerable<IdNameModel> GetAddOn()
+           => repository.GetAddOn();
+
 
 
     }
