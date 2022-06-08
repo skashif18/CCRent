@@ -8,6 +8,7 @@ namespace CoreBusiness.Master
         public SysCity()
         {
             SrvCustomers = new HashSet<SrvCustomer>();
+            SrvServiceBookings = new HashSet<SrvServiceBooking>();
             SrvSuppliers = new HashSet<SrvSupplier>();
         }
 
@@ -25,6 +26,7 @@ namespace CoreBusiness.Master
 
         public virtual SysCountry Country { get; set; }
         public virtual ICollection<SrvCustomer> SrvCustomers { get; set; }
+        public virtual ICollection<SrvServiceBooking> SrvServiceBookings { get; set; }
         public virtual ICollection<SrvSupplier> SrvSuppliers { get; set; }
     }
 }

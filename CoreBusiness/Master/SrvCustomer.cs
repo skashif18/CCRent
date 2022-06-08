@@ -5,6 +5,10 @@ namespace CoreBusiness.Master
 {
     public partial class SrvCustomer : Entity
     {
+        public SrvCustomer()
+        {
+            SrvServiceBookings = new HashSet<SrvServiceBooking>();
+        }
         public int Id { get; set; }
         public string NameEn { get; set; }
         public string NameAr { get; set; }
@@ -30,5 +34,7 @@ namespace CoreBusiness.Master
         public virtual SysLanguage Language { get; set; }
         public virtual SysNationality Nationality { get; set; }
         public virtual SysReligion Religion { get; set; }
+
+        public virtual ICollection<SrvServiceBooking> SrvServiceBookings { get; set; }
     }
 }

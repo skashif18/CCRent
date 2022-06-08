@@ -46,8 +46,13 @@ namespace Plugins.DataStore.SQL
         public virtual DbSet<SysNationality> SysNationalities { get; set; }
         public virtual DbSet<SysReligion> SysReligions { get; set; }
 
+        public virtual DbSet<SrvServiceBooking> SrvServiceBookings { get; set; }
+        public virtual DbSet<SrvServiceStatus> SrvServiceStatuses { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+
             modelBuilder.Entity<SrvAddOn>(entity =>
             {
                 entity.ToTable("SrvAddOn");
@@ -801,6 +806,84 @@ namespace Plugins.DataStore.SQL
 
                 entity.Property(e => e.NameEn).IsRequired();
             });
+
+            modelBuilder.Entity<SrvServiceBooking>(entity =>
+            {
+                entity.ToTable("SrvServiceBooking");
+
+                entity.Property(e => e.CreationDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(dateadd(hour,(3),getutcdate()))");
+
+                entity.Property(e => e.CreationUserName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasDefaultValueSql("('')");
+
+                entity.Property(e => e.FromDateTime).HasColumnType("datetime");
+
+                entity.Property(e => e.GeoCode).IsRequired();
+
+                entity.Property(e => e.IsActive)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.LastUpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.LastUpdateUserName).HasMaxLength(50);
+
+                entity.Property(e => e.ToDateTime).HasColumnType("datetime");
+
+                entity.HasOne(d => d.City)
+                    .WithMany(p => p.SrvServiceBookings)
+                    .HasForeignKey(d => d.CityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SrvServiceBooking_SysCity");
+
+                entity.HasOne(d => d.Country)
+                    .WithMany(p => p.SrvServiceBookings)
+                    .HasForeignKey(d => d.CountryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SrvServiceBooking_SysCountry");
+
+                entity.HasOne(d => d.Customer)
+                    .WithMany(p => p.SrvServiceBookings)
+                    .HasForeignKey(d => d.CustomerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SrvServiceBooking_SrvCustomer");
+
+                entity.HasOne(d => d.Service)
+                    .WithMany(p => p.SrvServiceBookings)
+                    .HasForeignKey(d => d.ServiceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SrvServiceBooking_SrvService");
+            });
+
+            modelBuilder.Entity<SrvServiceStatus>(entity =>
+            {
+                entity.ToTable("SrvServiceStatus");
+
+                entity.Property(e => e.CreationDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(dateadd(hour,(3),getutcdate()))");
+
+                entity.Property(e => e.CreationUserName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasDefaultValueSql("('')");
+
+                entity.Property(e => e.IsActive)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.LastUpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.LastUpdateUserName).HasMaxLength(50);
+
+                entity.Property(e => e.NameEn).IsRequired();
+            });
+
+
 
             OnModelCreatingPartial(modelBuilder);
         }

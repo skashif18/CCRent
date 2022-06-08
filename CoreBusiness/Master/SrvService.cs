@@ -9,6 +9,7 @@ namespace CoreBusiness.Master
         {
             SrvServiceAddOns = new HashSet<SrvServiceAddOn>();
             SrvServiceAttachments = new HashSet<SrvServiceAttachment>();
+            SrvServiceBookings = new HashSet<SrvServiceBooking>();
             SrvServiceClassValues = new HashSet<SrvServiceClassValue>();
             SrvServiceSchedules = new HashSet<SrvServiceSchedule>();
         }
@@ -30,6 +31,7 @@ namespace CoreBusiness.Master
         public virtual SrvServiceType ServiceType { get; set; }
         public virtual ICollection<SrvServiceAddOn> SrvServiceAddOns { get; set; }
         public virtual ICollection<SrvServiceAttachment> SrvServiceAttachments { get; set; }
+        public virtual ICollection<SrvServiceBooking> SrvServiceBookings { get; set; }
         public virtual ICollection<SrvServiceClassValue> SrvServiceClassValues { get; set; }
         public virtual ICollection<SrvServiceSchedule> SrvServiceSchedules { get; set; }
     }

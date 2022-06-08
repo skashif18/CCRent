@@ -1,16 +1,11 @@
-﻿using System;
+﻿using CoreBusiness.Base;
+using System;
 using System.Collections.Generic;
-using CoreBusiness.Base;
+
 namespace CoreBusiness.Master
 {
-    public partial class SysCountry : Entity
+    public partial class SrvServiceStatus:Entity
     {
-        public SysCountry()
-        {
-            SysCities = new HashSet<SysCity>();
-            SrvServiceBookings = new HashSet<SrvServiceBooking>();
-        }
-
         public int Id { get; set; }
         public string NameEn { get; set; }
         public string NameAr { get; set; }
@@ -20,8 +15,5 @@ namespace CoreBusiness.Master
         public string UserDefined2 { get; set; }
         public string UserDefined3 { get; set; }
         public string UserDefined4 { get; set; }
-
-        public virtual ICollection<SrvServiceBooking> SrvServiceBookings { get; set; }
-        public virtual ICollection<SysCity> SysCities { get; set; }
     }
 }
