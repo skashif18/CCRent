@@ -132,6 +132,9 @@
             services.AddTransient<IServiceAddOnRepository, ServiceAddOnRepository>();
             services.AddTransient<IServiceAddOnService, ServiceAddOnService>();
 
+            services.AddTransient<IServiceBookingRepository, ServiceBookingRepository>();
+            services.AddTransient<IServiceBookingService, ServiceBookingService>();
+
 
             return services;
         }

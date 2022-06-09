@@ -40,6 +40,9 @@ namespace Appo.Server.Infrastructure.AutoMapper
             CreateMap<SrvServiceAddOn, ServiceAddOnResponseModel>();
             CreateMap<ServiceAddOnRequestModel, SrvServiceAddOn>();
 
+            CreateMap<SrvServiceBooking, ServiceBookingResponseModel>();
+            CreateMap<ServiceBookingRequestModel, SrvServiceBooking>();
+
         }
     }
 }
