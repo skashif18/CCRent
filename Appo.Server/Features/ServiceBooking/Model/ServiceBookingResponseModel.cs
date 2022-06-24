@@ -21,5 +21,10 @@ namespace CoreBusiness.Master
         public string UserDefined3 { get; set; }
         public string UserDefined4 { get; set; }
 
+        public virtual SysCity City { get; set; }
+        public virtual SysCountry Country { get; set; }
+        public virtual SrvCustomer Customer { get; set; }
+        public virtual SrvService Service { get; set; }
+
     }
 }

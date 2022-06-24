@@ -1,5 +1,6 @@
 ﻿using CoreBusiness;
 using CoreBusiness.Master;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,6 +95,15 @@ namespace Plugins.DataStore.SQL.ServiceRepository
             }
 
             return response;
+        }
+
+        public IEnumerable<SrvServiceBooking> GetByVendorUserName(string username)
+        {
+            var v = db.SrvServiceBookings
+                .Include(m => m.Service)
+                .Include(m => m.City)
+                .Include(m => m.Country).Where(m => m.Service.CreationUserName == username);
+            return v;
         }
     }
 }

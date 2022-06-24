@@ -17,5 +17,7 @@ namespace UseCases.DataStorePluginInterfaces.SrvTable
         IEnumerable<ServiceBookingResponseModel> GetByServiceId(int serviceId);
         IEnumerable<ServiceBookingResponseModel> GetByCustomerId(int customerId);
 
+
+        IEnumerable<ServiceBookingResponseModel> GetByVendorUserName(string username);
     }
 }
