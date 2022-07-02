@@ -54,9 +54,14 @@ namespace Appo.Server.Features.ServiceClassValue.Service
             return repository.Update(dbmodel);
         }
 
-        IEnumerable<ServiceBookingResponseModel> IServiceBookingService.GetByVendorUserName(string username)
+        public IEnumerable<ServiceBookingResponseModel> GetByVendorUserName(string username)
         {
             var _model = repository.GetByVendorUserName(username);
+            return mapper.Map<IEnumerable<ServiceBookingResponseModel>>(_model);
+        }
+        public IEnumerable<ServiceBookingResponseModel> GetByCustomerUserName(string username)
+        {
+            var _model = repository.GetByCustomerUserName(username);
             return mapper.Map<IEnumerable<ServiceBookingResponseModel>>(_model);
         }
     }

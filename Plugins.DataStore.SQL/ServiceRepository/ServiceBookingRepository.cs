@@ -105,5 +105,14 @@ namespace Plugins.DataStore.SQL.ServiceRepository
                 .Include(m => m.Country).Where(m => m.Service.CreationUserName == username);
             return v;
         }
+
+        public IEnumerable<SrvServiceBooking> GetByCustomerUserName(string username)
+        {
+            var v = db.SrvServiceBookings
+                .Include(m => m.Service)
+                .Include(m => m.City)
+                .Include(m => m.Country).Where(m => m.CreationUserName == username);
+            return v;
+        }
     }
 }

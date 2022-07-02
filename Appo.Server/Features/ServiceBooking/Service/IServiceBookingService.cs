@@ -19,5 +19,7 @@ namespace UseCases.DataStorePluginInterfaces.SrvTable
 
 
         IEnumerable<ServiceBookingResponseModel> GetByVendorUserName(string username);
+
+        IEnumerable<ServiceBookingResponseModel> GetByCustomerUserName(string username);
     }
 }

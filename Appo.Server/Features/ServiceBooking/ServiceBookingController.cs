@@ -38,6 +38,12 @@ namespace Appo.Server.Features.ServiceClassValue
         public IEnumerable<ServiceBookingResponseModel> GetByVendorUserName(string username)
             => repository.GetByVendorUserName(username);
 
+        [HttpGet]
+        [Route("by-customer-username")]
+        [AllowAnonymous]
+        public IEnumerable<ServiceBookingResponseModel> GetByCustomerUserName(string username)
+            => repository.GetByCustomerUserName(username);
+
 
         [HttpGet]
         [Route("by-Id")]

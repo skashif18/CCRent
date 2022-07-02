@@ -6,6 +6,11 @@ namespace CoreBusiness.Master
 {
     public partial class SrvServiceBooking:Entity
     {
+        public SrvServiceBooking()
+        {
+            SrvServiceBookingRatings = new HashSet<SrvServiceBookingRating>();
+            SrvServiceBookingReviews = new HashSet<SrvServiceBookingReview>();
+        }
         public int Id { get; set; }
         public int ServiceId { get; set; }
         public int CustomerId { get; set; }
@@ -25,5 +30,8 @@ namespace CoreBusiness.Master
         public virtual SysCountry Country { get; set; }
         public virtual SrvCustomer Customer { get; set; }
         public virtual SrvService Service { get; set; }
+
+        public virtual ICollection<SrvServiceBookingRating> SrvServiceBookingRatings { get; set; }
+        public virtual ICollection<SrvServiceBookingReview> SrvServiceBookingReviews { get; set; }
     }
 }
