@@ -3,6 +3,7 @@ using Appo.Server.Features.Master.Model;
 using Appo.Server.Features.Service.Model;
 using Appo.Server.Features.ServiceAttachment.Model;
 using Appo.Server.Features.ServiceAttachmentType.Model;
+using Appo.Server.Features.ServiceBookingRating.Model;
 using Appo.Server.Features.ServiceClassValue.Model;
 using Appo.Server.Features.ServiceSchedule.Model;
 using Appo.Server.Features.ServiceType.Model;
@@ -42,6 +43,9 @@ namespace Appo.Server.Infrastructure.AutoMapper
 
             CreateMap<SrvServiceBooking, ServiceBookingResponseModel>();
             CreateMap<ServiceBookingRequestModel, SrvServiceBooking>();
+
+            CreateMap<SrvServiceBookingRating, ServiceBookingRatingResponseModel>();
+            CreateMap<ServiceBookingRatingRequestModel, SrvServiceBookingReview>();
 
         }
     }

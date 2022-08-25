@@ -79,7 +79,9 @@ namespace WebApp
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IServiceTypeRepository, ServiceTypeRepository>();
             services.AddTransient<IServiceTypeAttachmentRepository, ServiceTypeAttachmentRepository>();
+            services.AddTransient<IServiceTypeEvaluationCriterionRepository , ServiceTypeEvaluationCriterionRepository>();
             services.AddTransient<IAddOnRepository, AddOnRepository>();
+
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 

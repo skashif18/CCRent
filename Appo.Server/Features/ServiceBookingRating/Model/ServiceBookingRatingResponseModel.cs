@@ -1,14 +1,14 @@
 ﻿using CoreBusiness.Base;
-using System;
-using System.Collections.Generic;
+using CoreBusiness.Master;
 
-namespace CoreBusiness.Master
+namespace Appo.Server.Features.ServiceBookingRating.Model
 {
-    public partial class SrvServiceBookingReview :Entity
+    public class ServiceBookingRatingResponseModel : Entity
     {
         public int Id { get; set; }
         public int ServiceBookingId { get; set; }
-        public string ReviewValue { get; set; }
+        public int CriteriaId { get; set; }
+        public int RatingValue { get; set; }
         public bool? IsActive { get; set; }
         public string Note { get; set; }
         public string UserDefined1 { get; set; }
@@ -16,6 +16,7 @@ namespace CoreBusiness.Master
         public string UserDefined3 { get; set; }
         public string UserDefined4 { get; set; }
 
+        public virtual SrvServiceTypeEvaluationCriterion Criteria { get; set; }
         public virtual SrvServiceBooking ServiceBooking { get; set; }
     }
 }

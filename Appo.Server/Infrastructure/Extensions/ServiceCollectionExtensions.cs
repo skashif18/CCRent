@@ -8,6 +8,7 @@
     using Appo.Server.Features.ServiceAddOn.Service;
     using Appo.Server.Features.ServiceAttachment.Service;
     using Appo.Server.Features.ServiceAttachmentType.Service;
+    using Appo.Server.Features.ServiceBookingRating.Service;
     using Appo.Server.Features.ServiceClassValue.Service;
     using Appo.Server.Features.ServiceSchedule.Service;
     using Appo.Server.Features.ServiceType.Service;
@@ -134,6 +135,10 @@
 
             services.AddTransient<IServiceBookingRepository, ServiceBookingRepository>();
             services.AddTransient<IServiceBookingService, ServiceBookingService>();
+
+
+            services.AddTransient<IServiceBookingRatingRepository, ServiceBookingRatingRepository>();
+            services.AddTransient<IServiceBookingRatingService, ServiceBookingRatingService>();
 
 
             return services;
