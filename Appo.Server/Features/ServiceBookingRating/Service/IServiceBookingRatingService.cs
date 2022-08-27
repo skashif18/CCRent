@@ -6,7 +6,7 @@ namespace Appo.Server.Features.ServiceBookingRating.Service
 {
     public interface IServiceBookingRatingService
     {
-        Response Create(ServiceBookingRatingRequestModel model);
+        Response Create(IEnumerable<ServiceBookingRatingRequestModel> model);
         Response Update(ServiceBookingRatingRequestModel model);
 
         ServiceBookingRatingResponseModel GetById(int Id);
@@ -14,5 +14,7 @@ namespace Appo.Server.Features.ServiceBookingRating.Service
         IEnumerable<ServiceBookingRatingResponseModel> GetByServiceBookingId(int serviceId);
 
         Response Delete(int Id);
+
+        public IEnumerable<ServiceBookingRatingResponseModel> GetAll();
     }
 }

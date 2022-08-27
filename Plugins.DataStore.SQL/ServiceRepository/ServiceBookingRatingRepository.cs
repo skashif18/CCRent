@@ -16,15 +16,24 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         {
             db = _db;
         }
-        public Response Create(SrvServiceBookingRating model)
+        public Response Create(IEnumerable<SrvServiceBookingRating> model)
         {
+            foreach(SrvServiceBookingRating m in model)
+            {
+                var result = db.SrvServiceBookingRatings.Find(m.Id);
+                if(result == null)
+                {
+                    db.Add(m);
+                } else
+                {
+                    result.RatingValue = m.RatingValue;
+                }
+            }
             try
             {
-                db.Add(model);
                 db.SaveChanges();
                 response.IsSuccess = true;
                 response.Message = "Added Successfully";
-                response.Id = model.Id;
                 response.Objects = model;
 
 
@@ -37,6 +46,7 @@ namespace Plugins.DataStore.SQL.ServiceRepository
 
             return response;
         }
+
 
         public Response Delete(int Id)
         {
@@ -67,6 +77,9 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         => db.SrvServiceBookingRatings.Where(m => m.Id == Id).FirstOrDefault();
         public IEnumerable<SrvServiceBookingRating> GetByServiceBookingId(int serviceBookingId)
         => db.SrvServiceBookingRatings.Where(m => m.ServiceBookingId == serviceBookingId);
+
+        public IEnumerable<SrvServiceBookingRating> GetAll()
+        => db.SrvServiceBookingRatings;
 
         public Response Update(SrvServiceBookingRating model)
         {

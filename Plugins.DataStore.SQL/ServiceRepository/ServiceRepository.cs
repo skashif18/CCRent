@@ -111,7 +111,7 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         {
             return db.SrvServices
                 .Include(m => m.SrvServiceAttachments)
-                .Include(m=>m.SrvServiceClassValues);
+                .Include(m => m.SrvServiceClassValues);
         }
     }
 }

@@ -67,6 +67,7 @@ namespace Appo.Server.Features.ServiceClassValue
 
         [HttpPut]
         [Route("update")]
+        [AllowAnonymous]
         public IActionResult Update(ServiceBookingRequestModel model)
         {
             var result = repository.Update(model);

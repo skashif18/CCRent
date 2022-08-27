@@ -39,6 +39,7 @@ namespace Appo.Server.Features.Service
 
         [HttpGet]
         [Route("by-Id")]
+        [AllowAnonymous]
         public ServiceResponseModel GetById(int Id)
             => repository.GetById(Id);
 

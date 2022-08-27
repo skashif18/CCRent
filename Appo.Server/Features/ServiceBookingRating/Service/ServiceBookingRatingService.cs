@@ -21,10 +21,10 @@ namespace Appo.Server.Features.ServiceBookingRating.Service
             repository = _repository;
             mapper = _mapper;
         }
-        public Response Create(ServiceBookingRatingRequestModel model)
+        public Response Create(IEnumerable<ServiceBookingRatingRequestModel> model)
         {
-            dbmodel = mapper.Map<SrvServiceBookingRating>(model);
-            return repository.Create(dbmodel);
+            var _dbmodel = mapper.Map<IEnumerable<SrvServiceBookingRating>>(model);
+            return repository.Create(_dbmodel);
         }
 
         public Response Delete(int Id)
@@ -48,6 +48,12 @@ namespace Appo.Server.Features.ServiceBookingRating.Service
         {
             dbmodel = mapper.Map<SrvServiceBookingRating>(model);
             return repository.Update(dbmodel);
+        }
+
+        public IEnumerable<ServiceBookingRatingResponseModel> GetAll()
+        {
+            var _model = repository.GetAll();
+            return mapper.Map<IEnumerable<ServiceBookingRatingResponseModel>>(_model);
         }
     }
 }

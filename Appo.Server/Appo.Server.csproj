@@ -44,6 +44,12 @@
     <None Remove="Infrastructure\Services\**" />
     <None Remove="Models\**" />
     <None Remove="wwwroot\**" />
+    <None Remove="Features\ServiceBookingReview\" />
+    <None Remove="Features\ServiceBookingReview\Model\" />
+    <None Remove="Features\ServiceBookingReview\Service\" />
+    <None Remove="Features\ServiceEvaluationCriteria\" />
+    <None Remove="Features\ServiceEvaluationCriteria\Model\" />
+    <None Remove="Features\ServiceEvaluationCriteria\Service\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -75,6 +81,12 @@
   <ItemGroup>
     <Folder Include="Data\Models\" />
     <Folder Include="upload\serviceImage\" />
+    <Folder Include="Features\ServiceBookingReview\" />
+    <Folder Include="Features\ServiceBookingReview\Model\" />
+    <Folder Include="Features\ServiceBookingReview\Service\" />
+    <Folder Include="Features\ServiceEvaluationCriteria\" />
+    <Folder Include="Features\ServiceEvaluationCriteria\Model\" />
+    <Folder Include="Features\ServiceEvaluationCriteria\Service\" />
   </ItemGroup>
 
 </Project>

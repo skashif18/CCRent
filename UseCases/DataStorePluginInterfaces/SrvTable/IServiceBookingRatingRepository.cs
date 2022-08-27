@@ -6,7 +6,7 @@ namespace UseCases.DataStorePluginInterfaces.SrvTable
 {
     public  interface IServiceBookingRatingRepository
     {
-        Response Create(SrvServiceBookingRating model);
+        Response Create(IEnumerable<SrvServiceBookingRating> model);
         Response Update(SrvServiceBookingRating model);
 
         SrvServiceBookingRating GetById(int Id);
@@ -14,6 +14,8 @@ namespace UseCases.DataStorePluginInterfaces.SrvTable
         IEnumerable<SrvServiceBookingRating> GetByServiceBookingId(int serviceId);
 
         Response Delete(int Id);
+
+        public IEnumerable<SrvServiceBookingRating> GetAll();
 
     }
 }

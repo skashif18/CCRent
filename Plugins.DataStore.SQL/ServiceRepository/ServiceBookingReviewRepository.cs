@@ -20,9 +20,19 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         }
         public Response Create(SrvServiceBookingReview model)
         {
-            try
+            var result = db.SrvServiceBookingReviews.Find(model.Id);
+
+            if(result == null)
             {
                 db.Add(model);
+            } else
+            {
+                result.ReviewValue = model.ReviewValue;
+            }
+
+            try
+            {
+                
                 db.SaveChanges();
                 response.IsSuccess = true;
                 response.Message = "Added Successfully";
