@@ -8,6 +8,8 @@ namespace CoreBusiness.Master
         public SrvClass()
         {
             SrvClassValues = new HashSet<SrvClassValue>();
+            SrvServiceRequestClasses = new HashSet<SrvServiceRequestClass>();
+            SrvServiceRequestClassValues = new HashSet<SrvServiceRequestClassValue>();
         }
 
         public int Id { get; set; }
@@ -19,8 +21,9 @@ namespace CoreBusiness.Master
         public string UserDefined2 { get; set; }
         public string UserDefined3 { get; set; }
         public string UserDefined4 { get; set; }
-       
 
+        public virtual ICollection<SrvServiceRequestClassValue> SrvServiceRequestClassValues { get; set; }
+        public virtual ICollection<SrvServiceRequestClass> SrvServiceRequestClasses { get; set; }
         public virtual ICollection<SrvClassValue> SrvClassValues { get; set; }
     }
 }

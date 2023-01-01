@@ -171,7 +171,7 @@
                             .Filters
                             .Add<ModelOrNotFoundActionFilter>())
             .AddControllersAsServices().AddJsonOptions(
-                x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve
+               x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
                 );
 
         public static IServiceCollection AddSwagger(this IServiceCollection services)

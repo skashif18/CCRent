@@ -12,6 +12,9 @@ namespace CoreBusiness.Master
             SrvServiceBookings = new HashSet<SrvServiceBooking>();
             SrvServiceClassValues = new HashSet<SrvServiceClassValue>();
             SrvServiceSchedules = new HashSet<SrvServiceSchedule>();
+            SrvServiceRequestClassValues = new HashSet<SrvServiceRequestClassValue>();
+
+            SrvServiceRequestQuotations = new HashSet<SrvServiceRequestQuotation>();
         }
 
         public int Id { get; set; }
@@ -34,5 +37,8 @@ namespace CoreBusiness.Master
         public virtual ICollection<SrvServiceBooking> SrvServiceBookings { get; set; }
         public virtual ICollection<SrvServiceClassValue> SrvServiceClassValues { get; set; }
         public virtual ICollection<SrvServiceSchedule> SrvServiceSchedules { get; set; }
+        public virtual ICollection<SrvServiceRequestClassValue> SrvServiceRequestClassValues { get; set; }
+        public virtual ICollection<SrvServiceRequestQuotation> SrvServiceRequestQuotations { get; set; }
+        
     }
 }

@@ -110,7 +110,7 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         public IEnumerable<SrvServiceBooking> GetByCustomerUserName(string username)
         {
             var v = db.SrvServiceBookings
-                .Include(m => m.Service)
+                .Include(m => m.Service).ThenInclude(m=>m.SrvServiceAttachments)
                 .Include(m => m.City)
                 .Include(m => m.Country).Where(m => m.CreationUserName == username);
             return v;

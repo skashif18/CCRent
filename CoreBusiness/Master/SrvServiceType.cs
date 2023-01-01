@@ -9,6 +9,7 @@ namespace CoreBusiness.Master
         {
             InverseServiceType = new HashSet<SrvServiceType>();
             SrvServiceTypeAttachments = new HashSet<SrvServiceTypeAttachment>();
+            SrvServiceRequests = new HashSet<SrvServiceRequest>();
             SrvServiceTypeEvaluationCriteria = new HashSet<SrvServiceTypeEvaluationCriterion>();
             SrvServices = new HashSet<SrvService>();
         }
@@ -27,7 +28,8 @@ namespace CoreBusiness.Master
 
         public virtual SrvServiceType ServiceType { get; set; }
         public virtual ICollection<SrvServiceType> InverseServiceType { get; set; }
-        public virtual ICollection<SrvServiceTypeAttachment> SrvServiceTypeAttachments { get; set; }
+        public virtual ICollection<SrvServiceTypeAttachment> SrvServiceTypeAttachments { get; set; } 
+        public virtual ICollection<SrvServiceRequest> SrvServiceRequests { get; set; }
         public virtual ICollection<SrvServiceTypeEvaluationCriterion> SrvServiceTypeEvaluationCriteria { get; set; }
         public virtual ICollection<SrvService> SrvServices { get; set; }
     }
