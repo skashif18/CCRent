@@ -7,6 +7,8 @@ using Appo.Server.Features.ServiceBookingRating.Model;
 using Appo.Server.Features.ServiceBookingReview.Model;
 using Appo.Server.Features.ServiceClassValue.Model;
 using Appo.Server.Features.ServiceEvaluationCriteria.Model;
+using Appo.Server.Features.ServiceRequest.Model;
+using Appo.Server.Features.ServiceRequestQuotation.Model;
 using Appo.Server.Features.ServiceSchedule.Model;
 using Appo.Server.Features.ServiceType.Model;
 using AutoMapper;
@@ -54,6 +56,12 @@ namespace Appo.Server.Infrastructure.AutoMapper
 
             CreateMap<SrvServiceTypeEvaluationCriterion, ServiceEvaluationCriteriaResponseModel>();
             CreateMap<ServiceEvaluationCriteriaRequestModel, SrvServiceTypeEvaluationCriterion>();
+
+            CreateMap<SrvServiceRequest, ServiceRequestResponseModel>();
+            CreateMap<ServiceRequestRequestModel, SrvServiceRequest>();
+
+            CreateMap<SrvServiceRequestQuotation, ServiceRequestQuotationResponseModel>();
+            CreateMap<ServiceRequestQuotationRequestModel, SrvServiceRequestQuotation>();
 
         }
     }

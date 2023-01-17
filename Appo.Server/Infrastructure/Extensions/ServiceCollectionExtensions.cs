@@ -12,6 +12,8 @@
     using Appo.Server.Features.ServiceBookingReview.Service;
     using Appo.Server.Features.ServiceClassValue.Service;
     using Appo.Server.Features.ServiceEvaluationCriteria.Service;
+    using Appo.Server.Features.ServiceRequest.Service;
+    using Appo.Server.Features.ServiceRequestQuotation.Service;
     using Appo.Server.Features.ServiceSchedule.Service;
     using Appo.Server.Features.ServiceType.Service;
     using Appo.Server.Infrastructure.Extensions;
@@ -147,6 +149,12 @@
 
             services.AddTransient<IServiceTypeEvaluationCriterionRepository, ServiceTypeEvaluationCriterionRepository>();
             services.AddTransient<IServiceEvaluationCriteriaService, ServiceEvaluationCriteriaService>();
+
+            services.AddTransient<IServiceRequestRepository, ServiceRequestRepository>();
+            services.AddTransient<IServiceRequestService, ServiceRequestService>();
+
+            services.AddTransient<IServiceRequestQuotationRepository, ServiceRequestQuotationRepository>();
+            services.AddTransient<IServiceRequestQuotationService, ServiceRequestQuotationService>();
 
 
             return services;
