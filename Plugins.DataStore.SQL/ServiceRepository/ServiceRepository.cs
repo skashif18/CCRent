@@ -63,12 +63,12 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         }
 
         public IEnumerable<SrvService> GetAll(string email)
-             => db.SrvServices.Where(m=>m.CreationUserName.Equals(email))
+             => db.SrvServices.Where(m => m.CreationUserName.Equals(email)).OrderByDescending(m => m.CreationDate)
             .Include(m => m.SrvServiceAttachments)
             .Include(m => m.SrvServiceClassValues);
 
         public SrvService GetById(int Id)
-        =>db.SrvServices.Find(Id);
+        => db.SrvServices.Find(Id);
 
         public Response Update(SrvService model)
         {
