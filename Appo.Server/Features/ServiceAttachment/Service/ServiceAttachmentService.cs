@@ -75,8 +75,10 @@ namespace Appo.Server.Features.ServiceAttachment.Service
             dbmodel.IsActive = true;
             response.IsSuccess = true;
             response.Objects = dbmodel;
-
-           // var updateresponse = repository.Update(dbmodel);
+            if (!exist)
+            {
+                var updateresponse = repository.Update(dbmodel);
+            }
 
             UploadFile(files, filePath, fileName);
 
