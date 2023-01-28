@@ -1,5 +1,7 @@
 ﻿using CoreBusiness;
 using CoreBusiness.Master;
+using Microsoft.EntityFrameworkCore;
+using Plugins.DataStore.SQL.Infrastructure.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,7 @@ namespace Plugins.DataStore.SQL.ServiceRepository
 
         private readonly CarRentContext db;
         private readonly Response response = new();
+        private readonly ICurrentUserService currentUser;
         public ServiceAttachmentRepository(CarRentContext _db)
         {
             db = _db;
@@ -66,7 +69,7 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         }
 
         public SrvServiceAttachment GetById(int Id)
-        =>db.SrvServiceAttachments.Where(m=>m.Id ==Id).FirstOrDefault();
+        => db.SrvServiceAttachments.Where(m => m.Id == Id).FirstOrDefault();
         public IEnumerable<SrvServiceAttachment> GetByServiceId(int serviceId)
         => db.SrvServiceAttachments.Where(m => m.ServiceId == serviceId);
 
@@ -107,6 +110,17 @@ namespace Plugins.DataStore.SQL.ServiceRepository
             }
 
             return response;
+        }
+
+        public bool CheckDuplicate(int attachmentTypeId, int serviceId, string userName)
+        {
+            var _check = db.SrvServiceAttachments.Where(m => m.ServiceTypeAttachmentId == attachmentTypeId
+            && m.ServiceId == serviceId && m.CreationUserName == userName).FirstOrDefault();
+            if(_check != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -4,6 +4,7 @@ using CoreBusiness;
 using CoreBusiness.Master;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Plugins.DataStore.SQL.Infrastructure.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,6 +19,7 @@ namespace Appo.Server.Features.ServiceAttachment.Service
         private readonly IWebHostEnvironment env;
 
         private readonly IServiceAttachmentRepository repository;
+        private readonly ICurrentUserService currentUser;
 
         private readonly IMapper mapper;
 
@@ -25,15 +27,17 @@ namespace Appo.Server.Features.ServiceAttachment.Service
         private SrvServiceAttachment dbmodel = new();
         private object postedFile;
 
-        public ServiceAttachmentService(IServiceAttachmentRepository _repository, IMapper _mapper, IWebHostEnvironment _env)
+        public ServiceAttachmentService(IServiceAttachmentRepository _repository, IMapper _mapper, IWebHostEnvironment _env, ICurrentUserService _currentUser)
         {
             repository = _repository;
             mapper = _mapper;
             env = _env;
+            currentUser = _currentUser;
         }
 
         public Response Create(IFormFile files, IFormCollection formFileCollection)
         {
+
             int serviceId = Convert.ToInt32(formFileCollection["serviceId"]);
             int attachmentTypeId = Convert.ToInt32(formFileCollection["attachmentId"]);
 
@@ -49,8 +53,17 @@ namespace Appo.Server.Features.ServiceAttachment.Service
             model.IsActive = false;
             model.Note = "";
 
-            dbmodel = mapper.Map<SrvServiceAttachment>(model);
-            var response  = repository.Create(dbmodel);
+            string email = currentUser.GetUserName();
+
+
+            bool exist = repository.CheckDuplicate(attachmentTypeId, serviceId, email);
+            var response = new Response();
+
+            if (!exist)
+            {
+                dbmodel = mapper.Map<SrvServiceAttachment>(model);
+                response  = repository.Create(dbmodel);
+            }
 
             var ext = Path.GetExtension(files.FileName);
             string fileName = "" + serviceId + "_" + attachmentTypeId + ext;
@@ -60,12 +73,14 @@ namespace Appo.Server.Features.ServiceAttachment.Service
             dbmodel.ServerLocalPath = serverLocalPath;
             dbmodel.FileUrlpath= UploadDirectory + "/" + fileName;
             dbmodel.IsActive = true;
+            response.IsSuccess = true;
+            response.Objects = dbmodel;
 
-            var updateresponse = repository.Update(dbmodel);
+           // var updateresponse = repository.Update(dbmodel);
 
             UploadFile(files, filePath, fileName);
 
-            return updateresponse;
+            return response;
         }
 
         public Response Delete(int Id)
@@ -95,14 +110,17 @@ namespace Appo.Server.Features.ServiceAttachment.Service
         {
             string wwwPath = env.WebRootPath;
 
-            string path = Path.Combine(env.ContentRootPath, filePath);
-
             FileStream stream = null;
-            if (File.Exists(path))
+            if(filePath != null && filePath != "")
             {
-                stream = new FileStream(path, FileMode.Open);
-            }
+                string path = Path.Combine(env.ContentRootPath, filePath);
+
+                if (File.Exists(path))
+                {
+                    stream = new FileStream(path, FileMode.Open);
+                }
        
+            }
             return stream;
         }
 
