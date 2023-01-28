@@ -54,7 +54,6 @@ namespace Appo.Server.Features.ServiceClassValue
 
         [HttpPost]
         [Route("create")]
-        [AllowAnonymous]
         public IActionResult Create(ServiceBookingRequestModel model)
         {
 

@@ -11,7 +11,7 @@ namespace Appo.Server.Features.ServiceClassValue.Service
 {
     public class ServiceBookingService : IServiceBookingService
     {
-        private readonly CarRentContext db;
+      
 
         private readonly IServiceBookingRepository repository;
 

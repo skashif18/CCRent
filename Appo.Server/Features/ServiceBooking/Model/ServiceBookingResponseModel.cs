@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CoreBusiness.Master
 {
-    public partial class ServiceBookingResponseModel : Entity
+    public partial class ServiceBookingResponseModel
     {
         public int Id { get; set; }
         public int ServiceId { get; set; }
