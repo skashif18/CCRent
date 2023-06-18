@@ -36,6 +36,108 @@ namespace Plugins.DataStore.SQL.ServiceRepository
             return response;
         }
 
+        public Response CreateNew(ServiceScheduleNewModel model)
+        {
+            var resp = new Response();
+            try
+
+            {
+                var delMode = db.SrvServiceSchedules.Where(m => m.ServiceId == model.SrvId);
+                db.RemoveRange(delMode);
+                int len = (model.EndtDate - model.StartDate).Days;
+                if (model.ScheduleType.ToLower() == "daily")
+                {
+                    if (len < model.Interval)
+                    {
+                        resp.Message = "Invalid logic";
+                        return resp;
+                    }
+                    int increment = model.Interval;
+                    int i = 0;
+                    while (i <= len)
+                    {
+
+                        var _model = new SrvServiceSchedule();
+                        _model.ServiceId = model.SrvId;
+                        _model.FromDatetime = model.StartDate.AddDays(i);
+                        _model.ToDateTime = model.StartDate.AddDays(i + 1);
+                        db.Add(_model);
+                        i = i + increment;
+
+
+                    }
+                }
+                else if (model.ScheduleType.ToLower() == "monthly")
+                {
+                    len = (model.EndtDate - model.StartDate).Days / 30;
+                    if (len < model.Interval)
+                    {
+                        resp.Message = "Invalid logic";
+                        return resp;
+                    }
+                    int increment = model.Interval;
+                    int i = 0;
+                    var _model = new SrvServiceSchedule();
+                    while (i <= len)
+                    {
+
+                        _model = new SrvServiceSchedule();
+                        _model.ServiceId = model.SrvId;
+                        _model.FromDatetime = model.StartDate.AddMonths(i);
+                        _model.ToDateTime = _model.FromDatetime.AddDays(1);
+                        db.Add(_model);
+                        i = i + increment;
+
+
+                    }
+                }
+                else if (model.ScheduleType.ToLower() == "weekly")
+                {
+                    len = (model.EndtDate - model.StartDate).Days / 7;
+                    if (len < model.Interval)
+                    {
+                        resp.Message = "Invalid logic";
+                        return resp;
+                    }
+                    int increment = model.Interval;
+                    var _model = new SrvServiceSchedule();
+                    int i = 0;
+                    while (i <= len)
+                    {
+
+
+                        for (int j = 0; j < 7; j++)
+                        {
+
+                            if (model.InvervalDay.Contains(((int)model.StartDate.AddDays((i * 7) + j).DayOfWeek)))
+                            {
+                                _model = new SrvServiceSchedule();
+                                _model.ServiceId = model.SrvId;
+                                _model.FromDatetime = model.StartDate.AddDays((i * 7) + j);
+                                _model.ToDateTime = _model.FromDatetime.AddDays(1);
+                                db.Add(_model);
+                            }
+                        }
+                        i = i + increment;
+
+
+                    }
+                }
+
+                db.SaveChanges();
+                response.IsSuccess = true;
+                response.Message = "Added Successfully";
+                response.Objects = db.SrvServiceSchedules.Where(m => m.ServiceId == model.SrvId).ToList();
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Error: " + ex.Message;
+            }
+
+            return response;
+        }
+
         public IEnumerable<SrvServiceSchedule> GetAll()
        => db.SrvServiceSchedules;
 

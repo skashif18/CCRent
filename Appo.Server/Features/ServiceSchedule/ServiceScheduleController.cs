@@ -1,5 +1,6 @@
 ﻿using Appo.Server.Features.ServiceSchedule.Model;
 using Appo.Server.Features.ServiceSchedule.Service;
+using CoreBusiness;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -37,6 +38,19 @@ namespace Appo.Server.Features.ServiceSchedule
         {
 
             var result = repository.Create(model);
+
+            if (!result.IsSuccess) return BadRequest(result.Message);
+
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("createNew")]
+        [AllowAnonymous]
+        public IActionResult CreateNew(ServiceScheduleNewModel model)
+        {
+
+            var result = repository.CreateNew(model);
 
             if (!result.IsSuccess) return BadRequest(result.Message);
 

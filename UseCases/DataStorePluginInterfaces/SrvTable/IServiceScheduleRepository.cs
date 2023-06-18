@@ -11,6 +11,7 @@ namespace UseCases.DataStorePluginInterfaces.SrvTable
     public  interface IServiceScheduleRepository
     {
         Response Create(SrvServiceSchedule model);
+        Response CreateNew(ServiceScheduleNewModel model);
         Response Update(SrvServiceSchedule model);
         SrvServiceSchedule GetById(int Id);
         IEnumerable<SrvServiceSchedule> GetByServiceId(int serviceId);

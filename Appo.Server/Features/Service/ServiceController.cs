@@ -66,5 +66,16 @@ namespace Appo.Server.Features.Service
             return Ok(result);
         }
 
+        [HttpPut]
+        [Route("updateLocation")]
+        public IActionResult UpdateLocation(ServiceUpdateLocatioinModel model)
+        {
+            var result = repository.UpdateLocation(model);
+
+            if (!result.IsSuccess) return BadRequest(result.Message);
+
+            return Ok(result);
+        }
+
     }
 }

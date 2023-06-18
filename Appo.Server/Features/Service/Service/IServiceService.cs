@@ -9,6 +9,7 @@ namespace Appo.Server.Features.Service.Service
     {
         Response Create(ServiceRequestModel model);
         Response Update(ServiceRequestModel model);
+        Response UpdateLocation(ServiceUpdateLocatioinModel model);
         IEnumerable<ServiceResponseModel> GetAll(string email);
         Response Delete(int Id);
         ServiceResponseModel GetById(int Id);

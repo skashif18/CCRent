@@ -107,6 +107,36 @@ namespace Plugins.DataStore.SQL.ServiceRepository
 
             return response;
         }
+
+        public Response UpdateLocation(SrvService model)
+        {
+            var _model = db.SrvServices.Find(model.Id);
+            if (model != null)
+            {
+                #region Updating the field
+                _model.UserDefined1 = model.UserDefined1;
+                _model.UserDefined2 = model.UserDefined2;
+                #endregion
+                try
+                {
+                    db.SaveChanges();
+                    response.IsSuccess = true;
+                    response.Message = "Updated  Successfully";
+                }
+                catch (Exception ex)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Error: " + ex.Message;
+                }
+            }
+            else
+            {
+                response.IsSuccess = false;
+                response.Message = "Error: Data not found with this Id:  - " + model.Id;
+            }
+
+            return response;
+        }
         public IEnumerable<SrvService> GetService()
         {
             return db.SrvServices

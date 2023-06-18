@@ -26,6 +26,10 @@ public class ServiceScheduleService : IServiceScheduleService
         dbmodel = mapper.Map<SrvServiceSchedule>(model);
         return repository.Create(dbmodel);
     }
+    public Response CreateNew(ServiceScheduleNewModel model)
+    {
+        return repository.CreateNew(model);
+    }
     public Response Delete(int Id)
     {
         return repository.Delete(Id);

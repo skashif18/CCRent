@@ -27,6 +27,7 @@ namespace Appo.Server.Infrastructure.AutoMapper
             CreateMap<SrvServiceType, ServiceTypeResponseModel>();
 
             CreateMap<ServiceRequestModel, SrvService>();
+            CreateMap<ServiceUpdateLocatioinModel, SrvService>();
             CreateMap<SrvService, ServiceResponseModel>();
 
             CreateMap<ServiceAttachmentRequestModel, SrvServiceAttachment>();

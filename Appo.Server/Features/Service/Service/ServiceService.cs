@@ -49,6 +49,12 @@ namespace Appo.Server.Features.Service.Service
             return repository.Update(dbmodel);
         }
 
+        public Response UpdateLocation(ServiceUpdateLocatioinModel model)
+        {
+            dbmodel = mapper.Map<SrvService>(model);
+            return repository.UpdateLocation(dbmodel);
+        }
+
         public IEnumerable<SrvService> GetService()
         {
             return repository.GetService();

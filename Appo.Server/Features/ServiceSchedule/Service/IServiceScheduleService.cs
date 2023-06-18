@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public interface IServiceScheduleService
 {
     Response Create(ServiceScheduleRequestModel model);
+    Response CreateNew(ServiceScheduleNewModel model);
     Response Update(ServiceScheduleRequestModel model);
     ServiceScheduleResponseModel GetById(int Id);
     IEnumerable<ServiceScheduleResponseModel> GetByServiceId(int serviceId);
