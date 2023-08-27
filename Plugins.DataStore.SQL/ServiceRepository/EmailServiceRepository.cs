@@ -16,7 +16,7 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         {
             var email = new MimeMessage();
 
-            email.From.Add(new MailboxAddress("Mahad Job", "noreply@mahadjobs.com"));
+            email.From.Add(new MailboxAddress("Addrriyah", "addiriyahclassicshow@gmail.com"));
             email.To.Add(new MailboxAddress(emailModel.Email, emailModel.Email));
 
             email.Subject = emailModel.Subject;
@@ -35,7 +35,7 @@ namespace Plugins.DataStore.SQL.ServiceRepository
                     await smtp.ConnectAsync("smtp.gmail.com", 465, true);
                     //smtp.AuthenticationMechanisms.Remove("XOAUTH2");
                     // Note: only needed if the SMTP server requires authentication
-                    await smtp.AuthenticateAsync("noreply@mahadjobs.com", "Noreply@Mahad@123");
+                    await smtp.AuthenticateAsync("addiriyahclassicshow@gmail.com", "hitgtzcwiifyrefy");
                     await smtp.SendAsync(email);
                     //Thread.Sleep(2000);
                     //await smtp.DisconnectAsync(false);
