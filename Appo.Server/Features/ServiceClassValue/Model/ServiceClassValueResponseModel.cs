@@ -1,4 +1,6 @@
-﻿namespace Appo.Server.Features.ServiceClassValue.Model
+﻿using CoreBusiness.Master;
+
+namespace Appo.Server.Features.ServiceClassValue.Model
 {
     public class ServiceClassValueResponseModel
     {
@@ -14,6 +16,6 @@
         public string UserDefined2 { get; set; }
         public string UserDefined3 { get; set; }
         public string UserDefined4 { get; set; }
-
+        public virtual SrvClassValue ClassValue { get; set; }
     }
 }

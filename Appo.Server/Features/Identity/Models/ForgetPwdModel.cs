@@ -1,9 +1,10 @@
-﻿
+﻿using System.ComponentModel.DataAnnotations;
+
 namespace Appo.Server.Features.Identity.Models
 {
-    public class LoginResponseModel
+    public class ForgetPwdModel
     {
-        public string Token { get; set; }
+        [Required]
         public string Email { get; set; }
 
     }

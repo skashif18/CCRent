@@ -41,7 +41,7 @@ namespace Plugins.DataStore.SQL.ServiceRepository
 
         public Response Delete(int Id)
         {
-            var _model = db.SrvServiceAttachments.Find(Id);
+            var _model = db.SrvServiceClassValues.Find(Id);
             if (_model == null)
             {
                 response.IsSuccess = false;
@@ -51,7 +51,7 @@ namespace Plugins.DataStore.SQL.ServiceRepository
             try
             {
 
-                db.SrvServiceAttachments.Remove(_model);
+                db.Remove(_model);
                 db.SaveChanges();
                 response.IsSuccess = true;
                 response.Message = "Record Deleted Successfully .";
@@ -67,7 +67,28 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         public SrvServiceClassValue GetById(int Id)
         => db.SrvServiceClassValues.Where(m => m.Id == Id).FirstOrDefault();
         public IEnumerable<SrvServiceClassValue> GetByServiceId(int serviceId)
-        => db.SrvServiceClassValues.Where(m => m.ServiceId == serviceId);
+        => db.SrvServiceClassValues.Where(m => m.ServiceId == serviceId && m.IsActive == true).Select(m => new SrvServiceClassValue
+        {
+            Id = m.Id,
+            ClassValueId = m.ClassValueId,
+            ServiceId = m.ServiceId,
+            Note = m.Note,
+            ClassValue = new SrvClassValue
+            {
+                Id = m.ClassValue.Id,
+                NameEn = m.ClassValue.NameEn,
+                NameAr = m.ClassValue.NameAr,
+                ClassId = m.ClassValue.ClassId,
+                Class = db.SrvClasses.Where(n => n.Id == m.ClassValue.ClassId)
+                        .Select(n => new SrvClass
+                        {
+                            Id = n.Id,
+                            NameEn  =   n.NameEn,
+                            NameAr = n.NameAr, 
+                        })
+                        .FirstOrDefault()
+            },
+        });
 
         public Response Update(SrvServiceClassValue model)
         {
@@ -104,5 +125,6 @@ namespace Plugins.DataStore.SQL.ServiceRepository
 
             return response;
         }
+
     }
 }

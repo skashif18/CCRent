@@ -64,7 +64,19 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         public SrvServiceAddOn GetById(int Id)
         => db.SrvServiceAddOns.Where(m => m.Id == Id).FirstOrDefault();
         public IEnumerable<SrvServiceAddOn> GetByServiceId(int serviceId)
-        => db.SrvServiceAddOns.Where(m => m.ServiceId == serviceId);
+        => db.SrvServiceAddOns.Where(m => m.ServiceId == serviceId).Select(m => new SrvServiceAddOn
+        {
+            Id = m.Id,
+            AddOnId = m.AddOnId,
+            Note = m.Note,
+            Price = m.Price,
+            AddOn = new SrvAddOn
+            {
+                Id = m.AddOn.Id,
+                NameAr = m.AddOn.NameAr,
+                NameEn = m.AddOn.NameEn,
+            }
+        } );
 
         public Response Update(SrvServiceAddOn model)
         {

@@ -54,6 +54,17 @@ namespace Appo.Server.Features.ServiceClassValue
             return Ok(result);
         }
 
+        [HttpDelete]
+        [Route("delete")]
+        public IActionResult Delete(int id)
+        {
+            var result = repository.Delete(id);
+
+            if (!result.IsSuccess) return BadRequest(result.Message);
+
+            return Ok(result);
+        }
+
     }
 
 }

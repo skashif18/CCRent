@@ -56,26 +56,28 @@ namespace Appo.Server.Features.ServiceAttachment.Service
             string email = currentUser.GetUserName();
 
 
-            bool exist = repository.CheckDuplicate(attachmentTypeId, serviceId, email);
+            var exist = repository.CheckDuplicate(attachmentTypeId, serviceId, email);
             var response = new Response();
-
-            if (!exist)
+            bool update = false;
+            if (exist == null)
             {
                 dbmodel = mapper.Map<SrvServiceAttachment>(model);
                 response  = repository.Create(dbmodel);
+                update = response.IsSuccess;
             }
 
             var ext = Path.GetExtension(files.FileName);
             string fileName = "" + serviceId + "_" + attachmentTypeId + ext;
             string serverLocalPath = $"http://135.181.134.124:8001//{UploadDirectory}/{fileName}";
 
-            dbmodel.Id = response.Id;
+            dbmodel.Id = exist == null? response.Id : exist.Id;
             dbmodel.ServerLocalPath = serverLocalPath;
             dbmodel.FileUrlpath= UploadDirectory + "/" + fileName;
             dbmodel.IsActive = true;
+            
             response.IsSuccess = true;
             response.Objects = dbmodel;
-            if (!exist)
+            if (exist != null || update)
             {
                 var updateresponse = repository.Update(dbmodel);
             }

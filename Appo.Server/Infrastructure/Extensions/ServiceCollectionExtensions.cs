@@ -33,6 +33,7 @@
     using System;
     using System.Text;
     using System.Text.Json.Serialization;
+    using UseCases.DataStorePluginInterfaces;
     using UseCases.DataStorePluginInterfaces.Masters;
     using UseCases.DataStorePluginInterfaces.SrvTable;
     using UseCases.DataStorePluginInterfaces.SrvTable.SrvMaster;
@@ -61,7 +62,8 @@
                 option.Password.RequireUppercase = false;
 
             })
-                .AddEntityFrameworkStores<AccountContext>();
+                .AddEntityFrameworkStores<AccountContext>()
+                .AddDefaultTokenProviders();
             return services;
         }
 
@@ -155,6 +157,8 @@
 
             services.AddTransient<IServiceRequestQuotationRepository, ServiceRequestQuotationRepository>();
             services.AddTransient<IServiceRequestQuotationService, ServiceRequestQuotationService>();
+
+            services.AddTransient<IEmailServiceRepository,EmailServiceRepository>();
 
 
             return services;

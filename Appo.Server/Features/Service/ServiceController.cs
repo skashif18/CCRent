@@ -66,6 +66,16 @@ namespace Appo.Server.Features.Service
             return Ok(result);
         }
 
+        [HttpDelete]
+        [Route("delete")]
+        public IActionResult Delete(int srvId)
+        {
+            var result = repository.Delete(srvId);
+
+            if (!result.IsSuccess) return BadRequest(result.Message);
+
+            return Ok(result);
+        }
         [HttpPut]
         [Route("updateLocation")]
         public IActionResult UpdateLocation(ServiceUpdateLocatioinModel model)

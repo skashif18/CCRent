@@ -79,17 +79,8 @@ namespace Plugins.DataStore.SQL.ServiceRepository
             if (model != null)
             {
                 #region Updating the field
-                _model.ServiceId = model.ServiceId;
-                _model.ServiceTypeAttachmentId = model.ServiceTypeAttachmentId;
                 _model.FileUrlpath = model.FileUrlpath;
                 _model.ServerLocalPath = model.ServerLocalPath;
-                _model.FileType = model.FileType;
-                _model.Note = model.Note;
-                _model.UserDefined1 = model.UserDefined1;
-                _model.UserDefined2 = model.UserDefined2;
-                _model.UserDefined3 = model.UserDefined3;
-                _model.UserDefined4 = model.UserDefined4;
-                _model.IsActive = model.IsActive;
                 #endregion
                 try
                 {
@@ -112,15 +103,15 @@ namespace Plugins.DataStore.SQL.ServiceRepository
             return response;
         }
 
-        public bool CheckDuplicate(int attachmentTypeId, int serviceId, string userName)
+        public SrvServiceAttachment? CheckDuplicate(int attachmentTypeId, int serviceId, string userName)
         {
             var _check = db.SrvServiceAttachments.Where(m => m.ServiceTypeAttachmentId == attachmentTypeId
             && m.ServiceId == serviceId && m.CreationUserName == userName).FirstOrDefault();
             if(_check != null)
             {
-                return true;
+                return _check;
             }
-            return false;
+            return null;
         }
     }
 }

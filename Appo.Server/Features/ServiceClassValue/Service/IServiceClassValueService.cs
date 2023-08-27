@@ -13,5 +13,6 @@ namespace Appo.Server.Features.ServiceClassValue.Service
         public IEnumerable<ServiceClassValueResponseModel> GetByServiceId(int serviceId);
 
         public Response Update(ServiceClassValueRequestModel model);
+        Response Delete(int id);
     }
 }

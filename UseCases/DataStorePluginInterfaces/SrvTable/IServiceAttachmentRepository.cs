@@ -18,7 +18,7 @@ namespace UseCases.DataStorePluginInterfaces.SrvTable
         IEnumerable<SrvServiceAttachment> GetByServiceId(int serviceId);
 
         Response Delete(int Id);
-       bool CheckDuplicate(int attachmentTypeId, int _attachmentTypeId, string userName);
+        SrvServiceAttachment? CheckDuplicate(int attachmentTypeId, int _attachmentTypeId, string userName);
 
     }
 }

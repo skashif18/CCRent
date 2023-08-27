@@ -48,8 +48,7 @@ namespace Plugins.DataStore.SQL.ServiceRepository
             }
             try
             {
-
-                db.SrvServices.Remove(_model);
+                _model.IsActive = false;
                 db.SaveChanges();
                 response.IsSuccess = true;
                 response.Message = "Record Deleted Successfully .";
@@ -63,7 +62,7 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         }
 
         public IEnumerable<SrvService> GetAll(string email)
-             => db.SrvServices.Where(m => m.CreationUserName.Equals(email)).OrderByDescending(m => m.CreationDate)
+             => db.SrvServices.Where(m => m.CreationUserName.Equals(email) && m.IsActive != false).OrderByDescending(m => m.CreationDate)
             .Include(m => m.SrvServiceAttachments)
             .Include(m => m.SrvServiceClassValues);
 
@@ -139,7 +138,7 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         }
         public IEnumerable<SrvService> GetService()
         {
-            return db.SrvServices
+            return db.SrvServices.Where(m => m.IsActive != false)
                 .Include(m => m.SrvServiceAttachments)
                 .Include(m => m.SrvServiceClassValues);
         }

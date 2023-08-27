@@ -13,5 +13,6 @@ namespace Appo.Server.Features.ServiceAddOn.Service
         public IEnumerable<ServiceAddOnResponseModel> GetByServiceId(int serviceId);
 
         public Response Update(ServiceAddOnRequestModel model);
+        Response Delete(int id);
     }
 }

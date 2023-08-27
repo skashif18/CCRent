@@ -51,7 +51,18 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         => db.SrvServiceBookings.Where(m => m.Id == Id).FirstOrDefault();
 
         public IEnumerable<SrvServiceBooking> GetByServiceId(int serviceId)
-        => db.SrvServiceBookings.Where(m => m.ServiceId == serviceId);
+        => db.SrvServiceBookings.Where(m => m.ServiceId == serviceId).Select(n => new SrvServiceBooking
+        {
+            Id = n.Id,
+            City = n.City,
+            CityId = n.CityId,
+            Country = n.Country,
+            CountryId = n.CountryId,
+            FromDateTime = n.FromDateTime,
+            ToDateTime = n.ToDateTime,
+            ServiceId = serviceId,
+            UserDefined1 = n.UserDefined1,
+        });
 
         public Response Update(SrvServiceBooking model)
         {
@@ -112,7 +123,18 @@ namespace Plugins.DataStore.SQL.ServiceRepository
             var v = db.SrvServiceBookings
                 .Include(m => m.Service).ThenInclude(m=>m.SrvServiceAttachments)
                 .Include(m => m.City)
-                .Include(m => m.Country).Where(m => m.CreationUserName == username);
+                .Include(m => m.Country).Where(m => m.CreationUserName == username).Select(n => new SrvServiceBooking
+                {
+                    Id = n.Id,
+                    City = n.City,
+                    CityId = n.CityId,
+                    Country = n.Country,
+                    CountryId = n.CountryId,
+                    FromDateTime = n.FromDateTime,
+                    ToDateTime = n.ToDateTime,
+                    ServiceId = n.ServiceId,
+                    UserDefined1 = n.UserDefined1,
+                });
             return v;
         }
     }

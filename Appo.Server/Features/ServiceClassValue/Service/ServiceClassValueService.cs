@@ -47,5 +47,9 @@ namespace Appo.Server.Features.ServiceClassValue.Service
             dbmodel = mapper.Map<SrvServiceClassValue>(model);
             return repository.Update(dbmodel);
         }
+        public Response Delete(int id)
+        {
+            return repository.Delete(id);
+        }
     }
 }
