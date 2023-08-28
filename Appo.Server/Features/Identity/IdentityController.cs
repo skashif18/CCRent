@@ -162,7 +162,7 @@
             email.Name = user.UserName;
             email.Subject = "Forget Password";
             email.Body = $"<b>Hi {user.Email} <br> In order to reset your password please click on the link below <br>" +
-                $"<a href='{url}/change-pwd/{HttpUtility.UrlEncode(token)}?email={user.Email}'>Password Reset</a></b>";
+                $"<a href='{url}/screens/change-pwd/{HttpUtility.UrlEncode(token)}?email={user.Email}'>Password Reset</a></b>";
             response.Message = email.Body;
             var sent = await emailService.SentEmail(email);
             if (sent)
