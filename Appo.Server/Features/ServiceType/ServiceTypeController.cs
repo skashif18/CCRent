@@ -30,6 +30,11 @@ namespace Appo.Server.Features.ServiceType
             => repository.GetChildByParentId(Id);
 
         [HttpGet]
+        [Route("heirarchy")]
+        public string GetChildToParent(int srvTypeId)
+           => repository.GetChildToParent(srvTypeId);
+
+        [HttpGet]
         [Route("service-type-by-Id")]
         public ServiceTypeResponseModel GetById(int Id)
             => repository.GetById(Id);

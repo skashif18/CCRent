@@ -21,6 +21,7 @@ namespace UseCases.DataStorePluginInterfaces.SrvTable.SrvMaster
         SrvCategory GetById(int id);
 
         IEnumerable<SrvCategory> GetBaseParentAll();
+        string GetChildToParent(int catId);
 
         IEnumerable<SrvCategory> GetChildByParentId(int Id);
     }

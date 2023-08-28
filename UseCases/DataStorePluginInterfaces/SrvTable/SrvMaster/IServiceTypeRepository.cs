@@ -13,6 +13,7 @@ namespace UseCases.DataStorePluginInterfaces.SrvTable.SrvMaster
         Response Create(SrvServiceType model);
 
         IList<SrvServiceType> GetAll();
+        string GetChildToParent(int catId);
 
         Response Delete(int id);
 

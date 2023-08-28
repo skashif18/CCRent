@@ -11,6 +11,7 @@ namespace Appo.Server.Features.ServiceType.Service
         IList<ServiceTypeResponseModel> GetAll();
 
         Response Update(ServiceTypeRequestModel model);
+        string GetChildToParent(int catId);
 
         ServiceTypeResponseModel GetById(int id);
 

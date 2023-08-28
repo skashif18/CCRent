@@ -47,6 +47,38 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         }
         public IEnumerable<SrvCategory> GetBaseParentAll()
             => db.SrvCategories.Where(m => m.ParentCategoryId == null || m.ParentCategoryId == 0);
+
+        public string GetChildToParent(int catId)
+        {
+            var model = db.SrvCategories;
+            string catHie = "";
+            int _catId = catId;
+            var strList = new List<string>();
+            while (true)
+            {
+                var newModel = model.Where(m => m.Id == _catId).FirstOrDefault();
+                if (newModel != null)
+                {
+                    strList.Add(newModel.NameEn);
+                   
+                    _catId = newModel.ParentCategoryId?? 0;
+                    if(_catId == 0)
+                    {
+                        break;
+                    }
+                }
+            }
+            strList.Reverse();
+            foreach(var item in strList)
+            {
+                catHie = catHie + item;
+                if (!strList.Last().Equals(item))
+                {
+                    catHie = catHie + " " + "> ";
+                }
+            }
+            return catHie;
+        }
         public IEnumerable<SrvCategory> GetChildByParentId(int Id)
             => db.SrvCategories.Where(m => m.ParentCategoryId == Id);
 

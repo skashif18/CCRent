@@ -37,6 +37,10 @@ namespace Appo.Server.Features.ServiceType.Service
             var list = repository.GetBaseParentAll();
             return mapper.Map<IEnumerable<ServiceTypeResponseModel>>(list);
         }
+        public string GetChildToParent(int srvTypeId)
+        {
+            return repository.GetChildToParent(srvTypeId);
+        }
 
         public ServiceTypeResponseModel GetById(int Id)
         {

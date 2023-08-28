@@ -39,6 +39,10 @@ namespace Appo.Server.Features.Category.Services
             return mapper.Map<IEnumerable<CategoryResponseModel>>(list);
         }
 
+        public string GetChildToParent(int catId)
+        {
+            return repository.GetChildToParent(catId);
+        }
         public CategoryResponseModel GetById(int Id)
         {
             var model = repository.GetById(Id);

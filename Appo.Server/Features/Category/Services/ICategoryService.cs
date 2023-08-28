@@ -11,7 +11,7 @@ namespace Appo.Server.Features.Category.Services
         IList<CategoryResponseModel> GetAll();
 
         Response Update(CategoryRequestModel model);
-
+        string GetChildToParent(int catId);
         CategoryResponseModel GetById(int id);
 
         IEnumerable<CategoryResponseModel> GetBaseParentAll();
