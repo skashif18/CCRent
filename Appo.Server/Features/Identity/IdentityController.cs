@@ -160,9 +160,14 @@
             SentEmailModel email = new();
             email.Email = user.Email;
             email.Name = user.UserName;
-            email.Subject = "Forget Password";
-            email.Body = $"<b>Hi {user.Email} <br> In order to reset your password please click on the link below <br>" +
-                $"<a href='{url}/screens/change-pwd/{HttpUtility.UrlEncode(token)}?email={user.Email}'>Password Reset</a></b>";
+            email.Subject = "Reset Your Account Password";
+            email.Body = $"<html><body><b>Dear {user.Email} <br><br> We noticed that you've requested a password reset for your account. To ensure the security of your account, " +
+                $"we're here to help you regain access. Follow the steps below to reset your password: <br><br>" +
+                $"Click the Reset Password Button: " +
+                $"<a href='{url}/screens/change-pwd/{HttpUtility.UrlEncode(token)}?email={user.Email}'>Password Reset</a></b>" +
+                $"<br><br> Create a Strong Password: Choose a new password that's unique and secure. " +
+                $"Include a mix of uppercase and lowercase letters, numbers, and symbols. Avoid using easily guessable information.<br><br>" +
+                $"Thank you for choosing Addrriyah<br>Best regards </html></body>";
             response.Message = email.Body;
             var sent = await emailService.SentEmail(email);
             if (sent)
