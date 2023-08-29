@@ -150,7 +150,7 @@
         public async Task<ActionResult<Response>> ForgetPwd(ForgetPwdModel model)
         {
             var response = new Response();
-            string url = "http://136.243.174.48:5001";
+            string url = "http://136.243.174.48:5000";
             var user = await this.userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
