@@ -82,6 +82,7 @@
                 s.NameEn = model.Name;
                 s.Email = model.Email;
                 s.IsActive = false;
+                s.UserDefined1 = model.Type;
                 var v = supplier.Create(s);
                 return Ok(v);
             }

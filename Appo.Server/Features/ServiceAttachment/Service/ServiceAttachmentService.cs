@@ -43,6 +43,7 @@ namespace Appo.Server.Features.ServiceAttachment.Service
 
 
             string filePath = GetFilePath();
+            var ext = Path.GetExtension(files.FileName);
 
             ServiceAttachmentRequestModel model = new();
             model.ServiceId = Convert.ToInt32(formFileCollection["serviceId"]);
@@ -50,6 +51,10 @@ namespace Appo.Server.Features.ServiceAttachment.Service
             model.FileUrlpath = filePath;
             model.ServerLocalPath = filePath;
             model.FileType = 1;
+            if (ext == ".mov" || ext == ".mp4")
+            {
+                model.FileType = 2;
+            }
             model.IsActive = false;
             model.Note = "";
 
@@ -66,7 +71,6 @@ namespace Appo.Server.Features.ServiceAttachment.Service
                 update = response.IsSuccess;
             }
 
-            var ext = Path.GetExtension(files.FileName);
             string fileName = "" + serviceId + "_" + attachmentTypeId + ext;
             string serverLocalPath = $"http://135.181.134.124:8001//{UploadDirectory}/{fileName}";
 
@@ -74,6 +78,7 @@ namespace Appo.Server.Features.ServiceAttachment.Service
             dbmodel.ServerLocalPath = serverLocalPath;
             dbmodel.FileUrlpath= UploadDirectory + "/" + fileName;
             dbmodel.IsActive = true;
+            dbmodel.FileType = model.FileType;
             
             response.IsSuccess = true;
             response.Objects = dbmodel;

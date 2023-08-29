@@ -80,6 +80,7 @@ namespace Plugins.DataStore.SQL.ServiceRepository
             {
                 #region Updating the field
                 _model.FileUrlpath = model.FileUrlpath;
+                _model.FileType = model.FileType;
                 _model.ServerLocalPath = model.ServerLocalPath;
                 #endregion
                 try
