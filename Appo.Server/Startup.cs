@@ -8,6 +8,8 @@ namespace Appo.Server
     using Appo.Server.Infrastructure;
     using Appo.Server.Infrastructure.Extensions;
     using Appo.Server.Infrastructure.Filters;
+    using Microsoft.Extensions.FileProviders;
+    using System.IO;
 
     public class Startup
     {
@@ -49,7 +51,14 @@ namespace Appo.Server
                 {
                     endpoints.MapControllers();
                 });
-               //.ApplyMigrations();
+            app.UseFileServer(new FileServerOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                Path.Combine(Directory.GetCurrentDirectory(), "upload")),
+                RequestPath = "/upload",
+                EnableDefaultFiles = true
+            });
+            //.ApplyMigrations();
         }
     }
 }
