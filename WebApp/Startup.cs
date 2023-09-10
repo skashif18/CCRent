@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using UseCases;
 using UseCases.DataStorePluginInterfaces;
 using UseCases.DataStorePluginInterfaces.Masters;
+using UseCases.DataStorePluginInterfaces.SrvTable;
 using UseCases.DataStorePluginInterfaces.SrvTable.SrvMaster;
 using WebApp.Data;
 
@@ -84,6 +85,8 @@ namespace WebApp
 
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+            services.AddScoped<IServiceRepository, ServiceRepository>();
 
             //Dependency Injection for Use Cases and Repositories
 

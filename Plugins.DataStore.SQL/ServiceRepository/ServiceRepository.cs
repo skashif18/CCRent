@@ -62,9 +62,36 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         }
 
         public IEnumerable<SrvService> GetAll(string email)
-             => db.SrvServices.Where(m => m.CreationUserName.Equals(email) && m.IsActive != false).OrderByDescending(m => m.CreationDate)
-            .Include(m => m.SrvServiceAttachments)
-            .Include(m => m.SrvServiceClassValues);
+             => db.SrvServices.Where(m => m.CreationUserName.Equals(email)).OrderByDescending(m => m.CreationDate);
+
+        public Response Toggle(bool val ,int id)
+        {
+            var model = db.SrvServices.Find(id);
+            if (model != null)
+            {
+                #region Updating the field
+                model.IsActive = val;
+                #endregion
+                try
+                {
+                    db.SaveChanges();
+                    response.IsSuccess = true;
+                    response.Message = "Updated  Successfully";
+                }
+                catch (Exception ex)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Error: " + ex.Message;
+                }
+            }
+            else
+            {
+                response.IsSuccess = false;
+                response.Message = "Error: Data not found with this Id:  - " + model.Id;
+            }
+
+            return response;
+        }
 
         public SrvService GetById(int Id)
         => db.SrvServices.Find(Id);
@@ -139,6 +166,13 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         public IEnumerable<SrvService> GetService()
         {
             return db.SrvServices.Where(m => m.IsActive != false)
+                .Include(m => m.SrvServiceAttachments)
+                .Include(m => m.SrvServiceClassValues);
+        }
+
+        public IEnumerable<SrvService> GetServiceAdmin()
+        {
+            return db.SrvServices
                 .Include(m => m.SrvServiceAttachments)
                 .Include(m => m.SrvServiceClassValues);
         }

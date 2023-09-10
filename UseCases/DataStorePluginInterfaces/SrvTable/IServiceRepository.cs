@@ -14,9 +14,11 @@ namespace UseCases.DataStorePluginInterfaces.SrvTable
         Response Update(SrvService model);
         Response UpdateLocation(SrvService model);
         IEnumerable<SrvService> GetAll(string email);
+        Response Toggle(bool val, int id);
         Response Delete(int Id);
         SrvService GetById(int Id);
         IEnumerable<SrvService>GetService();
+        IEnumerable<SrvService> GetServiceAdmin();
 
     }
 }
