@@ -160,6 +160,10 @@
 
             services.AddTransient<IEmailServiceRepository,EmailServiceRepository>();
 
+            services.AddTransient<ICountryRepository, CountryRepository>();
+
+            services.AddTransient<ICityRepository, CityRepository>();
+
 
             return services;
         }

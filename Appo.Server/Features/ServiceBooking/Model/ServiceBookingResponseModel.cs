@@ -16,6 +16,7 @@ namespace CoreBusiness.Master
         public DateTime ToDateTime { get; set; }
         public bool? IsActive { get; set; }
         public string Note { get; set; }
+        public DateTime ModifiedDate { get; set; }
         public string UserDefined1 { get; set; }
         public string UserDefined2 { get; set; }
         public string UserDefined3 { get; set; }

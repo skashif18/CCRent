@@ -42,6 +42,16 @@ namespace Appo.Server.Features.Master
           => repository.GetCities();
 
         [HttpGet]
+        [Route("GetCountry")]
+        public IEnumerable<SysCountry> GetCountry()
+          => service.GetCountries();
+
+        [HttpGet]
+        [Route("GetCitiesByContryId")]
+        public IEnumerable<SysCity> GetCitiesByContryId(int id)
+          => service.GetCityByCountryId(id);
+
+        [HttpGet]
         [Route("GetClasses")]
         public IEnumerable<IdNameModel> GetClasses()
           => repository.GetClass();
