@@ -1,4 +1,5 @@
 ﻿@page "/services"
+@using Blazorise
 @using Syncfusion.Blazor.DropDowns
 @using System.Collections.Specialized
 @using System.Collections
@@ -8,7 +9,7 @@
 @inject IServiceRepository repository
 
 
-<h3>Manage Categories</h3>
+<h3>Services</h3>
 @if (Service != null){
 <table class="table">
     <thead>
@@ -26,23 +27,33 @@
                 <td>@item.NameEn</td>
                 <td>@item.NameAr</td>
                 <td>@item.IsActive</td>
-                <td>
-                        @if(@item.IsActive != true){
-                            <button type="button" @onclick="@(() => toggle(true,item.Id))" class="btn btn-sm">Make Active</button>
-                        } else{
-                        <button type="button" @onclick="@(() => toggle(false,item.Id))" class="btn btn-sm">Make Inactive</button>
-                        }
-                </td>
+                <td><a class="pointer" @onclick="@(() => ViewSrv(item.Id))">View Detail</a></td>
             </tr>
         }
     </tbody>
 </table>
+
+<style>
+    .approve{
+        background-color:green;
+        border-radius:7px;
+        color:white;
+    }
+
+    .reject {
+        background-color: red;
+        border-radius: 7px;
+        color:white;
+    }
+    .pointer{
+        cursor:pointer;
+    }
+
+</style>
 }
 
 
 @code {
-
-
     IEnumerable<SrvService> Service = new List<SrvService>();
     protected override void OnInitialized()
     {
@@ -55,16 +66,14 @@
         Service = repository.GetServiceAdmin();
     }
 
-    private void toggle(bool val,int id)
-    {
-        repository.Toggle(val,id);
-        toastService.ShowSuccess("Success");
-        LoadService();
-    }
-
     public void RefState()
     {
         this.StateHasChanged();
+    }
+
+    private void ViewSrv(int srvId)
+    {
+        NavigationManager.NavigateTo($"/view-service-detail/{srvId}");
     }
 
 }

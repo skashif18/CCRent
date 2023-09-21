@@ -1,0 +1,198 @@
+﻿@page "/view-service-detail/{id}"
+@using Syncfusion.Blazor.DropDowns
+@using System.Collections.Specialized
+@using System.Collections
+
+@inject IToastService toastService
+@inject NavigationManager NavigationManager
+@inject IServiceRepository repository
+@inject IServiceClassValueRepository classValRepo
+@inject ICategoryRepository catRepo
+@inject IServiceTypeRepository srvTypeRepo
+@inject IServiceScheduleRepository scheduleRepo
+
+@if (Service != null)
+{
+<h3>@Service.NameEn</h3>
+    <div class="row mt-3">
+        <div class="col-12">
+            <h3>Attachments</h3>
+            <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    @foreach(var i in Service.SrvServiceAttachments)
+                    {
+                        @if (i.FileUrlpath != null)
+                        {
+                            @if (i.Id == Service.SrvServiceAttachments.FirstOrDefault().Id)
+                            {
+                                <div class="carousel-item active">
+                                    <img src="http://136.243.174.48:8001/@i.FileUrlpath" class="d-block w-100" alt="...">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="carousel-item">
+                                    <img src="http://136.243.174.48:8001/@i.FileUrlpath" class="d-block w-100" alt="...">
+                                </div>
+                            }
+                        }
+
+                }
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-4">
+                    <b>Category</b>
+                </div>
+                <div class="col-4">
+                    <p>@CatHei</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <b>Service</b>
+                </div>
+                <div class="col-4">
+                    <p>@SrvHei</p>
+                </div>
+            </div>
+            <div class="row mt-2 mt-2">
+                <div class="col-12">
+                    <h4>Specification</h4>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                @foreach (var i in classVal)
+                                {
+                                    <th><b>@i.ClassValue.Class.NameEn</b></th>
+                                }
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                            @foreach (var item in classVal)
+                            {
+                                
+                                    <td>@item.ClassValue.NameEn</td>
+                            }
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+       
+            <div class="row mt-2 mt-2">
+                <div class="col-12">
+                    <h4>Schedule</h4>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>From Date</th>
+                                <th>To Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in schedule)
+                            {
+                                <tr>
+                                    <td>@item.FromDatetime.Date</td>
+                                    <td>@item.ToDateTime.Date</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <EditForm Model="Service">
+        <div class="row">
+            <div class="col-8">
+                <h4>Rejection Reason (Optional)</h4>
+                <InputText id="nameen" @bind-Value="Service.UserDefined3" class="form-control"></InputText>
+            </div>
+        </div>
+        <div class="row mb-5">
+            <div class="col-8">
+            </div>
+            <div class="col-2">
+                <button type="button" @onclick="@(() => toggle(true,Service.Id))" class="btn btn-sm approve">Approve</button>
+        
+            </div>
+            <div class="col-2">
+                <button type="button" @onclick="@(() => toggle(false,Service.Id))" class="btn btn-sm reject">Reject</button>
+            </div>
+        </div>
+        <div class="row mb-5">
+            <div class="col-8">
+            </div>
+        </div>
+    </EditForm>
+   
+    <style>
+        .approve {
+            background-color: green;
+            border-radius: 7px;
+            color: white;
+        }
+
+        .reject {
+            background-color: red;
+            border-radius: 7px;
+            color: white;
+        }
+
+    </style>
+}
+
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; }
+
+    SrvService Service;
+    IEnumerable<SrvServiceClassValue> classVal;
+    IEnumerable<SrvServiceSchedule> schedule;
+    string CatHei = "";
+    string SrvHei = "";
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        LoadService();
+    }
+
+    private void LoadService()
+    {
+        if (int.TryParse(this.Id, out int iId))
+        {
+            var val = repository.GetById(iId);
+            this.Service = val;
+            this.classVal = classValRepo.GetByServiceId(iId);
+            this.CatHei = catRepo.GetChildToParent(this.Service.CategoryId);
+            this.SrvHei = srvTypeRepo.GetChildToParent(this.Service.ServiceTypeId);
+            this.schedule = scheduleRepo.GetByServiceId(iId);
+        }
+    }
+
+    private void toggle(bool val, int id)
+    {
+        repository.Toggle(val, id, Service.UserDefined3);
+        toastService.ShowSuccess("Success");
+        NavigationManager.NavigateTo($"/services");
+    }
+
+    public void RefState()
+    {
+        this.StateHasChanged();
+    }
+
+    private void ViewSrv(int srvId)
+    {
+        NavigationManager.NavigateTo($"/view-service-detail/{srvId}");
+    }
+
+}

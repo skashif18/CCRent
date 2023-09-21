@@ -44,7 +44,8 @@ namespace WebApp
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
             services.AddBlazoredToast();
-            
+            services.AddBootstrapBlazor();
+
             services.AddDbContext<CarRentContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
@@ -83,6 +84,10 @@ namespace WebApp
             services.AddTransient<IServiceTypeEvaluationCriterionRepository , ServiceTypeEvaluationCriterionRepository>();
             services.AddTransient<IAddOnRepository, AddOnRepository>();
 
+            services.AddTransient<IServiceClassValueRepository, ServiceClassValueRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IServiceTypeRepository, ServiceTypeRepository>();
+            services.AddTransient<IServiceScheduleRepository, ServiceScheduleRepository>();
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 

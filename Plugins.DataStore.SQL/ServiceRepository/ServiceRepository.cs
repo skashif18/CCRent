@@ -22,6 +22,7 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         {
             try
             {
+                model.IsActive = false;
                 db.Add(model);
                 db.SaveChanges();
                 response.IsSuccess = true;
@@ -62,15 +63,24 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         }
 
         public IEnumerable<SrvService> GetAll(string email)
-             => db.SrvServices.Where(m => m.CreationUserName.Equals(email)).OrderByDescending(m => m.CreationDate);
+             => db.SrvServices.Where(m => m.CreationUserName.Equals(email))
+            .Include(m=>m.SrvServiceAttachments).OrderByDescending(m => m.CreationDate);
 
-        public Response Toggle(bool val ,int id)
+        public Response Toggle(bool val ,int id, String?reason)
         {
             var model = db.SrvServices.Find(id);
             if (model != null)
             {
                 #region Updating the field
                 model.IsActive = val;
+                if(val == false)
+                {
+                    model.UserDefined3 = reason;
+                }
+                else
+                {
+                    model.UserDefined3 = "";
+                }
                 #endregion
                 try
                 {
@@ -169,7 +179,6 @@ namespace Plugins.DataStore.SQL.ServiceRepository
                 .Include(m => m.SrvServiceAttachments)
                 .Include(m => m.SrvServiceClassValues);
         }
-
         public IEnumerable<SrvService> GetServiceAdmin()
         {
             return db.SrvServices
