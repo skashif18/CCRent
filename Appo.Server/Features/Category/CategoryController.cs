@@ -1,5 +1,6 @@
 ﻿using Appo.Server.Features.Category.Model;
 using Appo.Server.Features.Category.Services;
+using CoreBusiness;
 using CoreBusiness.Master;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +44,11 @@ namespace Appo.Server.Features.Category
         [Route("heirarchy")]
         public string GetChildToParent(int catId)
             => repository.GetChildToParent(catId);
+
+        [HttpGet]
+        [Route("heirarchyObj")]
+        public Response GetChildToParentObj(int catId)
+           => repository.GetChildToParentObj(catId);
 
 
         [HttpPost]

@@ -14,6 +14,7 @@ namespace UseCases.DataStorePluginInterfaces.SrvTable.SrvMaster
 
         IList<SrvServiceType> GetAll();
         string GetChildToParent(int catId);
+        Response GetChildToParentObj(int srvTypeId);
 
         Response Delete(int id);
 

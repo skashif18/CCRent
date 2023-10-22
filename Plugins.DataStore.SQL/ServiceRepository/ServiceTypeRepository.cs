@@ -83,6 +83,43 @@ namespace Plugins.DataStore.SQL.ServiceRepository
             return catHie;
         }
 
+        public Response GetChildToParentObj(int srvTypeId)
+        {
+            var resp = new Response();
+            var model = db.SrvServiceTypes;
+            string catHie = "";
+            int _catId = srvTypeId;
+            var strList = new List<string>();
+            while (true)
+            {
+                var newModel = model.Where(m => m.Id == _catId).FirstOrDefault();
+                if (newModel != null)
+                {
+                    if (!strList.Contains(catHie))
+                    {
+                        strList.Add(newModel.NameEn);
+                    }
+
+                    _catId = newModel.ServiceTypeId ?? 0;
+                    if (_catId == 0)
+                    {
+                        break;
+                    }
+                }
+            }
+            strList.Reverse();
+            foreach (var item in strList)
+            {
+                catHie = catHie + item;
+                if (!strList.Last().Equals(item))
+                {
+                    catHie = catHie + " " + "> ";
+                }
+            }
+            resp.Objects = catHie;
+            return resp;
+        }
+
         public IEnumerable<SrvServiceType> GetChildByParentId(int Id)
             => db.SrvServiceTypes.Where(m => m.ServiceTypeId == Id);
 

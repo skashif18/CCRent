@@ -43,6 +43,11 @@ namespace Appo.Server.Features.Category.Services
         {
             return repository.GetChildToParent(catId);
         }
+
+        public Response GetChildToParentObj(int catId)
+        {
+            return repository.GetChildToParentObj(catId);
+        }
         public CategoryResponseModel GetById(int Id)
         {
             var model = repository.GetById(Id);

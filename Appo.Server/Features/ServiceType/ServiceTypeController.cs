@@ -1,5 +1,6 @@
 ﻿using Appo.Server.Features.ServiceType.Model;
 using Appo.Server.Features.ServiceType.Service;
+using CoreBusiness;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -33,6 +34,11 @@ namespace Appo.Server.Features.ServiceType
         [Route("heirarchy")]
         public string GetChildToParent(int srvTypeId)
            => repository.GetChildToParent(srvTypeId);
+
+        [HttpGet]
+        [Route("heirarchyObj")]
+        public Response GetChildToParentObj(int srvTypeId)
+          => repository.GetChildToParentObj(srvTypeId);
 
         [HttpGet]
         [Route("service-type-by-Id")]

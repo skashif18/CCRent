@@ -48,6 +48,18 @@ namespace Appo.Server.Features.ServiceAttachment
             return Ok(result);
         }
 
+        [HttpPost]
+        [Route("createBase64")]
+        public IActionResult CreateBase64(IFormFile files, IFormCollection formFileCollection)
+        {
+
+            var result = repository.CreateBase64(files, formFileCollection);
+
+            if (!result.IsSuccess) return BadRequest(result.Message);
+
+            return Ok(result);
+        }
+
         [HttpPut]
         [Route("update")]
         public IActionResult Update(ServiceAttachmentRequestModel model)

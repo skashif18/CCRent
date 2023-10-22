@@ -9,6 +9,9 @@ namespace Appo.Server.Features.ServiceAttachment.Service
     public interface IServiceAttachmentService
     {
         Response Create(IFormFile files, IFormCollection formFileCollection);
+
+        string UploadFileBase64(string base64, string filePath, string fileName);
+        Response CreateBase64(IFormFile files, IFormCollection formFileCollection);
         Response Update(ServiceAttachmentRequestModel model);
 
         ServiceAttachmentResponseModel GetById(int Id);

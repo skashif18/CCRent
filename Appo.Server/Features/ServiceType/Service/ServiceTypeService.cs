@@ -42,6 +42,11 @@ namespace Appo.Server.Features.ServiceType.Service
             return repository.GetChildToParent(srvTypeId);
         }
 
+        public Response GetChildToParentObj(int srvTypeId)
+        {
+            return repository.GetChildToParentObj(srvTypeId);
+        }
+
         public ServiceTypeResponseModel GetById(int Id)
         {
             var model = repository.GetById(Id);
