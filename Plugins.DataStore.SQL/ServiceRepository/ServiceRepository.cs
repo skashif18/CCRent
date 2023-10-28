@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UseCases.DataStorePluginInterfaces.SrvTable;
+using UseCases.DataStorePluginInterfaces.SrvTable.SrvMaster;
 
 namespace Plugins.DataStore.SQL.ServiceRepository
 {
@@ -14,9 +15,11 @@ namespace Plugins.DataStore.SQL.ServiceRepository
     {
         private readonly CarRentContext db;
         private readonly Response response = new();
-        public ServiceRepository(CarRentContext _db)
+        private readonly ICategoryRepository categoryRepository;
+        public ServiceRepository(CarRentContext _db, ICategoryRepository _categoryRepository)
         {
             db = _db;
+            categoryRepository = _categoryRepository;
         }
         public Response Create(SrvService model)
         {
@@ -175,9 +178,49 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         }
         public IEnumerable<SrvService> GetService()
         {
-            return db.SrvServices.Where(m => m.IsActive != false)
+            var y = db.SrvServices.Where(m => m.IsActive != false)
                 .Include(m => m.SrvServiceAttachments)
-                .Include(m => m.SrvServiceClassValues);
+                .Include(m => m.SrvServiceBookings)
+                .Select(m => new SrvServiceResponse
+                {
+                    Id = m.Id,
+                    CategoryId = m.CategoryId,
+                    ServiceTypeId = m.ServiceTypeId,
+                    NameAr = m.NameAr,
+                    NameEn = m.NameEn,
+                    UserDefined1 = m.UserDefined1,
+                    UserDefined2 = m.UserDefined2,
+                    UserDefined3 = m.UserDefined3,
+                    IsActive = m.IsActive,
+                    SrvServiceAttachments =new List<SrvServiceAttachment> 
+                    {
+                        m.SrvServiceAttachments.Select(n => new SrvServiceAttachment {
+                            Id = n.Id,
+                            ServerLocalPath = n.ServerLocalPath,
+                            FileType = n.FileType,
+                            FileUrlpath = n.FileUrlpath,
+                            ServiceTypeAttachmentId = n.ServiceTypeAttachmentId,
+                            ServiceId = n.ServiceId,
+                            IsActive = n.IsActive,
+                        }).FirstOrDefault() 
+                    },
+                    ReviewNum = m.SrvServiceBookings
+                    .Where(n => n.ServiceId == m.Id).Select(n => new
+                    {
+                        Ratings = n.SrvServiceBookingReviews.Select(t => t.Id).Count(), //== 0? new List<int> { 0 }.Sum() : n.SrvServiceBookingRatings.Select(t => t.RatingValue).Sum()
+
+                    }).Select(t => t.Ratings).FirstOrDefault(),
+
+                    AvgRating = m.SrvServiceBookings
+                    .Where(n => n.ServiceId == m.Id).Select(n => new
+                    {
+                        Ratings = n.SrvServiceBookingRatings.Select(t => t.RatingValue).Average(), //== 0? new List<int> { 0 }.Sum() : n.SrvServiceBookingRatings.Select(t => t.RatingValue).Sum()
+
+                    }).Select(t => t.Ratings).FirstOrDefault(),
+
+                    CategoryHie = categoryRepository.GetChildToParentNoDb(m.CategoryId,db.SrvCategories.Where(t => t.Id != 0).AsParallel())
+                }).AsParallel().ToList();
+            return y;
         }
         public IEnumerable<SrvService> GetServiceAdmin()
         {

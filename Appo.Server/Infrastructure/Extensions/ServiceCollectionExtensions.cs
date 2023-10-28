@@ -11,6 +11,7 @@
     using Appo.Server.Features.ServiceBookingRating.Service;
     using Appo.Server.Features.ServiceBookingReview.Service;
     using Appo.Server.Features.ServiceClassValue.Service;
+    using Appo.Server.Features.ServiceCustomer.Services;
     using Appo.Server.Features.ServiceEvaluationCriteria.Service;
     using Appo.Server.Features.ServiceRequest.Service;
     using Appo.Server.Features.ServiceRequestQuotation.Service;
@@ -164,6 +165,8 @@
 
             services.AddTransient<ICityRepository, CityRepository>();
 
+            services.AddTransient<IServiceCustomerService, ServiceCustomerService>();
+
 
             return services;
         }
@@ -174,7 +177,8 @@
             => services.AddDbContext<CarRentContext>(
                 options =>
                      options.UseSqlServer(
-                         configuration.GetDefaultConnectionString()))
+                         configuration.GetDefaultConnectionString())
+                , contextLifetime: ServiceLifetime.Transient)
 
             .AddDbContext<AccountContext>(
                 options =>

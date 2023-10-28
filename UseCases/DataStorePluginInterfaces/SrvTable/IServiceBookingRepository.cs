@@ -16,6 +16,8 @@ namespace UseCases.DataStorePluginInterfaces.SrvTable
         SrvServiceBooking GetById(int Id);
         IEnumerable<SrvServiceBooking> GetByServiceId(int serviceId);
         IEnumerable<SrvServiceBooking> GetByCustomerId(int customerId);
+        IEnumerable<SrvServiceBooking> GetByCustomerEmail(string customerEmail);
+        AvailableDateTimeResponseModel GetBookingDates(int srvId);
 
         IEnumerable<SrvServiceBooking> GetByVendorUserName(string  username);
 

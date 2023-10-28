@@ -10,6 +10,7 @@ namespace UseCases.DataStorePluginInterfaces.SrvTable.Supplier
         Response Create(SrvCustomer model);
         Response Update(SrvCustomer model);
         SrvCustomer GetById(int Id);
+        SrvCustomer GetByEmail(string email);
 
         //for admin
         IEnumerable<SrvCustomer> GetSupplierList();

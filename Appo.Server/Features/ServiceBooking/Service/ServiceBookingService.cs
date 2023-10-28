@@ -48,6 +48,14 @@ namespace Appo.Server.Features.ServiceClassValue.Service
             return mapper.Map<IEnumerable<ServiceBookingResponseModel>>(_model);
         }
 
+        public IEnumerable<ServiceBookingResponseModel> GetByCustomerEmail(string customerEmail)
+        {
+            {
+                var _model = repository.GetByCustomerEmail(customerEmail);
+                return mapper.Map<IEnumerable<ServiceBookingResponseModel>>(_model);
+            }
+        }
+
         public Response Update(ServiceBookingRequestModel model)
         {
             dbmodel = mapper.Map<SrvServiceBooking>(model);
@@ -63,6 +71,11 @@ namespace Appo.Server.Features.ServiceClassValue.Service
         {
             var _model = repository.GetByCustomerUserName(username);
             return mapper.Map<IEnumerable<ServiceBookingResponseModel>>(_model);
+        }
+
+        public AvailableDateTimeResponseModel GetBookingDates(int srvId)
+        {
+            return repository.GetBookingDates(srvId);
         }
     }
 }

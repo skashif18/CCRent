@@ -22,6 +22,9 @@ namespace Appo.Server.Features.Service.Model
         public string UserDefined2 { get; set; }
         public string UserDefined3 { get; set; }
         public string UserDefined4 { get; set; }
+        public float AvgRating { get; set; }
+        public string CategoryHie { get; set; }
+        public int ReviewNum { get; set; }
 
         public virtual ICollection<SrvServiceAttachment> SrvServiceAttachments { get; set; }
         public virtual ICollection<SrvServiceClassValue> SrvServiceClassValues { get; set; }

@@ -1,6 +1,7 @@
 ﻿using CoreBusiness;
 using CoreBusiness.Master;
 using Microsoft.EntityFrameworkCore;
+using Plugins.DataStore.SQL.Infrastructure.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,12 @@ namespace Plugins.DataStore.SQL.ServiceRepository
     {
         private readonly CarRentContext db;
         private readonly Response response = new();
-        public ServiceBookingRepository(CarRentContext _db)
+        private readonly ICurrentUserService currentUserService;
+        private readonly IServiceScheduleRepository serviceScheduleRepository;
+        public ServiceBookingRepository(CarRentContext _db, IServiceScheduleRepository serviceScheduleRepository)
         {
             db = _db;
+            this.serviceScheduleRepository = serviceScheduleRepository;
         }
 
 
@@ -45,7 +49,72 @@ namespace Plugins.DataStore.SQL.ServiceRepository
         }
 
         public IEnumerable<SrvServiceBooking> GetByCustomerId(int customerId)
-         => db.SrvServiceBookings.Where(m => m.CustomerId == customerId);
+        {
+            return db.SrvServiceBookings.Where(m => m.CustomerId == customerId);
+        }
+
+        public IEnumerable<SrvServiceBooking> GetByCustomerEmail(string customerEmail)
+        {
+            var email = db.SrvCustomers.Where(m => m.Email == customerEmail).FirstOrDefault();
+            int custId = 0;
+            if (email != null)
+            {
+                custId = email.Id;
+
+                var v = db.SrvServiceBookings
+                    .Where(m => m.CustomerId == custId)
+                    .Include(m => m.Service).ThenInclude(m => m.SrvServiceAttachments)
+                    .Include(m => m.City)
+                    .Include(m => m.Country).Select(n => new SrvServiceBooking
+                    {
+                        Id = n.Id,
+                        City = new SysCity
+                        {
+                            Id = n.City.Id,
+                            NameEn = n.City.NameEn,
+                            NameAr = n.City.NameAr,
+                        },
+                        CityId = n.CityId,
+                        Country = new SysCountry 
+                        { 
+                            Id = n.Country.Id,
+                            NameEn = n.Country.NameEn,
+                            NameAr = n.Country.NameAr,
+                        },
+
+                        CountryId = n.CountryId,
+                        FromDateTime = n.FromDateTime,
+                        ToDateTime = n.ToDateTime,
+                        ServiceId = n.ServiceId,
+                        UserDefined1 = n.UserDefined1,
+                        UserDefined2 = n.UserDefined2,
+                        CreationDate = n.CreationDate,
+                        LastUpdateDate = n.LastUpdateDate,
+                    
+                        Service = new SrvService
+                        {
+                            Id = n.Service.Id,
+                            NameEn = n.Service.NameEn,
+                            NameAr = n.Service.NameAr,
+                            SrvServiceAttachments = new List<SrvServiceAttachment>() 
+                            {
+                                n.Service.SrvServiceAttachments.Select(m => new SrvServiceAttachment
+                                {
+                                    Id = m.Id,
+                                    FileType   = m.FileType,
+                                    FileUrlpath = m.FileUrlpath,
+                                    ServiceId = m.ServiceId,
+                                    ServerLocalPath = m.ServerLocalPath,
+                                    ServiceTypeAttachmentId = m.ServiceTypeAttachmentId,
+
+                                }).FirstOrDefault()
+                            }
+                        }
+                    });
+                return v;
+            }
+            return new List<SrvServiceBooking>();
+        }
 
         public SrvServiceBooking GetById(int Id)
         => db.SrvServiceBookings.Where(m => m.Id == Id).FirstOrDefault();
@@ -136,6 +205,50 @@ namespace Plugins.DataStore.SQL.ServiceRepository
                     UserDefined1 = n.UserDefined1,
                 });
             return v;
+        }
+
+        public AvailableDateTimeResponseModel GetBookingDates(int srvId)
+        {
+            var model = serviceScheduleRepository.GetByServiceId(srvId);
+            var bookedModel = db.SrvServiceBookings.Where(m => m.ServiceId == srvId);
+            var allFromDate = bookedModel.Select(m => new{ 
+                fromDate =  m.FromDateTime.Date,
+                toDate = m.ToDateTime.Date
+            }).ToList();
+            var bookedDates = new List<DateTime>();
+            foreach (var date in allFromDate)
+            {
+                var startDate = date.fromDate;
+                while (startDate != date.toDate)
+                {
+                    bookedDates.Add(startDate);
+                    startDate = startDate.AddDays(1);
+                }
+                bookedDates.Add(date.toDate);
+            }
+            var allToDate = bookedModel.Select(m => m.ToDateTime.Date).ToList();
+
+            var availableFromDate = model.Where(m => !bookedDates.Contains(m.FromDatetime) && !bookedDates.Contains(m.ToDateTime)
+                && (m.FromDatetime.Date >= DateTime.Now.Date) && (m.ToDateTime.Date >= DateTime.Now.Date)
+            )
+                .Select(m => new
+                {
+                    fromDate = m.FromDatetime.Date,
+                    toDate = m.ToDateTime.Date
+                }
+                ).ToList();
+
+            var response = new AvailableDateTimeResponseModel
+            {
+                FromDateTime = availableFromDate.Select(m => m.fromDate).ToList(),
+                ToDateTime = availableFromDate.Where(m => !availableFromDate.Select(m => m.fromDate).ToList().Contains(m.toDate)).Select(m => m.toDate).ToList(),
+            };
+            var listOfDate = response.FromDateTime.Concat(response.ToDateTime).ToList();
+            return new AvailableDateTimeResponseModel
+            {
+                FromDateTime = listOfDate,
+                ToDateTime = listOfDate
+            }; ;
         }
     }
 }

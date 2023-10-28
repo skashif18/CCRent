@@ -1,6 +1,7 @@
 ﻿using Appo.Server.Features.ServiceAddOn.Service;
 using Appo.Server.Features.ServiceClassValue.Model;
 using Appo.Server.Features.ServiceClassValue.Service;
+using CoreBusiness;
 using CoreBusiness.Master;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,12 @@ namespace Appo.Server.Features.ServiceClassValue
         public IEnumerable<ServiceBookingResponseModel> GetByCustomerId(int Id)
             => repository.GetByCustomerId(Id);
 
+        [HttpGet]
+        [Route("by-customer-email")]
+        [AllowAnonymous]
+        public IEnumerable<ServiceBookingResponseModel> GetByCustomerEmail(string customerEmail)
+           => repository.GetByCustomerEmail(customerEmail);
+
 
         [HttpGet]
         [Route("by-vendor-username")]
@@ -51,9 +58,16 @@ namespace Appo.Server.Features.ServiceClassValue
         public ServiceBookingResponseModel GetById(int Id)
             => repository.GetById(Id);
 
+        [HttpGet]
+        [Route("booking-date")]
+        [AllowAnonymous]
+        public AvailableDateTimeResponseModel GetBookingDates(int srvId)
+            => repository.GetBookingDates(srvId);
+
 
         [HttpPost]
         [Route("create")]
+        [AllowAnonymous]
         public IActionResult Create(ServiceBookingRequestModel model)
         {
 

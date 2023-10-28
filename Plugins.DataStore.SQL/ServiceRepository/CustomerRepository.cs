@@ -48,6 +48,12 @@ namespace Plugins.DataStore.SQL.ServiceRepository
             throw new NotImplementedException();
         }
 
+        public SrvCustomer GetByEmail(string email)
+        {
+            var model = db.SrvCustomers.Where(m => m.Email == email).FirstOrDefault();
+            return model;
+        }
+
         public IEnumerable<SrvCustomer> GetSupplierList()
         {
             throw new NotImplementedException();
